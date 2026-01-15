@@ -1,23 +1,41 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import {Header} from './components/Header'
-import {Footer} from "./components/Footer";
-import {HomePage} from './components/pages/HomePage'
-import About from './components/pages/About'
+import ClientLayout from "./layouts/ClientLayout";
+import AdminLayout from "./layouts/AdminLayout";
+import ScrollToTop from "./components/utils/ScrollToTop";
 
-export default function App(){
+import { HomePage } from "./components/pages/HomePage";
+import About from "./components/pages/About";
+import Service from "./components/pages/Service";
+import Traning from "./components/pages/Traning";
+import News from "./components/pages/News";
+import Contact from "./components/pages/Contact";
+
+import Dashboard from "./pages/admin/Dashboard";
+// import Users from "./pages/admin/Users";
+import './index_original.css'
+export default function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50 mt-[65px]">
-        <div>
-          <Header onMenuToggle={()=>{}}></Header>
-          <Routes>
-            <Route path="/" element={<HomePage/>}></Route>
-            <Route path='/about' element={<About/>}></Route>
-          </Routes>
-          <Footer/>
-        </div>
-      </div>
+      <ScrollToTop/>
+      <Routes>
+        {/* CLIENT */}
+        <Route element={<ClientLayout />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/services" element={<Service />} />
+          <Route path="/training" element={<Traning />} />
+          <Route path="/news" element={<News />} />
+          <Route path="/contact" element={<Contact />} />
+
+        </Route>
+
+        {/* ADMIN */}
+        <Route path="/admin" element={<AdminLayout />}>
+          <Route index element={<Dashboard />} />
+          {/* <Route path="users" element={<Users />} /> */}
+        </Route>
+      </Routes>
     </Router>
-  )
+  );
 }

@@ -10,7 +10,10 @@ export default defineConfig({
   resolve: {
     alias: {
       't_logo':path.resolve(__dirname, './src/assets/imgs/logo.png'),
-      't_logo2': path.resolve(__dirname, './src/assets/imgs/logo_2.png')
+      't_logo2': path.resolve(__dirname, './src/assets/imgs/logo_2.png'),
+      'slider_1': path.resolve(__dirname,'./src/assets/imgs/slider_1.jpg'),
+      'slider_2': path.resolve(__dirname,'./src/assets/imgs/slider_2.jpg'),
+      'slider_3': path.resolve(__dirname,'./src/assets/imgs/slider_3.jpg'),
     }
   },
   build: {

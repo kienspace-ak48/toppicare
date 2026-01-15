@@ -1,9 +1,9 @@
-function Services(){
-    return (
-        <>
-            <h1>Services page</h1>
-        </>       
-    )
+function Service() {
+  return (
+    <div className="min-h-[40vh]">
+      <h1>Service page</h1>
+    </div>
+  );
 }
 
-export default Services;
+export default Service;
