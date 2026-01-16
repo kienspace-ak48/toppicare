@@ -67,7 +67,7 @@ app.get("/api/user", async (req, res) => {
 });
 //
 // SPA fallback (React Router)
-app.get((req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, "../public/index.html"));
 });
 // app.get('/', (req,res)=>{

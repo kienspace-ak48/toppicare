@@ -38,7 +38,7 @@ export default function AdminLayout() {
         activeItem={activeItem}
         setActiveItem={setActiveItem}
       />
-      <div className="flex-1 p-6 transition-[padding] duration-300 ease-in-out">
+      <div className="flex-1 p-6 transition-[padding] duration-300 ease-in-out overflow-scroll">
         <Header/>
         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 min-h-[30%]">
           <Outlet />

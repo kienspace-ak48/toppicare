@@ -12,22 +12,64 @@ import {
   Search,
   ChevronDown,
   User,
+  Image,
+  Film,
 } from "lucide-react";
-
+import { Link } from "react-router-dom";
+// const navigate = useNavigate();
+// const location = useLocation();
 const Sidebar = ({ isDarkMode, toggleDarkMode, activeItem, setActiveItem }) => {
   const navigationItems = [
     {
       id: "dashboard",
       icon: <LayoutDashboard size={20} />,
       label: "Dashboard",
-      active: true,
+      path: "/admin",
     },
-    { id: "users", icon: <Users size={20} />, label: "Users", badge: 24 },
-    // { id: "posts", icon: <FileText size={20} />, label: "Posts", badge: 128 },
-    { id: "settings", icon: <Settings size={20} />, label: "Page Config" },
-    { id: "analytics", icon: <BarChart3 size={20} />, label: "Analytics" },
-    // { id: "products", icon: <Package size={20} />, label: "Products" },
+    {
+      id: "users",
+      icon: <Users size={20} />,
+      label: "Users",
+      badge: 24,
+    },
+    {
+      id: "settings",
+      icon: <Settings size={20} />,
+      label: "Page Config",
+      children: [
+        { id: "home", label: "Home", path: "/admin/pageconfig/homepage" },
+        { id: "menus", label: "Menus", path: "/admin/pageconfig/about" },
+        {
+          id: "seo",
+          label: "SEO Settings",
+          path: "/admin/pageconfig/training",
+        },
+      ],
+    },
+    // {
+    //   id: "analytics",
+    //   icon: <BarChart3 size={20} />,
+    //   label: "Analytics",
+    // },
+    {
+      id: "gallery",
+      icon: <Image size={20} />,
+      label: "Gallery",
+    },
+    {
+      id: "videos",
+      icon: <Film size={20} />,
+      label: "Videos",
+    },
   ];
+
+  const [openMenus, setOpenMenus] = useState({});
+  const toggleSubmenu = (id) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   const getColorClasses = (color) => {
     const colors = {
@@ -53,68 +95,113 @@ const Sidebar = ({ isDarkMode, toggleDarkMode, activeItem, setActiveItem }) => {
     >
       <div className="p-2">
         {/* Logo */}
-        <div className="flex items-center justify-center  mb-8" onClick={() => setCollapsed(!collapsed)}>
+        <div
+          className="flex items-center justify-center  mb-8"
+          onClick={() => setCollapsed(!collapsed)}
+        >
           <div className="w-10 h-10 rounded-lg bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
             <Settings className="text-white" size={20} />
           </div>
-          {!collapsed && (<h1
-            className="
+          {!collapsed && (
+            <h1
+              className="
     text-[18px] font-bold text-gray-800 dark:text-white
     cursor-pointer select-none
     hover:text-blue-500 transition pl-3
   "
-          >
-            AccessRace Panel
-          </h1>)}
-          
+            >
+              AccessRace Panel
+            </h1>
+          )}
         </div>
 
         {/* Navigation */}
-        <nav className="space-y-2">
-          {navigationItems.map((item) => {
-            const isActive = activeItem === item.id;
-            const colorClasses = getColorClasses("blue");
-            return (
-              <button
-                key={item.id}
-                onClick={() => setActiveItem(item.id)}
-                className={`w-full flex items-center p-3 rounded-lg transition-all duration-200
-  ${collapsed ? "justify-center" : "space-x-3"}
-  ${
-    isActive
-      ? "bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-900/10"
-      : "hover:bg-gray-50 dark:hover:bg-gray-700/50"
-  }`}
-              >
-                <span
-                  className={`${
-                    isActive
-                      ? "text-blue-500 dark:text-blue-400"
-                      : "text-gray-500 dark:text-gray-400"
-                  }`}
-                >
-                  {item.icon}
-                </span>
-                {!collapsed && (
-                  <span className={`
-    font-medium whitespace-nowrap
-    transition-all duration-200
-    ${collapsed
-      ? 'opacity-0 translate-x-2 pointer-events-none'
-      : 'opacity-100 translate-x-0'}
-  `}>{item.label}</span>
-                )}
-                {!collapsed && item.badge && (
-                  <span
-                    className={`ml-auto text-xs px-2 py-1 rounded-full ${colorClasses.badge}`}
+        {navigationItems.map((item) => {
+          const isActive = activeItem === item.id;
+          const hasChildren = item.children?.length > 0;
+
+          return (
+            <div key={item.id}>
+              {item.path ? (
+                // 👉 MENU CÓ PATH → ĐI ROUTE
+                <Link to={item.path}>
+                  <button
+                    onClick={() => setActiveItem(item.id)}
+                    className={`w-full flex items-center p-3 rounded-lg transition-all
+          ${collapsed ? "justify-center" : "space-x-3"}
+          ${
+            isActive
+              ? "bg-gradient-to-r from-blue-50 to-blue-100 dark:from-blue-900/20"
+              : "hover:bg-gray-50 dark:hover:bg-gray-700/50"
+          }
+        `}
                   >
-                    {item.badge}
+                    <span className="text-gray-500 dark:text-gray-400">
+                      {item.icon}
+                    </span>
+
+                    {!collapsed && (
+                      <span className="font-medium flex-1 text-left">
+                        {item.label}
+                      </span>
+                    )}
+                  </button>
+                </Link>
+              ) : (
+                // 👉 MENU KHÔNG PATH → TOGGLE SUBMENU
+                <button
+                  onClick={() => toggleSubmenu(item.id)}
+                  className={`w-full flex items-center p-3 rounded-lg transition-all
+        ${collapsed ? "justify-center" : "space-x-3"}
+        hover:bg-gray-50 dark:hover:bg-gray-700/50
+      `}
+                >
+                  <span className="text-gray-500 dark:text-gray-400">
+                    {item.icon}
                   </span>
-                )}
-              </button>
-            );
-          })}
-        </nav>
+
+                  {!collapsed && (
+                    <span className="font-medium flex-1 text-left">
+                      {item.label}
+                    </span>
+                  )}
+                  {!collapsed && item.children?.length > 0 &&(
+                    <ChevronDown
+                      size={16}
+                      className={`transition-transform ${
+                        openMenus[item.id] ? "rotate-180" : ""
+                      }`}
+                    />
+                  )}
+                  
+                </button>
+              )}
+
+              {/* ===== SUBMENU ===== */}
+              {!collapsed && !item.path && openMenus[item.id] && (
+                <div className="ml-8 mt-1 space-y-1">
+                  {item.children?.map((child) => (
+                    <Link key={child.id} to={child.path}>
+                      <button
+                        onClick={() => setActiveItem(child.id)}
+                        className={`w-full text-left px-3 py-2 rounded-md text-sm
+              ${
+                activeItem === child.id
+                  ? "bg-blue-100 text-blue-600 dark:bg-blue-900/30"
+                  : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+              }
+            `}
+                      >
+                        {child.label}
+                      </button>
+                    </Link>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
+
         {/* Theme Toggle */}
         <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700">
           {/* User Profile */}
