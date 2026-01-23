@@ -1,0 +1,571 @@
+<style>
+  /* Tailwind arbitrary selector */
+  #imageActionWrapper > :only-child {
+    grid-column: span 2 / span 2;
+  }
+</style>
+
+<button id="btn_cta_save" class="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg">
+  Save Config
+</button>
+
+<details class="accordion group border rounded-lg  my-4">
+  <summary
+    class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
+  >
+    <div class="flex items-center gap-2">
+      <span class="text-purple-500">⚙️</span>
+      <span class="font-medium">Hero</span>
+    </div>
+    <span class="transition-transform group-open:rotate-180">▼</span>
+  </summary>
+
+  <!-- <div class="px-4 pb-4 pt-2 space-y-3">
+      <input class="w-full border rounded px-3 py-2" placeholder="Hero title" />
+      <textarea class="w-full border rounded px-3 py-2"></textarea>
+    </div> -->
+  <div class="homepage_container px-4 pb-4 pt-2 space-y-3">
+    <!-- banner slider -->
+     <div class="flex items-center gap-x-5">
+       <label for="">Slider hero</label>
+       <button id="btnAdd" class="px-4 py-3 bg-green-600 text-white rounded-lg mb-4">Thêm +</button>
+     </div>
+    <!--  -->
+      <div id="imageActionWrapper" class="grid grid-cols-2 gap-5">
+        <%if(pc && pc.homepage.banner.length > 0){%>
+          <%pc.homepage.banner.forEach((b)=>{%>
+            <div class="image_action mb-6 border p-4 rounded-lg">
+            <input
+                  type="text"
+                  value="<%=b.title%>"
+                  name="home_banner_title"
+                  class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+                  placeholder="Title"
+                />
+            <div class="flex gap-0 items-center">
+              <button
+                type="button"
+                class="chooseImg flex-1 px-4 py-3 border border-green-500 rounded-lg">
+                Chọn ảnh
+              </button>
+
+              <input
+                type="text"
+                value="<%=b.banner_img%>"
+                class="img_input flex-3 px-4 py-3 border rounded-lg"
+                placeholder="img"
+              />
+            </div>
+
+            <div class="img_preview border  h-[200px]">
+              <img src="/<%=b.banner_img%>" class="w-full max-h-[200px] object-cover" />
+            </div>
+
+            <button
+              type="button"
+              class="btnRemove text-red-500 text-sm mt-2">
+              Xóa
+            </button>
+          </div>
+          <%})%>
+        <%}%>
+      </div>
+      <hr>
+    <!--  -->
+    <div class=" grid grid-cols-2 gap-5">
+      <div class="">
+        <label for="" class="block w-full px-4 py-3 mb-3">About</label>
+        <input type="text" name="home_slogan"
+        value="<%=(pc &&pc.homepage)?pc.homepage?.slogan:''%>"
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg "
+        >
+        <input
+          type="text"
+          value="<%=(pc && pc.homepage)?pc.homepage?.about?.title:''%>"
+          name="home_about_title"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+          placeholder="title"
+        />
+        <!-- <input
+          type="text"
+          name="home_about_desc"
+          value="<%#=(pc && pc.homepage)?pc.homepage?.about?.desc:''%>"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+          placeholder="desc"
+        /> -->
+        <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3" name="home_about_desc" id=""><%=(pc && pc.homepage)?pc.homepage?.about?.desc:''%></textarea>
+        <input
+          type="text"
+          name="home_about_video"
+          value="<%=(pc && pc.homepage)?pc.homepage?.about?.video:''%>"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+          placeholder="video"
+        />
+      </div>
+      <!-- intro app -->
+      <div class="">
+        <label for="" class="block w-full px-4 py-3">Intro app</label>
+        <!-- image handle action -->
+        <div class="image_action">
+          <div class="flex justify-between items-center  mt-3">
+            <button class="flex-1 px-4 py-3  chooseImg rounded-lg border border-green-500">Chọn ảnh</button>
+            <input
+              type="text"
+              name="home_intro_img"
+              value="<%=(pc && pc.homepage)?pc.homepage?.intro_app?.img:''%>"
+              class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg "
+              placeholder="img"
+            />
+          </div>
+          <div class="img_preview border border-gray-300 w-full h-[200px]">
+            <img src="/<%=(pc && pc.homepage)?pc.homepage?.intro_app?.img:''%>" alt="" class="w-full object-cover max-h-[200px]">
+          </div>
+        </div>
+        <!--  -->
+        <input
+          type="text"
+          name="home_intro_title"
+          value="<%=(pc && pc.homepage)?pc.homepage?.intro_app?.title:''%>"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+          placeholder="title"
+        />
+        
+        <!--  -->
+        <div class="flex justify-between items-center my-3">
+          <label for="" class="pr-4 py-3">Benefits</label>
+          <button class="px-4 py-3 w-full border border-black rounded-lg " id="homepage_cta_benefit_add">Add</button>
+        </div>
+        <div id="homepage_intro_app_wrapper">
+          <%if(pc && pc.homepage.intro_app.benefits.length >0){%>
+            <%pc.homepage.intro_app.benefits.forEach(b=>{%>
+              <div class="relative benefit_input_template" >
+                <input type="text" value="<%=b%>" class="homepage_introapp_benefit_input w-full px-4 py-3 rounded-lg bg-white border border-gray-300" placeholder="benefits">
+                <span class="btn_remove text-red-500 top-0 right-2 -translate-y-1/2 absolute hover:cursor-pointer">X</span>
+              </div>
+            <%})%>
+          <%}%>
+        </div>
+      </div>
+      
+    </div>
+    <!--  -->
+    <!-- faq -->
+       <hr>
+       <div class=" col-span-full">
+        <label for="" class="px-4 py-3 w-full my-3" >faq</label>
+        <input type="text" value="<%=(pc && pc.homepage)?pc.homepage?.faq?.title:''%>" name="home_faq_title" class="px-4 py-3 w-full rounded-xl border border-gray-300 mt-3">
+        
+        <div class="flex justify-between items-center">
+          <label for="">FaQs</label>
+          <button id="btn_home_faq_add" class="px-4 py-3 border border-gray-300 rounded-lg bg-green-500">Add +</button>
+        </div>
+        <!--  -->
+        <div id="wrapper_home_faq" class="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <%if(pc.homepage.faq && pc.homepage.faq.sentences.length > 0){%>
+            <%pc.homepage.faq.sentences.forEach(s=>{%>
+              <div class="border border-gray-300 rounded-sm p-4 item_card relative" > 
+                <input type="text" class="px-4 py-3 w-full rounded-lg border border-gray-300" value="<%=s.question%>" name="question">
+                <input type="text" class="px-4 py-3 w-full rounded-lg border border-gray-300" value="<%=s.answer%>" name="answer">
+                <span class="home_faq_remove text-red-500 hover:cursor-pointer absolute top-0 right-2" >X</span>
+              </div>
+            <%})%>
+          <%}%>
+        </div>
+       </div>
+    <hr>
+    <!-- commitment -->
+      <div class="">
+        <label for="" class="w-full px-4 py-3">Commitments</label>
+        <input
+          type="text"
+          name="home_commit_title"
+          value="<%=(pc && pc.homepage)?pc.homepage?.commitment?.title:''%>"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg m-3"
+          placeholder="title"
+        />
+        <input
+          type="text"
+          name="home_commit_desc"
+          value="<%=(pc && pc.homepage)?pc.homepage?.commitment.desc:''%>"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg m-3"
+          placeholder="desc"
+        />
+        <!-- Commitment card-->
+       <div class="flex justify-between gap-5">
+          <label for="" class="px-4 py-3">Commitment card</label>
+          <button id="home_com_cta_add_card" class="px-4 py-3 rounded-lg border">Add +</button>
+       </div>
+      <div id="home_com_wrapper" class="grid grid-cols-4 sm:grid-cols-3 gap-5">
+        <%if(pc.homepage.commitment && pc.homepage.commitment.cards.length > 0){%>
+          <%pc.homepage.commitment.cards.forEach(c=>{%>
+            <div class="relative home_com_card mt-3 p-4 border border-gray-300 rounded-md">
+              <input type="text" class="px-4 py-3 rounded-lg border border-gray-300 w-full" name="home_com_card_icon" value="<%=c.icon%>">
+              <input type="text" class="px-4 py-3 rounded-lg border border-gray-300 w-full" name="home_com_card_title" value="<%=c.title%>">
+              <input type="text" class="px-4 py-3 rounded-lg border border-gray-300 w-full" name="home_com_card_desc" value="<%=c.desc%>">
+              <buton class="btn_home_com_remove text-red-500 absolute top-0 right-2 -translate-y-1/2 hover:cursor-pointer">X</buton>
+            </div>
+          <%})%>
+        <%}%>
+      </div>
+       <!-- commitment end -->
+        
+      </div>
+    <!--  -->
+  </div>
+</details>
+
+<details class="accordion group border rounded-lg bg-white my-4">
+  <summary
+    class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
+  >
+    <div class="flex items-center gap-2">
+      <span class="text-purple-500">⚙️</span>
+      <span class="font-medium">About</span>
+    </div>
+
+    <span class="transition-transform group-open:rotate-180">▼</span>
+  </summary>
+  <div class="px-4 pb-4 pt-2">
+    <div class="grid grid-cols-2">
+      <div>
+        <label for="" class="px-4 py-3">Banner</label>
+        <!-- image handle action -->
+        <div class="image_action">
+          <div class="flex justify-between items-center ">
+            <button class="flex-1 px-4 py-3  chooseImg rounded-lg border border-green-500">Chọn ảnh</button>
+            <input
+              type="text"
+              value="<%=(pc &&pc.homepage)?pc.homepage?.banner[0]?.banner_img :'' %>"
+              class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg "
+              placeholder="img"
+            />
+          </div>
+          <div class="img_preview border border-gray-300 w-full h-[200px]">
+            <img src="/<%=(pc && pc.homepage)?pc.homepage?.banner[0]?.banner_img:''%>" alt="" class="w-full object-cover max-h-[200px]">
+          </div>
+        </div>
+        <!-- end -->
+      </div>
+      <div>
+        b
+      </div>
+    </div>
+  </div>
+</details>
+
+<details class="accordion group border rounded-lg bg-white my-4">
+  <summary
+    class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
+  >
+    <span class="font-medium">Product</span>
+    <span class="transition-transform group-open:rotate-180">▼</span>
+  </summary>
+  <div class="px-4 pb-4 pt-2">Nội dung Product</div>
+</details>
+<!-- ==============TEAMPLATE================= -->
+ <template id="homepage_introapp_benefit">
+  <div class="relative benefit_input_template" >
+    <input type="text" class="homepage_introapp_benefit_input w-full px-4 py-3 rounded-lg bg-white border border-gray-300" placeholder="benefits">
+    <span class="btn_remove text-red-500 top-0 right-2 -translate-y-1/2 absolute hover:cursor-pointer">X</span>
+  </div>
+ </template>
+ <!--  -->
+ <template id="home_faq_template">
+    <div class="border border-gray-300 rounded-sm p-4 item_card relative" > 
+      <input type="text" class="px-4 py-3 w-full rounded-lg border border-gray-300" name="question">
+      <input type="text" class="px-4 py-3 w-full rounded-lg border border-gray-300" name="answer">
+      <span class="home_faq_remove text-red-500 hover:cursor-pointer top-0 right-2 -translate-y-1/2 absolute">X</span>
+    </div>
+ </template>
+ <!--  -->
+ <template id="home_com_carad_template">
+  <div class="relative home_com_card p-4 rounded-md border border-gray-300 ">
+    <input type="text" class="px-4 py-3 rounded-lg border border-gray-300 w-full"  name="home_com_card_icon">
+    <input type="text" class="px-4 py-3 rounded-lg border border-gray-300 w-full"  name="home_com_card_title">
+    <input type="text" class="px-4 py-3 rounded-lg border border-gray-300 w-full"  name="home_com_card_desc">
+    <buton class="btn_home_com_remove text-red-500 absolute top-0 right-2 -translate-y-1/2 hover:cursor-pointer">X</buton>
+  </div>
+ </template>
+ <!-- TEMPLATE -->
+<template id="imageActionTemplate">
+  <div class="image_action mb-6 border p-4 rounded-lg">
+    <input
+          type="text"
+          value="<%=(pc && pc.homepage)?pc.homepage?.banner[0]?.title:''%>"
+          name="home_banner_title"
+          class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+          placeholder="Title"
+        />
+    <div class="flex gap-0 items-center">
+      <button
+        type="button"
+        class="chooseImg flex-1 px-4 py-3 border border-green-500 rounded-lg">
+        Chọn ảnh
+      </button>
+
+      <input
+        type="text"
+        class="img_input flex-3 px-4 py-3 border rounded-lg"
+        placeholder="img"
+      />
+    </div>
+
+    <div class="img_preview border  h-[200px]">
+      <img class="w-full max-h-[200px] object-cover" />
+    </div>
+
+    <button
+      type="button"
+      class="btnRemove text-red-500 text-sm mt-2">
+      Xóa
+    </button>
+  </div>
+</template>
+<!-- </div> -->
+<!-- =================MODAL===================== -->
+<div
+  id="gallery_modal"
+  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+>
+  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
+    <div class="header flex justify-between mb-4">
+      <h2>Chon anh</h2>
+      <button onclick="closeChooseImgModal()">X</button>
+    </div>
+    <!--  -->
+    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+  </div>
+</div>
+<!-- =========================SCRIPT HERE================ -->
+<script>
+  const accordions = document.querySelectorAll(".accordion");
+  var ctaChooseImg = document.querySelectorAll(".chooseImg");
+  const imgList = document.querySelector("#imgList");
+  const chooseImgModal = document.querySelector("#gallery_modal");
+  let imgInputIsFocusing = null;
+  const btnAdd = document.querySelector('#btnAdd');
+  const wrapper = document.querySelector('#imageActionWrapper');
+  const template = document.querySelector('#imageActionTemplate');
+  const homepageCtaBenefitAdd = document.querySelector('#homepage_cta_benefit_add');
+  const homepageIntroAppWrapper = document.querySelector('#homepage_intro_app_wrapper');
+  const homepageIntroappBenefitTemplate = document.querySelector('#homepage_introapp_benefit');
+  const btnHomeComAddCard = document.querySelector('#home_com_cta_add_card');
+  const wrapperHomeComCard = document.querySelector('#home_com_wrapper');
+  const templateHomeComCard = document.querySelector('#home_com_carad_template');
+  const btnHomeFaq = document.querySelector('#btn_home_faq_add');
+  const wrapperHomeFaq = document.querySelector('#wrapper_home_faq');
+  const templateHomeFaq = document.querySelector('#home_faq_template');
+  // 
+  btnHomeFaq.addEventListener('click', ()=>{
+    console.log('aa')
+    const clone = templateHomeFaq.content.cloneNode(true);
+    wrapperHomeFaq.appendChild(clone);
+  });
+  wrapperHomeFaq.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('home_faq_remove')){
+      ev.target.closest('.item_card').remove();
+    }
+  })
+  //
+  btnHomeComAddCard.addEventListener('click', ()=>{
+    const clone = templateHomeComCard.content.cloneNode(true);
+    wrapperHomeComCard.appendChild(clone);
+  })
+  wrapperHomeComCard.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains("btn_home_com_remove")){
+      ev.target.closest('.home_com_card').remove();
+    }
+  })
+  // them block
+  btnAdd.addEventListener('click', ()=>{
+    const clone = template.content.cloneNode(true);
+    wrapper.appendChild(clone);
+  });
+  homepageCtaBenefitAdd.addEventListener('click', ()=>{
+    const clone = homepageIntroappBenefitTemplate.content.cloneNode(true);
+    homepageIntroAppWrapper.appendChild(clone);
+  });
+  // event delegation
+  homepageIntroAppWrapper.addEventListener('click', (e)=>{
+    //
+    if(e.target.classList.contains('btn_remove')){
+      e.target.closest('.benefit_input_template').remove();
+    }
+  })
+  //event delegation
+  wrapper.addEventListener("click", (e)=>{
+    //xoa block
+    if(e.target.classList.contains('btnRemove')){
+      e.target.closest('.image_action').remove();
+    }
+
+    //choose image (event)
+    if(e.target.classList.contains("chooseImg")){
+      const block = e.target.closest('.image_action');
+
+    }
+  })
+
+  accordions.forEach((item) => {
+    item.addEventListener("toggle", () => {
+      if (item.open) {
+        accordions.forEach((other) => {
+          if (other !== item) {
+            other.removeAttribute("open");
+          }
+        });
+      }
+    });
+  });
+  //
+  function openChooseImgModal() {
+    chooseImgModal.classList.remove("hidden");
+    chooseImgModal.classList.add("flex");
+  }
+  function closeChooseImgModal() {
+    chooseImgModal.classList.remove("flex");
+    chooseImgModal.classList.add("hidden");
+  }
+  ctaChooseImg.forEach((el) => {
+    el.addEventListener("click", (ev) => {
+      console.log(el);
+      loadImage();
+      let input = el.closest('.image_action');
+      imgInputIsFocusing = input;
+      console.log("input ", input);
+      openChooseImgModal();
+    });
+  });
+  //
+  wrapper.addEventListener('click', (e)=>{
+    //
+    if(e.target.classList.contains('btnRemove')){
+      e.target.closest('.image_action').remove();
+      return;
+    }
+
+    //choose image
+    if(e.target.classList.contains('chooseImg')){
+      const block = e.target.closest('.image_action');
+      imgInputIsFocusing = block;
+      loadImage();
+      openChooseImgModal();
+      return;
+    }
+  })
+  //
+  function loadImage() {
+    imgList.innerHTML = "Loading...";
+    $.ajax({
+      url: "/admin/gallery/image-getall",
+      method: "GET",
+      success: (res) => {
+        if (res.success) {
+          imgList.innerHTML = "";
+          res.data.forEach((item) => {
+            const img = document.createElement("img");
+            img.src = "/" + item.path;
+            img.className = `
+            w-full h-32
+            object-cover
+            cursor-pointer rounded border
+            hover:ring-4 hover:ring-blue-500
+            transition
+          `;
+
+            img.onclick = () => selectImage(item.path);
+
+            imgList.appendChild(img);
+          });
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  //
+  function selectImage(src) {
+    imgInputIsFocusing.querySelector('.img_input').value = src;
+     imgInputIsFocusing.querySelector('.img_preview img').src ="/"+src;
+    closeChooseImgModal();
+  }
+  // 
+
+  function submitData(data){
+    $.ajax({
+      url: '/admin/page-config',
+      method: "POST",
+      data: JSON.stringify(data),
+      contentType: 'application/json',
+      success: (res)=>{
+        console.log(res);
+        document.location.reload();
+      },
+      error: (xhr, status, err)=>{
+        console.log(xhr.responseJSON?.mess|| "Server error")
+      }
+    })
+  }
+  //
+  document.querySelector('#btn_cta_save').addEventListener('click', (ev)=>{
+    let sliderBanner = [];
+    let home_introapp_benefits = [];
+    let home_com_cards = [];
+    let home_faq_cards = [];
+    homepageIntroAppWrapper.querySelectorAll('input').forEach(el=>{
+      home_introapp_benefits.push(el.value)
+    })
+    document.querySelectorAll('#imageActionWrapper .image_action').forEach(el=>{
+      let temp = {
+        title: el.querySelector('input[name="home_banner_title"]').value,
+        banner_img: el.querySelector('.img_input').value
+      }
+      sliderBanner.push(temp);
+    })
+    console.log(sliderBanner);
+    document.querySelectorAll('#home_com_wrapper .home_com_card').forEach(el=>{
+      let objT = {
+        icon: el.querySelector('input[name="home_com_card_icon"]').value,
+        title: el.querySelector('input[name="home_com_card_title"]').value,
+        desc: el.querySelector('input[name="home_com_card_desc"]').value
+      }
+      home_com_cards.push(objT);
+    })
+    document.querySelectorAll('#wrapper_home_faq .item_card').forEach(el=>{
+      let objT ={
+        question: el.querySelector('input[name="question"]').value,
+        answer: el.querySelector('input[name="answer"]').value
+      }
+      home_faq_cards.push(objT);
+    })
+    console.log(home_com_cards);
+    // alert(home_faq_cards.length)
+    let payload = {
+      homepage:{
+        banner: sliderBanner,
+        about:{
+          title: document.querySelector('input[name="home_about_title"]').value,
+          desc: document.querySelector('textarea[name="home_about_desc"]').value,
+          video: document.querySelector("input[name='home_about_video']").value
+        },
+        slogan: document.querySelector('input[name="home_slogan"]').value,
+        intro_app: {
+          img: document.querySelector('input[name="home_intro_img"]').value,
+          title: document.querySelector('input[name="home_intro_title"]').value,
+          benefits: home_introapp_benefits//["Đa dạng gói dịch vụ, đáp ứng mọi nhu cầu chăm sóc", "Đặt lịch nhanh chóng chỉ với vài thao tác", "Nhiều ưu đãi hấp dẫn dành cho khách hàng", "Gợi ý chăm sóc thông minh"]
+        },
+        commitment: {
+          title: document.querySelector('input[name="home_commit_title"]').value,
+          desc: document.querySelector('input[name="home_commit_desc"]').value,
+          cards: home_com_cards
+        },
+        faq: {
+          title: document.querySelector('input[name="home_faq_title"]').value,
+          sentences: home_faq_cards
+        }
+      }
+    }
+    console.log(payload);
+    submitData(payload);
+  })
+</script>

@@ -14,6 +14,9 @@ import imgBodyCopy21 from "slider_1";
 import imgPhuKhoaCopy1 from "slider_1";
 import imgThietBiChamSocCopy21 from "slider_1";
 
+import usePageConfig from "../../hooks/usePageConfig";
+// const ASSET_URL = import.meta.env.VITE_API_URL;
+const ASSET_URL = window.__ENV__.API_URL;
 const services = [
   {
     id: "liet-trinh-ket-hop",
@@ -126,6 +129,11 @@ const bookingSteps = [
 
 function Service() {
   const [selectedStep, setSelectedStep] = useState(1);
+  // 
+  const {data, loading, status } = usePageConfig();
+  const serviceSection = data?.data?.service;
+  console.log('data o services ',serviceSection)
+  // 
   return (
     <div className="">
       {/* Banner */}
@@ -206,7 +214,7 @@ function Service() {
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Steps List - Left Side */}
             <div className="flex flex-col gap-4">
-              {bookingSteps.map((step) => (
+              {serviceSection?.booking_guide?.steps.map((step) => (
                 <button
                   key={step.step}
                   onClick={() => setSelectedStep(step.step)}
@@ -254,7 +262,7 @@ function Service() {
             {/* Image Display - Right Side */}
             <div className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-full flex flex-col">
               <div className="relative aspect-[4/3] overflow-hidden">
-                {bookingSteps.map((step) => (
+                {serviceSection?.booking_guide?.steps.map((step) => (
                   <div
                     key={step.step}
                     className={`absolute inset-0 transition-opacity duration-500 ${

@@ -1,6 +1,16 @@
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
+
+import usePageConfig from '../../hooks/usePageConfig';
+// const ASSET_URL = import.meta.env.VITE_API_URL;
+const ASSET_URL = window.__ENV__.API_URL;
+
+
+// const {data, loading, error} = usePageConfig();
+// const homepage = data.data?.homepage;
+// console.log(data)
+
 const bannerSlides = [
   {
     id: 1,
@@ -18,9 +28,16 @@ const bannerSlides = [
     title: 'Dịch vụ chất lượng cao',
   },
 ];
-function About() {
-  const [currentSlide, setCurrentSlide] = useState(0);
 
+function About() {
+  // 
+  const{data, loading, error} = usePageConfig();
+  // console.log(data)
+  const aboutSection = data?.data?.about;
+  console.log('aboutSection co gi',aboutSection)
+  const [currentSlide, setCurrentSlide] = useState(0);
+  // 
+  // 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);
   };
@@ -32,15 +49,15 @@ function About() {
     <div className="">
       {/* Banner Slider */}
       <section className="relative h-[400px] md:h-[500px] overflow-hidden">
-        {bannerSlides.map((slide, index) => (
+        {aboutSection?.slider.map((slide, index) => (
           <div
-            key={slide.id}
+            key={index}
             className={`absolute inset-0 transition-opacity duration-700 ${
               index === currentSlide ? 'opacity-100' : 'opacity-0'
             }`}
           >
             <ImageWithFallBack
-              src={slide.image}
+              src={ASSET_URL+slide.image}
               alt={slide.title}
               className="w-full h-full object-cover"
             />
@@ -82,41 +99,44 @@ function About() {
       </section>
 
       {/* Vision */}
-      <section className="py-16 md:py-24">
+      {aboutSection?.vision.map((v, index)=>(
+        <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div className="relative">
+          <div className={`flex items-center gap-8 ${
+            index%2===1? "flex-row-reverse":"flex-row"}
+            `}>
+            {/* Image  */}
+            <div className="w-1/2">
               <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
                 <ImageWithFallBack
-                  src="https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=600"
+                  src={ASSET_URL+v.image}
                   alt="Vision"
                   className="w-full h-full object-cover"
                 />
               </div>
               <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-gradient-to-br from-purple-500 to-pink-500 rounded-3xl -z-10"></div>
             </div>
-            <div>
+            {/* Content */}
+            <div className='w-1/2'>
               <h2 className="text-3xl md:text-4xl mb-6 bg-[#2dbdb6] bg-clip-text text-transparent font-bold">
-                Tầm nhìn
+                {v?.title}
               </h2>
               <div className="space-y-4 text-gray-700 leading-relaxed">
-                <p className="text-[15px]" className="text-[16px]">
-                  Trở thành nền tảng dịch vụ chăm sóc sức khỏe hàng đầu tại Việt Nam, mang đến những trải nghiệm massage và spa chuyên nghiệp, tiện lợi và chất lượng cao cho hàng triệu người dân.
+                  {v?.desc.split('/br/').map((d, index)=>(
+                <p key={index} className="text-[15px]" className="text-[16px]">
+                  {d}
                 </p>
-                <p className="text-[15px]" className="text-[16px]">
-                  Chúng tôi hướng tới việc xây dựng một cộng đồng khỏe mạnh, nơi mọi người có thể dễ dàng tiếp cận các dịch vụ chăm sóc sức khỏe tại nhà hoặc tại cơ sở với chi phí hợp lý và chất lượng đảm bảo.
-                </p>
-                <p className="text-[15px]" className="text-[16px]">
-                  ToppiCare cam kết không ngừng đổi mới, ứng dụng công nghệ để nâng cao trải nghiệm khách hàng và tạo ra giá trị bền vững cho cộng đồng.
-                </p>
+                  ))}
+                  {/* Trở thành nền tảng dịch vụ chăm sóc sức khỏe hàng đầu tại Việt Nam, mang đến những trải nghiệm massage và spa chuyên nghiệp, tiện lợi và chất lượng cao cho hàng triệu người dân. */}
               </div>
             </div>
           </div>
         </div>
       </section>
+      ))}
 
       {/* Mission */}
-      <section className="py-16 md:py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
+      {/* <section className="py-16 md:py-24 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="order-2 md:order-1">
@@ -150,10 +170,10 @@ function About() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Brand Story */}
-      <section className="py-16 md:py-24">
+      {/* <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="relative">
@@ -190,28 +210,20 @@ function About() {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Stats */}
       <section className="py-16 bg-[#2dbdb6]">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-white">
-            <div>
-              <div className="text-4xl md:text-5xl mb-2">10K+</div>
-              <div className="text-sm md:text-base opacity-90 text-[16px] text-[15px]">Khách hàng</div>
-            </div>
-            <div>
-              <div className="text-4xl md:text-5xl mb-2">500+</div>
-              <div className="text-sm md:text-base opacity-90 text-[16px] text-[15px]">Kỹ thuật viên</div>
-            </div>
-            <div>
-              <div className="text-4xl md:text-5xl mb-2">10+</div>
-              <div className="text-sm md:text-base opacity-90 text-[16px] text-[15px]">Dịch vụ</div>
-            </div>
-            <div>
-              <div className="text-4xl md:text-5xl mb-2">4.9★</div>
-              <div className="text-sm md:text-base opacity-90 text-[16px] text-[15px]">Đánh giá</div>
-            </div>
+
+            {aboutSection?.stats.map((s, index)=>(
+              <div key={index}>
+                <div className="text-4xl md:text-5xl mb-2">{s.number}</div>
+                <div className="text-sm md:text-base opacity-90 text-[16px] text-[15px]">{s.title}</div>
+              </div>
+            ))}
+            
           </div>
         </div>
       </section>

@@ -18,8 +18,10 @@ export default defineConfig({
   },
   build: {
     // cau hinh -- khi build xong no tao file ben server luon
-    outDir: path.resolve(__dirname, '../server/public'),
-    emptyOutDir: true,
+    // outDir: path.resolve(__dirname, '../server/public'),
+    outDir: path.resolve(__dirname, '../server/public/disk'),
+
+    emptyOutDir: false,
   },
   server: {
     // historyApiFallback: true

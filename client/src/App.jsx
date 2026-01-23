@@ -33,10 +33,9 @@ export default function App() {
         </Route>
 
         {/* ADMIN */}
-        <Route path="/admin" element={<AdminLayout />}>
+        <Route path="/admin-old" element={<AdminLayout />}>
           <Route index element={<Dashboard />} />
           <Route path="pageconfig/homepage" element={<HomeAdminConfig />} />
-          {/* ❗ 404 ADMIN */}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

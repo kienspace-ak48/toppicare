@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 
 const pageConfig = new mongoose.Schema({
   info: {
-    author: "KienVu",
-    ver: "1.0",
+    author: {type:String, default: "KienVu"},
+    ver: {type: String, default: "1.0"},
   },
   homepage: {
-    banner: [{ title: String, banner_img: String }],
+    banner: [{ title: String, banner_img: String, _id:false }],
+    slogan: String,
     about: {
       title: String,
       desc: String,
@@ -25,13 +26,21 @@ const pageConfig = new mongoose.Schema({
           icon: String,
           title: String,
           desc: String,
+          _id: false
         },
       ],
     },
     faq: {
       title: String,
-      sentence: [{ q: String, a: String }],
+      sentences: [{ question: String, answer: String, _id: false }],
     },
+  },
+  about: {
+    slider: [
+      {title: "String", img: "String", _id: false}, 
+    ],
+    vision:[],
+    stats: []
   },
   intro: {
     slider: [
@@ -121,3 +130,5 @@ const pageConfig = new mongoose.Schema({
     }
   }
 });
+
+module.exports = mongoose.model("page_config", pageConfig)

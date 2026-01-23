@@ -16,32 +16,47 @@ import {
   Check,
   ArrowRight,
 } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
 import {Link} from 'react-router-dom';
+// const ASSET_URL = import.meta.env.VITE_API_URL;
+const ASSET_URL = window.__ENV__.API_URL;
 
 import useServices from "../../hooks/useServices";
+import usePageConfig from "../../hooks/usePageConfig";
 
 function HomePage() {
   // const { data, loading, error } = useServices();
+  const{data, loading, error} = usePageConfig();
+  console.log(data)
+  const [pageConfig, setPageConfig] = useState(null);
+  let heroSlides =data.data?.homepage?.banner??[];
+  let intro_app_benefits = data.data?.homepage?.intro_app?.benefits ??[]
+  useEffect(() => {
+    if (data) {
+      setPageConfig(data.data);
+    }
+  }, [data]);
+
   // console.log(data)
-  const heroSlides = [
-    {
-      id: 1,
-      image: slider_1,
-      title: "Dịch vụ massage chăm sóc sức khỏe",
-    },
-    {
-      id: 2,
-      image: slider_2,
-      title: "Kỹ thuật viên chuyên nghiệp",
-    },
-    {
-      id: 3,
-      image: slider_3,
-      title: "Thư giãn và chăm sóc toàn diện",
-    },
-  ];
+  // const heroSlides = [
+  //   {
+  //     id: 1,
+  //     image: slider_1,
+  //     title: "Dịch vụ massage chăm sóc sức khỏe",
+  //   },
+  //   {
+  //     id: 2,
+  //     image: slider_2,
+  //     title: "Kỹ thuật viên chuyên nghiệp",
+  //   },
+  //   {
+  //     id: 3,
+  //     image: slider_3,
+  //     title: "Thư giãn và chăm sóc toàn diện",
+  //   },
+  // ];
+  
   //   const services = [
   //     {
   //       id: "liet-trinh-ket-hop",
@@ -104,41 +119,41 @@ function HomePage() {
   //       color: "from-green-500 to-teal-500",
   //     },
   //   ];
-  const commitments = [
-    {
-      icon: Award,
-      title: "Kỹ Thuật Viên tay nghề cao",
-      description:
-        "Đội ngũ KTV được đào tạo bài bản, chuyên nghiệp với kinh nghiệp lâu năm",
-    },
-    {
-      icon: TrendingUp,
-      title: "Liệu trình đa dạng",
-      description:
-        "Nhiều gói dịch vụ phong phú, phù hợp với mọi nhu cầu khách hàng",
-    },
-    {
-      icon: DollarSign,
-      title: "Giá cả minh bạch",
-      description: "Bảng giá rõ ràng, không phát sinh chi phí ẩn",
-    },
-    {
-      icon: Lock,
-      title: "Bảo mật thông tin cá nhân",
-      description: "Cam kết bảo vệ tuyệt đối thông tin cá nhân của khách hàng",
-    },
-    {
-      icon: Shield,
-      title: "Hiệu quả vượt trội",
-      description: "Mang lại kết quả chăm sóc sức khỏe tối ưu nhất",
-    },
-    {
-      icon: Clock,
-      title: "Đúng hẹn",
-      description:
-        "An tâm trải nghiệm: Kỹ thuật viên đến đúng giờ, đúng lịch hẹn, giúp khách hàng thư giãn trọn vẹn ngay tại nhà",
-    },
-  ];
+  // const commitments = [
+  //   {
+  //     icon: Award,
+  //     title: "Kỹ Thuật Viên tay nghề cao",
+  //     description:
+  //       "Đội ngũ KTV được đào tạo bài bản, chuyên nghiệp với kinh nghiệp lâu năm",
+  //   },
+  //   {
+  //     icon: TrendingUp,
+  //     title: "Liệu trình đa dạng",
+  //     description:
+  //       "Nhiều gói dịch vụ phong phú, phù hợp với mọi nhu cầu khách hàng",
+  //   },
+  //   {
+  //     icon: DollarSign,
+  //     title: "Giá cả minh bạch",
+  //     description: "Bảng giá rõ ràng, không phát sinh chi phí ẩn",
+  //   },
+  //   {
+  //     icon: Lock,
+  //     title: "Bảo mật thông tin cá nhân",
+  //     description: "Cam kết bảo vệ tuyệt đối thông tin cá nhân của khách hàng",
+  //   },
+  //   {
+  //     icon: Shield,
+  //     title: "Hiệu quả vượt trội",
+  //     description: "Mang lại kết quả chăm sóc sức khỏe tối ưu nhất",
+  //   },
+  //   {
+  //     icon: Clock,
+  //     title: "Đúng hẹn",
+  //     description:
+  //       "An tâm trải nghiệm: Kỹ thuật viên đến đúng giờ, đúng lịch hẹn, giúp khách hàng thư giãn trọn vẹn ngay tại nhà",
+  //   },
+  // ];
   const newsArticles = [
     {
       id: 1,
@@ -203,13 +218,13 @@ function HomePage() {
       <section className="relative h-[500px] md:h-[600px] overflow-hidden ">
         {heroSlides.map((slide, index) => (
           <div
-            key={slide.id}
+            key={index}
             className={`absolute inset-0 transition-opacity duration-700 ${
               index === currentSlide ? "opcaity-100" : "opacity-0"
             }`}
           >
             <ImageWithFallBack
-              src={slide.image}
+              src={ASSET_URL+slide.banner_img}
               alt={slide.title}
               className="w-full h-full object-cover"
             />
@@ -256,7 +271,8 @@ function HomePage() {
       <section className="py-6 bg-[#2bdbd6]">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-white text-2xl md:text-4xl font-bold">
-            Chạm là khỏe - Đặt là đến
+            {pageConfig?.homepage?.slogan??'Chạm là khỏe - Đặt là đến!'}
+            
           </h2>
         </div>
       </section>
@@ -266,18 +282,21 @@ function HomePage() {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <h2 className="text-3xl md:text-4xl mb-6 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-                Giới thiệu về ToppiCare
+                {/* Giới thiệu về ToppiCare */}
+                {pageConfig?.homepage?.about?.title}
               </h2>
-              <p className="text-gray-700 mb-4 leading-relaxed text-[16px]">
-                ToppiCare là nền tảng dịch vụ chăm sóc sức khỏe hàng đầu Việt
-                Nam, mang đến những trải nghiệm massage và spa chuyên nghiệp tại
-                nhà hoặc tại cơ sở.
-              </p>
-              <p className="text-gray-700 mb-6 leading-relaxed text-[16px] text-[15px]">
+              <div>
+                {pageConfig?.homepage?.about.desc.split("/br/").map((item, index)=>(
+                  <p key={index} className="text-gray-700 mb-6 leading-relaxed text-[15px]">
+                    {item}
+                  </p>
+                ))}
+              </div>
+              {/* <p className="text-gray-700 mb-6 leading-relaxed text-[16px] text-[15px]">
                 Với đội ngũ kỹ thuật viên được đào tạo bài bản, chúng tôi cam
                 kết mang đến dịch vụ chất lượng cao, giúp khách hàng thư giãn và
                 cải thiện sức khỏe một cách toàn diện.
-              </p>
+              </p> */}
               <Link
                 to="/about"
                 className="inline-block px-6 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
@@ -320,7 +339,7 @@ function HomePage() {
               <div className="relative mx-auto w-full max-w-[350px] transform hover:scale-[1.02] transition-transform duration-500">
                 {/* Bạn thay biến 'phoneAppImage' bằng đường dẫn ảnh bạn vừa upload nhé */}
                 <img 
-                  src="https://i.ibb.co/C55RtQDj/Thi-t-k-ch-a-c-t-n.png" 
+                  src={ASSET_URL+pageConfig?.homepage?.intro_app.img}
                   alt="Toppicare App Interface" 
                   className="w-full h-auto drop-shadow-2xl" 
                 />
@@ -330,18 +349,22 @@ function HomePage() {
             {/* CỘT PHẢI: NỘI DUNG TEXT */}
             <div className="order-1 md:order-2">
               <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6 leading-tight">
-                ToppiCare - Nền tảng đặt lịch <span className="text-[#2dbdb6]">massage và chăm sóc sức khỏe</span> tại nhà
+                {/* ToppiCare - Nền tảng đặt lịch <span className="text-[#2dbdb6]">massage và chăm sóc sức khỏe</span> tại nhà */}
+                {pageConfig?.homepage?.intro_app?.title}
               </h2>
 
               {/* Danh sách các tính năng (Checklist) */}
               <ul className="space-y-4 mb-8">
-                {[
-                  "Đa dạng gói dịch vụ, đáp ứng mọi nhu cầu chăm sóc",
-                  "Đặt lịch nhanh chóng chỉ với vài thao tác",
-                  "Nhiều ưu đãi hấp dẫn dành cho khách hàng",
-                  "Gợi ý chăm sóc thông minh",
-                  "Ghi lại lịch sử sức khỏe sau mỗi lần trải nghiệm"
-                ].map((item, index) => (
+                {
+                // mau= [
+                //   "Đa dạng gói dịch vụ, đáp ứng mọi nhu cầu chăm sóc",
+                //   "Đặt lịch nhanh chóng chỉ với vài thao tác",
+                //   "Nhiều ưu đãi hấp dẫn dành cho khách hàng",
+                //   "Gợi ý chăm sóc thông minh",
+                //   "Ghi lại lịch sử sức khỏe sau mỗi lần trải nghiệm"
+                // ];
+                
+                intro_app_benefits.map((item, index) => (
                   <li key={index} className="flex items-start gap-3">
                     <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#2dbdb6]/10 flex items-center justify-center">
                       <Check className="w-4 h-4 text-[#2dbdb6] stroke-[3]" />
@@ -368,15 +391,15 @@ function HomePage() {
       <section className="py-4 md:py-12 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4">
             <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-                Cam kết của chúng tôi
+                {pageConfig?.homepage?.commitment?.title??'Cam kết của chúng tôi _'} 
             </h2>
             <p className="text-center text-gray-600 mb-12 text-[16px]">
-                Những giá trị cốt lõi mà ToppiCare mang đến
+                {pageConfig?.homepage?.commitment?.desc??'Những giá trị cốt lõi mà ToppiCare mang đến _'} 
             </p>
             {/*  */}
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {commitments.map((com, index)=>{
-                    const Icon = com.icon;
+                {pageConfig?.homepage.commitment.cards.map((com, index)=>{
+                    const Icon = Award;
                     return(
                         <div
                         key={index} 
@@ -385,7 +408,7 @@ function HomePage() {
                                 <Icon className="w-8 h-8 text-white"/>
                             </div>
                             <h3 className="text-xl mb-3 bg-gradient-to-r from-[#ff6b6b] to-[#FF8C42] bg-clip-text text-transparent text-[16px] font-bold">{com.title}</h3>
-                            <p className="text-gray-600 leading-relaxed text-[16px]">{com.description}</p>
+                            <p className="text-gray-600 leading-relaxed text-[16px]">{com.desc}</p>
                         </div>
                     )
                 })}
@@ -445,7 +468,7 @@ function HomePage() {
       <section className="py-2 md:py-8 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-12 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            Câu hỏi thường gặp
+            {pageConfig?.homepage?.faq?.title??'Câu hỏi thường gặp _'}
           </h2>
 
           <div className="space-y-4">

@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="vi" class="h-full">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Admin Panel</title>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+     <link rel="stylesheet" href="/output.css">
+     <script src="/libs/js/jquery-3.7.1.js"></script>
+     <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css">
+    <style>
+      .menu-item {
+  @apply w-full flex items-center gap-3 px-3 py-4
+    text-gray-700 dark:text-gray-200
+    hover:bg-gray-100 dark:hover:bg-gray-700
+    font-medium transition;
+}
+    </style>
+  </head>
+
+  <body class="h-full bg-gray-100 dark:bg-gray-900">
+    <div class="flex h-screen">
+      <!-- SIDEBAR -->
+      <aside
+        id="sidebar"
+        class="w-64 bg-white dark:bg-gray-800 shadow-xl h-screen flex flex-col space-y-1 flex-shrink-0 transition-[width] duration-300 ease-in-out"
+      >
+        <div class="flex flex-col h-full px-3 py-4">
+          <!-- LOGO -->
+          <div
+            onclick="toggleSidebar()"
+            class="flex items-center gap-3 px-3 mb-8 cursor-pointer select-none"
+          >
+            <div
+              class="w-10 h-10 rounded-xl bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center text-white"
+            >
+              <i class="fa-solid fa-gears"></i>
+            </div>
+            <h1
+              id="logoText"
+              class="text-lg font-bold text-gray-800 dark:text-white tracking-wide"
+            >
+              Toppicare panel
+            </h1>
+          </div>
+          <!--  -->
+
+
+          <!-- NAV -->
+          <nav class="flex-col flex-1 space-y-1">
+            <div class="flex flex-col">
+              <!-- Dashboard -->
+            <a href="/admin" class="px-4 py-3 hover:bg-gray-300  w-full text-[16px] font-medium">
+              <i class="fa-solid fa-gauge text-blue-600 text-2xl"></i>
+              <span class="label">Dashboard</span>
+            </a>
+
+            <!-- SUBMENU -->
+            <!-- <div
+              id="pageConfigSub"
+              class="hidden ml-6 mt-2 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
+            >
+              <a href="/admin/pageconfig/homepage" class="submenu-item">
+                Home
+              </a>
+              <a href="/admin/pageconfig/about" class="submenu-item"> Menus </a>
+              <a href="/admin/pageconfig/training" class="submenu-item">
+                SEO Settings
+              </a>
+            </div> -->
+            <!-- page config -->
+             <a href="/admin/page-config" class="px-4 py-3 hover:bg-gray-300  w-full font-semibold text-[16px]">
+              <span class="icon"><i class="fa-solid fa-pager text-blue-600 text-2xl"></i></span>
+              <span class="label">Page config</span>
+             </a>
+            <!-- Gallery -->
+            <a href="/admin/gallery" class="px-4 py-3 hover:bg-gray-300  w-full font-semibold text-[16px]">
+              <i class="fa-regular fa-images text-blue-600 text-2xl"></i>
+              <span class="label">Gallery</span>
+            </a>
+            <a href="#" class="px-4 py-3 hover:bg-gray-300  w-full font-semibold text-[16px]">
+              <i class="fa-solid fa-clapperboard text-blue-600 text-2xl"></i>
+              <span class="label">Videos</span>
+            </a>
+            <!-- Videos -->
+            <!-- <button class="menu-item">
+              <span class="icon">🎬</span>
+              <span class="label">Videos</span>
+            </button> -->
+            </div>
+            
+          </nav>
+
+          <!-- FOOTER -->
+          <div class="pt-4 border-t border-gray-200 dark:border-gray-700">
+            <!-- USER CARD -->
+            <div
+              class="flex items-center gap-3 p-3 rounded-xl bg-gray-50 dark:bg-gray-700/40 mb-3"
+            >
+              <div
+                class="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-blue-400 flex items-center justify-center text-white"
+              >
+                <i class="fa-solid fa-user-gear"></i>
+              </div>
+              <div id="userInfo">
+                <p class="font-semibold text-sm dark:text-white">
+                  Quản trị viên
+                </p>
+                <p class="text-xs text-gray-500 dark:text-gray-300">
+                  admin@example.com
+                </p>
+              </div>
+            </div>
+
+            <!-- THEME -->
+            <button
+              
+              id="toggleDarkMode"
+              class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
+            >
+              <i class="fa-regular fa-moon"></i>
+              <span class="label text-sm font-medium dark:text-white">
+                Dark / Light
+              </span>
+            </button>
+          </div>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <main class="flex-1 p-6 overflow-y-auto">
+        <!-- HEADER -->
+        <header class="flex flex-col md:flex-row justify-between gap-4 mb-8">
+          <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
+            Dashboard
+          </h2>
+
+          <div class="flex items-center gap-4">
+            <!-- Search -->
+            <div class="relative">
+              <input
+                class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:bg-gray-800 dark:text-white"
+                placeholder="Search..."
+              />
+              <span class="absolute left-3 top-2.5 text-gray-400"><i class="fa-solid fa-magnifying-glass"></i></span>
+            </div>
+
+            <!-- Bell -->
+            <button
+              class="relative p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
+            >
+              <i class="fa-regular fa-bell"></i>
+              <span
+                class="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-xs rounded-full flex items-center justify-center"
+              >
+                3
+              </span>
+            </button>
+
+            <!-- Avatar -->
+            <button
+              class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+            >
+              <div
+                class="w-8 h-8 rounded-full bg-blue-500 text-white flex items-center justify-center"
+              >
+                K
+              </div>
+              ⌄
+            </button>
+          </div>
+        </header>
+
+        <!-- CONTENT -->
+        <div class="p-6 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200">
+          <!-- Nội dung admin ở đây... -->
+          <%- body %>
+        </div>
+      </main>
+    </div>
+
+    <!-- JS -->
+    <script>
+      let collapsed = false;
+
+      function toggleSidebar() {
+        const sidebar = document.getElementById("sidebar");
+        collapsed = !collapsed;
+
+        sidebar.classList.toggle("w-64");
+        sidebar.classList.toggle("w-20");
+
+        document
+          .querySelectorAll(".label, #logoText, #userInfo")
+          .forEach((el) => el.classList.toggle("hidden"));
+
+        document
+          .querySelectorAll(".menu-item")
+          .forEach((item) => item.classList.toggle("justify-center"));
+      }
+
+      function toggleSubmenu(id, btn) {
+        const submenu = document.getElementById(id);
+        submenu.classList.toggle("hidden");
+
+        const chevron = btn.querySelector(".chevron");
+        chevron.classList.toggle("rotate-180");
+      }
+      function toggleSubmenu(id, btn) {
+        if (collapsed) return; // ❗ giống React: collapse thì không mở submenu
+
+        const submenu = document.getElementById(id);
+        submenu.classList.toggle("hidden");
+
+        const chevron = btn.querySelector(".chevron");
+        chevron.classList.toggle("rotate-180");
+      }
+      document.querySelector('#toggleDarkMode').addEventListener('click',()=>{
+        console.log('click')
+        document.documentElement.classList.toggle("dark")
+      })
+      // function toggleDarkMode() {
+      //   console.log('click me')
+      //   document.documentElement.classList.toggle("dark");
+      // }
+    </script>
+  </body>
+</html>

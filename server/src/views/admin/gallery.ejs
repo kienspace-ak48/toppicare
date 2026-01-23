@@ -1,0 +1,66 @@
+<form action="/admin/gallery/image-upload" method="post" enctype="multipart/form-data">
+    <input type="file" name="image" class="px-4 py-3 border border-gray-300 rounded-lg" >
+    <button type="submit" class="border border-indigo-500 px-4 py-3 rounded-lg">Submit</button>
+</form>
+<!-- gallery grid -->
+<div id="image_container" class="grid gird-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-5">
+    <%if(images.length ===0){%>
+        <p class="col-span-full text-center text-gray-500">Chưa có ảnh nào</p>
+    <%}else{%>
+        <%images.forEach(img=>{%>
+            <div class="group relative rounded-xl overflow-hidden shadow bg-white dark:bg-gray-800">
+                <!-- IMAGE -->
+                 <img src="/<%=img.path%>" alt="<%=img.name%>"
+                 class="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
+                 >
+                 <!-- OVERLAY -->
+        <div
+          class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100
+          flex items-center justify-center gap-3 transition"
+        >
+          <a
+            href="/<%= img.path %>"
+            target="_blank"
+            class="px-3 py-1.5 bg-white rounded-lg text-sm font-medium hover:bg-gray-100"
+          >
+            View
+          </a>
+
+          <button
+            data-id="<%=img.path%>"
+            class="px-3 py-1.5 bg-red-500 text-white rounded-lg text-sm hover:bg-red-600"
+          >
+            Delete
+          </button>
+        </div>
+                 <!--  -->
+            </div>
+       <% })%>
+    <%}%>
+</div>
+
+<!-- ==========SCRIPT HERE ===============-->
+<script>
+    // global scope
+    const imageContainerElement = document.querySelector('#image_container');
+
+    // lang nghe su kien click btn xoa
+    imageContainerElement.addEventListener('click', (ev)=>{
+        const deleteBtn = ev.target.closest('button[data-id]');
+        if(!deleteBtn || !imageContainerElement.contains(deleteBtn)) {return};
+        const imagePath = deleteBtn.dataset.id;
+        console.log('data id '+imagePath);
+        $.ajax({
+            method: "delete",
+            url: `/admin/gallery/image-delete`,
+            contentType: 'application/json',
+            data: JSON.stringify({img_slug: imagePath}),
+            success: (res)=>{
+                if(res.success){
+                    document.location.reload();
+                } 
+                console.log('delete success')},
+            error: (xhr, status, err)=>console.log(xhr.responseJSON?.mess||"Server error")
+        })
+    })
+</script>

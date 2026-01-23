@@ -8,15 +8,24 @@
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "nodemon src/server"
+    "start": "node src/server",
+    "dev": "nodemon src/server",
+    "tailwind": "npx @tailwindcss/cli -i ./index.css -o ./public/output.css --watch"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^7.1.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "ejs": "^4.0.1",
     "express": "^5.2.1",
-    "mongoose": "^9.1.3"
+    "express-ejs-layouts": "^2.5.1",
+    "mongoose": "^9.1.3",
+    "multer": "^2.0.2",
+    "sharp": "^0.34.5"
   },
   "devDependencies": {
-    "nodemon": "^3.1.11"
+    "@tailwindcss/cli": "^4.1.17",
+    "nodemon": "^3.1.11",
+    "tailwindcss": "^4.1.18"
   }
 }
