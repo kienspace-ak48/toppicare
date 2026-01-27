@@ -1,1 +1,45 @@
+<script src="/libs/tinymce/tinymce.min.js"></script>
 <h1>blog bai viet</h1>
+<div class="w-full mx-auto px-4 py-6">
+    <div class="grid grid-cols-12 gap-4">
+        <!-- LEFT SIDEBAR -->
+         <aside class="col-span-3 rounded-lg p-4 shadow">
+            <h3 class="font-semibold mb-3">Category</h3>
+            <ul class="space-y-2 text-sm">
+                <li><input type="checkbox" name="" id="">Tech</li>
+                <li><input type="checkbox" name="" id="">Design</li>
+                <li><input type="checkbox" name="" id="">Life</li>
+            </ul>
+         </aside>
+         <!-- MAIN CONTENT -->
+          <main class="col-span-6 rounded-lg p-4 shadow">
+            <h2 class="text-xl font-bold mb-3">Title</h2>
+            <input type="text" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
+            <h2 class="text-xl font-bold mb-4">Nội dung bài viết</h2>
+            <textarea name="" id="editor" class="w-full">Nội dung bài viết....</textarea>
+          </main>
+          <!-- RIGHT SIDEBAR -->
+           <aside class="col-span-3 rounded-lg p-4 shadow">
+            <h3 class="font-semibold mb-3">Author</h3>
+            <p class="text-sm">KienVu</p>
+            <hr class="my-3">
+            <h3 class="font-semibold mb-2">Status</h3>
+            <select name="" class="w-full border rounded px-2 py-1 text-sm" id="">
+                <option value="">Draft</option>
+                <option value="">Publish</option>
+            </select>
+           </aside>
+    </div>
+</div>
+
+<script>
+  tinymce.init({
+    selector: '#editor',
+    height: 500,
+    license_key: 'gpl', //important
+    // menubar: false,
+    plugins: 'lists link image code',
+    toolbar:
+      'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | code'
+  });
+</script>

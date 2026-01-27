@@ -4,16 +4,37 @@
     <meta charset="UTF-8" />
     <title>Admin Panel</title>
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
-     <link rel="stylesheet" href="/output.css">
-     <script src="/libs/js/jquery-3.7.1.js"></script>
-     <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="/output.css" />
+    <script src="/libs/js/jquery-3.7.1.js"></script>
+    <!-- 2. datatable core -->
+    <script src="/libs/js/dataTables.min.js"></script>
+    <!-- have to loaded second -->
+     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.tailwindcss.min.css">
+    <!-- <script src="/libs/js/dataTables.bootstrap5.min.js"></script> -->
+    <!-- icon fs -->
+    <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css" />
+    <script>
+      function myNotification(text, icon, timer = 2500, position = "top-end") {
+        Swal.fire({
+          // title: title,
+          text: text,
+          icon: icon,
+          timer: timer,
+          position: position,
+          showConfirmButton: false,
+        });
+      }
+    </script>
+    <!-- sweet2 -->
+    <link rel="stylesheet" href="/libs/css/sweetalert2.min.css" />
+    <script src="/libs/js/sweetalert2.all.min.js"></script>
     <style>
       .menu-item {
-  @apply w-full flex items-center gap-3 px-3 py-4
+        @apply w-full flex items-center gap-3 px-3 py-4
     text-gray-700 dark:text-gray-200
     hover:bg-gray-100 dark:hover:bg-gray-700
     font-medium transition;
-}
+      }
     </style>
   </head>
 
@@ -44,50 +65,117 @@
           </div>
           <!--  -->
 
-
           <!-- NAV -->
           <nav class="flex-col flex-1 space-y-1">
             <div class="flex flex-col">
               <!-- Dashboard -->
-            <a href="/admin" class="px-4 py-3 hover:bg-gray-300  w-full text-[16px] font-medium">
-              <i class="fa-solid fa-gauge text-blue-600 text-2xl"></i>
-              <span class="label">Dashboard</span>
-            </a>
+              <a
+                href="/admin"
+                class="px-4 py-3 hover:bg-gray-300 w-full text-[16px] font-medium"
+              >
+                <i class="fa-solid fa-gauge text-blue-600 text-2xl"></i>
+                <span class="label">Dashboard</span>
+              </a>
 
-            <!-- SUBMENU -->
-            <!-- <div
-              id="pageConfigSub"
-              class="hidden ml-6 mt-2 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
-            >
-              <a href="/admin/pageconfig/homepage" class="submenu-item">
-                Home
+              <button
+                onclick="toggleSubmenu('pageConfigSub', this)"
+                class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-pager text-blue-600 text-2xl"></i>
+                  <span class="label">Page config</span>
+                </div>
+
+                <!-- Chevron -->
+                <i
+                  class="fa-solid fa-chevron-down chevron transition-transform duration-200"
+                ></i>
+              </button>
+              <!-- sub -->
+              <div
+                id="pageConfigSub"
+                class="hidden ml-6 mt-1 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
+              >
+                <a
+                  href="/admin/page-config"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Homepage
+                </a>
+
+                <a
+                  href="/admin/pageconfig/menus"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Menus
+                </a>
+
+                <a
+                  href="/admin/pageconfig/seo"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  SEO Settings
+                </a>
+              </div>
+
+              <!-- END =============== -->
+              <!-- Blogs -->
+              <!-- NRW ================= -->
+              <button
+                onclick="toggleSubmenu('blogSub', this)"
+                class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-newspaper text-blue-600 text-2xl"></i>
+                  <span class="label">Blog</span>
+                </div>
+
+                <!-- Chevron -->
+                <i
+                  class="fa-solid fa-chevron-down chevron transition-transform duration-200"
+                ></i>
+              </button>
+              <!-- sub -->
+              <div
+                id="blogSub"
+                class="hidden ml-6 mt-1 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
+              >
+                <a
+                  href="/admin/blog"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Post
+                </a>
+                <a
+                  href="/admin/category"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Category
+                </a>
+              </div>
+
+              <!-- END =============== -->
+              <!-- Gallery -->
+              <a
+                href="/admin/gallery"
+                class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
+              >
+                <i class="fa-regular fa-images text-blue-600 text-2xl"></i>
+                <span class="label">Gallery</span>
               </a>
-              <a href="/admin/pageconfig/about" class="submenu-item"> Menus </a>
-              <a href="/admin/pageconfig/training" class="submenu-item">
-                SEO Settings
+              <a
+                href="#"
+                class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
+              >
+                <i class="fa-solid fa-clapperboard text-blue-600 text-2xl"></i>
+                <span class="label">Videos</span>
               </a>
-            </div> -->
-            <!-- page config -->
-             <a href="/admin/page-config" class="px-4 py-3 hover:bg-gray-300  w-full font-semibold text-[16px]">
-              <span class="icon"><i class="fa-solid fa-pager text-blue-600 text-2xl"></i></span>
-              <span class="label">Page config</span>
-             </a>
-            <!-- Gallery -->
-            <a href="/admin/gallery" class="px-4 py-3 hover:bg-gray-300  w-full font-semibold text-[16px]">
-              <i class="fa-regular fa-images text-blue-600 text-2xl"></i>
-              <span class="label">Gallery</span>
-            </a>
-            <a href="#" class="px-4 py-3 hover:bg-gray-300  w-full font-semibold text-[16px]">
-              <i class="fa-solid fa-clapperboard text-blue-600 text-2xl"></i>
-              <span class="label">Videos</span>
-            </a>
-            <!-- Videos -->
-            <!-- <button class="menu-item">
+              <!-- Videos -->
+              <!-- <button class="menu-item">
               <span class="icon">🎬</span>
               <span class="label">Videos</span>
             </button> -->
             </div>
-            
           </nav>
 
           <!-- FOOTER -->
@@ -113,7 +201,6 @@
 
             <!-- THEME -->
             <button
-              
               id="toggleDarkMode"
               class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
             >
@@ -141,7 +228,9 @@
                 class="pl-10 pr-4 py-2 rounded-lg border border-gray-300 dark:bg-gray-800 dark:text-white"
                 placeholder="Search..."
               />
-              <span class="absolute left-3 top-2.5 text-gray-400"><i class="fa-solid fa-magnifying-glass"></i></span>
+              <span class="absolute left-3 top-2.5 text-gray-400"
+                ><i class="fa-solid fa-magnifying-glass"></i
+              ></span>
             </div>
 
             <!-- Bell -->
@@ -171,7 +260,9 @@
         </header>
 
         <!-- CONTENT -->
-        <div class="p-6 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200">
+        <div
+          class="p-6 rounded-xl bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200"
+        >
           <!-- Nội dung admin ở đây... -->
           <%- body %>
         </div>
@@ -193,18 +284,35 @@
           .querySelectorAll(".label, #logoText, #userInfo")
           .forEach((el) => el.classList.toggle("hidden"));
 
-        document
-          .querySelectorAll(".menu-item")
-          .forEach((item) => item.classList.toggle("justify-center"));
-      }
+        // 🔥 Đóng tất cả submenu khi collapse
+        document.querySelectorAll('[id$="Sub"]').forEach((sub) => {
+          sub.classList.add("hidden");
+        });
 
-      function toggleSubmenu(id, btn) {
-        const submenu = document.getElementById(id);
-        submenu.classList.toggle("hidden");
-
-        const chevron = btn.querySelector(".chevron");
-        chevron.classList.toggle("rotate-180");
+        document.querySelectorAll(".chevron").forEach((c) => {
+          c.classList.remove("rotate-180");
+          // alert('a')
+          console.log(c);
+          c.classList.toggle("hidden", collapsed);
+          c.style.display = collapsed ? "none" : "inline-block";
+        });
       }
+      //
+      document.querySelectorAll("a").forEach((link) => {
+        if (link.href === window.location.href) {
+          link.classList.add("bg-blue-100", "text-blue-600");
+          const parentSub = link.closest('[id$="Sub"]');
+          if (parentSub) parentSub.classList.remove("hidden");
+        }
+      });
+
+      // function toggleSubmenu(id, btn) {
+      //   const submenu = document.getElementById(id);
+      //   submenu.classList.toggle("hidden");
+
+      //   const chevron = btn.querySelector(".chevron");
+      //   chevron.classList.toggle("rotate-180");
+      // }
       function toggleSubmenu(id, btn) {
         if (collapsed) return; // ❗ giống React: collapse thì không mở submenu
 
@@ -213,11 +321,14 @@
 
         const chevron = btn.querySelector(".chevron");
         chevron.classList.toggle("rotate-180");
+        c.classList.toggle("hidden", collapsed);
       }
-      document.querySelector('#toggleDarkMode').addEventListener('click',()=>{
-        console.log('click')
-        document.documentElement.classList.toggle("dark")
-      })
+      document
+        .querySelector("#toggleDarkMode")
+        .addEventListener("click", () => {
+          console.log("click");
+          document.documentElement.classList.toggle("dark");
+        });
       // function toggleDarkMode() {
       //   console.log('click me')
       //   document.documentElement.classList.toggle("dark");

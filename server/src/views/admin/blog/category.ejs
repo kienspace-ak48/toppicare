@@ -1,0 +1,205 @@
+<style>
+  
+</style>
+<div class="flex justify-between items-center mb-3">
+  <h1 class="textlg font-bold">Category List</h1>
+  <button id="openModal" class="px-4 py-3 border border-gray-300 rounded-lg">
+    + Add category
+  </button>
+</div>
+
+<div class="wrapper_table overflow-x-auto">
+  <table id="category_tbl" class="min-w-full text-sm text-left text-gray-600">
+    <thead class="bg-gray-100 font-semibold text-gray-700 uppercase text-xs">
+      <tr>
+        <th class="px-6 py-4">Name</th>
+        <th class="px-6 py-4">Slug</th>
+        <th class="px-6 py-4">Category</th>
+        <th class="px-6 py-4">Quantity</th>
+        <th class="px-6 py-4 text-center">Action</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+      <!-- <tr class="hover:bg-gray-50 transition">
+        <td class="px-6 py-4">Massage</td>
+        <td class="px-6 py-4">massage</td>
+        <td class="px-6 py-4">News</td>
+        <td class="px-6 py-4">2</td>
+        <td class="px-6 py-4">
+          <button
+            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+          >
+            Edit
+          </button>
+          <button
+            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+      <tr class="hover:bg-gray-50 transition">
+        <td class="px-6 py-4">Dao Tao Bam huyet</td>
+        <td class="px-6 py-4">dao-tao-bam-huyet</td>
+        <td class="px-6 py-4">Training</td>
+        <td class="px-6 py-4">1</td>
+        <td class="px-6 py-4">
+          <button
+            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+          >
+            Edit
+          </button>
+          <button
+            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+          >
+            Delete
+          </button>
+        </td>
+      </tr> -->
+    </tbody>
+  </table>
+</div>
+
+<!-- MODAL -->
+<div
+  id="modal"
+  class="fixed inset-0 z-50 items-center hidden justify-center bg-black/50"
+>
+  <!-- modal box -->
+  <div
+    class="bg-white w-full max-w-md rounded-xl shadow-lg p-6 animate-scaleIn"
+  >
+    <!-- header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">Popup title</h2>
+      <button
+        id="closeModal"
+        class="text-gray-400 hover:text-gray-600"
+        X
+      ></button>
+    </div>
+    <!-- Content -->
+    <div class="text-gray-600 mb-6">
+      <label for="" class="w-full mb-3">Title</label>
+      <input
+        type="text"
+        name="c_name"
+        class="px-4 py-3 border border-gray-300 rounded-lg w-full"
+      />
+      <label for="" class="w-full">Category root</label>
+      <select
+        name=""
+        id="c_category_root"
+        class="px-4 py-3 w-full rounded-lg border border-gray-300"
+      >
+        <option value="">--Choose--</option>
+        <option value="training">Training</option>
+        <option value="service">Service</option>
+        <option value="news">News</option>
+      </select>
+    </div>
+    <!-- footer -->
+    <div class="flex justify-end gap-2">
+      <button
+        id="cancelModal"
+        class="px-4 py-2 rounded-lg border border-gray-300"
+      >
+        Cancel
+      </button>
+      <button
+        id="btn_cta_category_save"
+        class="px-4 py-2 rounded-lg bg-blue-600 text-white"
+      >
+        Save
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ====SCRIPT HERE ========== -->
+<script>
+  const modal = document.querySelector("#modal");
+  const openBtn = document.querySelector("#openModal");
+  const closeBtn = document.querySelector("#closeModal");
+  const cancelBtn = document.querySelector("#cancelModal");
+  var categoryDataTable = null;
+
+  //
+  categoryDataTable = new DataTable("#category_tbl", {
+    ajax: {
+      url: "/admin/category/get-all",
+      dataSrc: "data",
+    },
+    info: false,
+    columns: [
+      { data: "name", render: (v) => (`<p class="px-4 py-6 ">${v}</p>`) },
+      {data: 'slug', render: (v)=>`<p class="px-4 py-6">${v}</p>`},
+      { data: "category_root", titile: "Category root" },
+      { data: "quantity" },
+      { data: null, render:()=>(
+        `<button
+            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+          >
+            Edit
+          </button>
+          <button
+            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+          >
+          Delete
+          </button>`
+      ) },
+
+    ],
+  });
+  //
+  function openModal() {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+  }
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    modal.classList.remove("flex");
+  }
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+  cancelBtn.addEventListener("click", closeModal);
+
+  // click ra ngoài để đóng
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) closeModal();
+  });
+
+  // ESC để đóng
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeModal();
+  });
+  //
+  document
+    .querySelector("#btn_cta_category_save")
+    .addEventListener("click", () => {
+      const payload = {
+        name: document.querySelector('#modal input[name="c_name"]').value,
+        category_root: document.querySelector("#modal #c_category_root").value,
+      };
+      Add(payload);
+    });
+  function Add(payload) {
+    $.ajax({
+      method: "POST",
+      url: "/admin/category/add",
+      data: JSON.stringify(payload),
+      contentType: "application/json",
+      success: (res) => {
+        console.log(res);
+        if (res.success) {
+          myNotification("Add sccess", "success");
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  // myNotification('hi', "success");
+</script>
