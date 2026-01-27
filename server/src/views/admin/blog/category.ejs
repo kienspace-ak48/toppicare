@@ -1,6 +1,4 @@
-<style>
-  
-</style>
+<style></style>
 <div class="flex justify-between items-center mb-3">
   <h1 class="textlg font-bold">Category List</h1>
   <button id="openModal" class="px-4 py-3 border border-gray-300 rounded-lg">
@@ -85,6 +83,7 @@
         type="text"
         name="c_name"
         class="px-4 py-3 border border-gray-300 rounded-lg w-full"
+       placeholder="Enter title..." 
       />
       <label for="" class="w-full">Category root</label>
       <select
@@ -115,14 +114,82 @@
     </div>
   </div>
 </div>
+<!-- EDIT -->
+<div
+  id="modalEdit"
+  class="fixed inset-0 z-50 items-center hidden justify-center bg-black/50"
+>
+  <!-- modal box -->
+  <div
+    class="bg-white w-full max-w-md rounded-xl shadow-lg p-6 animate-scaleIn"
+  >
+    <!-- header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-semibold">Edit category</h2>
+      <button
+        id="closeModal"
+        class="text-gray-400 hover:text-gray-600"
+        X
+      ></button>
+    </div>
+    <!-- Content -->
+    <div class="text-gray-600 mb-6">
+      <input type="hidden" name="" id="id_hidden">
+      <label for="" class="w-full mb-3">Title</label>
+      <input
+        type="text"
+        name="c_name"
+        id="c_name_edit"
+        class="px-4 py-3 border border-gray-300 rounded-lg w-full"
+      />
+      <label for="" class="w-full mb-3">Slug</label>
+      <input
+        type="text"
+        name="c_slug_edit"
+        id="c_slug_edit"
+        class="px-4 py-3 border border-gray-300 rounded-lg w-full"
+      />
+      <label for="" class="w-full">Category root</label>
+      <select
+        name=""
+        id="c_category_root_edit"
+        class="px-4 py-3 w-full rounded-lg border border-gray-300"
+      >
+        <option value="">--Choose--</option>
+        <option value="training">Training</option>
+        <option value="service">Service</option>
+        <option value="news">News</option>
+      </select>
+    </div>
+    <!-- footer -->
+    <div class="flex justify-end gap-2">
+      <button
+        id="cancelModalEdit"
+        class="px-4 py-2 rounded-lg border border-gray-300"
+      >
+        Cancel
+      </button>
+      <button
+        id="btn_cta_category_update"
+        class="px-4 py-2 rounded-lg bg-blue-600 text-white"
+      >
+        Update
+      </button>
+    </div>
+  </div>
+</div>
 
 <!-- ====SCRIPT HERE ========== -->
 <script>
   const modal = document.querySelector("#modal");
+  const modalEdit = document.querySelector("#modalEdit");
   const openBtn = document.querySelector("#openModal");
   const closeBtn = document.querySelector("#closeModal");
   const cancelBtn = document.querySelector("#cancelModal");
+  const cancalModalEdit = document.querySelector("#cancelModalEdit");
+  const btnCtaUpdate = document.querySelector("#btn_cta_category_update");
   var categoryDataTable = null;
+  const tbodyCategory = document.querySelector("#category_tbl tbody");
 
   //
   categoryDataTable = new DataTable("#category_tbl", {
@@ -132,23 +199,26 @@
     },
     info: false,
     columns: [
-      { data: "name", render: (v) => (`<p class="px-4 py-6 ">${v}</p>`) },
-      {data: 'slug', render: (v)=>`<p class="px-4 py-6">${v}</p>`},
+      { data: "name", render: (v) => `<p class="px-4 py-6 ">${v}</p>` },
+      { data: "slug", render: (v) => `<p class="px-4 py-6">${v}</p>` },
       { data: "category_root", titile: "Category root" },
       { data: "quantity" },
-      { data: null, render:()=>(
-        `<button
-            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+      {
+        data: null,
+        render: (data, type, row) =>
+          `<button
+            class="btn_edit border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-yellow-500 hover:text-white"
+            data-id="${row._id}"
           >
             Edit
           </button>
           <button
-            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
+            class="btn_delete border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-red-500 hover:text-white"
+            data-id="${row._id}"
           >
           Delete
-          </button>`
-      ) },
-
+          </button>`,
+      },
     ],
   });
   //
@@ -161,10 +231,18 @@
     modal.classList.add("hidden");
     modal.classList.remove("flex");
   }
-
+  function openModalUpdate() {
+    modalEdit.classList.remove("hidden");
+    modalEdit.classList.add("flex");
+  }
+  function closeModalUpdate() {
+    modalEdit.classList.add("hidden");
+    modalEdit.classList.remove("flex");
+  }
   openBtn.addEventListener("click", openModal);
   closeBtn.addEventListener("click", closeModal);
   cancelBtn.addEventListener("click", closeModal);
+  cancalModalEdit.addEventListener("click", closeModalUpdate);
 
   // click ra ngoài để đóng
   modal.addEventListener("click", (e) => {
@@ -175,6 +253,85 @@
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") closeModal();
   });
+  //
+  tbodyCategory.addEventListener("click", function (e) {
+    const editBtn = e.target.closest(".btn_edit");
+    const deleteBtn = e.target.closest(".btn_delete");
+    // Edit
+    if (editBtn) {
+      const tr = editBtn.closest("tr");
+      const rowData = categoryDataTable.row(tr).data();
+      console.log("Edit ", rowData);
+      editCategory(rowData._id);
+      // const select = document.querySelector("#c_category_root_edit");
+      // select.value = rowData.category_root;
+    }
+
+    // DELETE
+    if (deleteBtn) {
+      const tr = deleteBtn.closest("tr");
+      const rowData = categoryDataTable.row(tr).data();
+
+      console.log("DELETE:", rowData);
+
+      if (!confirm(`Delete "${rowData.name}" ?`)) return;
+      deleteCategory(rowData._id);
+    }
+  });
+  function editCategory(id) {
+    fetch(`/admin/category/edit/${id}`, {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          openModalUpdate();
+          document.querySelector("#c_name_edit").value = res.data.name;
+          document.querySelector('#id_hidden').value = res.data._id;
+          document.querySelector("#c_category_root_edit").value =res.data.category_root;
+          document.querySelector("#c_slug_edit").value = res.data.slug;
+        }
+      });
+  }
+  btnCtaUpdate.addEventListener("click", (ev) => {
+    const id = document.querySelector('#id_hidden').value;
+    const payload = { name: document.querySelector("#c_name_edit").value, slug: document.querySelector('#c_slug_edit').value, category_root: document.querySelector('#c_category_root_edit').value };
+    updateCategory(id, payload)
+  });
+  function updateCategory(id, payload) {
+    fetch(`/admin/category/update/${id}`, {
+      method: "PUT",
+      headers: {
+        "content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json(payload))
+      .then((res) => {
+        if (res.success) {
+          myNotification("Update success", "success");
+          categoryDataTable.ajax.reload(null, false);
+          closeModalUpdate();
+          // openModalUpdate();
+        }
+      })
+      .catch(() => myNotification("Delete failed", "error"));
+  }
+  //
+  function deleteCategory(id) {
+    fetch(`/admin/category/delete/${id}`, {
+      method: "DELETE",
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) {
+          myNotification("Delete success", "success");
+          categoryDataTable.ajax.reload(null, false);
+        }
+      })
+      .catch(() => myNotification("Delete failed", "error"));
+  }
+
   //
   document
     .querySelector("#btn_cta_category_save")
@@ -194,6 +351,8 @@
       success: (res) => {
         console.log(res);
         if (res.success) {
+          categoryDataTable.ajax.reload(null, false);
+          closeModal();
           myNotification("Add sccess", "success");
         }
       },

@@ -5,16 +5,32 @@
         <!-- LEFT SIDEBAR -->
          <aside class="col-span-3 rounded-lg p-4 shadow">
             <h3 class="font-semibold mb-3">Category</h3>
-            <ul class="space-y-2 text-sm">
+            
+            <!-- <ul class="space-y-2 text-sm">
                 <li><input type="checkbox" name="" id="">Tech</li>
                 <li><input type="checkbox" name="" id="">Design</li>
                 <li><input type="checkbox" name="" id="">Life</li>
-            </ul>
+            </ul> -->
+           <select name="" id="category_root" class="px-4 py-3 w-full border border-gray-300 rounded-lg">
+            <option value="#">--choose category--</option>
+            <%if(menu){%>
+              <%Object.entries(menu).forEach(([root, cat])=>{%>
+                <option value="<%=root%>"><%=root%></option>
+              <%})%>
+            <%}%>
+           </select>
+           <hr>
+           <ul id="sub_category">
+
+           </ul>
+
          </aside>
          <!-- MAIN CONTENT -->
           <main class="col-span-6 rounded-lg p-4 shadow">
             <h2 class="text-xl font-bold mb-3">Title</h2>
             <input type="text" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
+            <h2 class="text-xl font-bold mb-3">Slug</h2>
+            <input type="text" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
             <h2 class="text-xl font-bold mb-4">Nội dung bài viết</h2>
             <textarea name="" id="editor" class="w-full">Nội dung bài viết....</textarea>
           </main>
@@ -32,6 +48,7 @@
     </div>
 </div>
 
+<!-- SCRIPT HERE -->
 <script>
   tinymce.init({
     selector: '#editor',
@@ -42,4 +59,36 @@
     toolbar:
       'undo redo | bold italic | alignleft aligncenter alignright | bullist numlist | code'
   });
+  // 
+  const selectRoot = document.querySelector('#category_root');
+  selectRoot.addEventListener('change', function(){
+    const root = this.value;
+    if(!root){
+      console.log('chua chon option')
+      return
+    }
+    alert(root)
+    getSubCategory(root);
+  })
+  function getSubCategory(name){
+    fetch(
+      `/admin/category/get-menu/filter?root=${name}`,
+      {
+        method: 'GET'
+      }
+    ).then((res)=>res.json())
+    .then((res)=>{console.log(res);
+      let htmlString = '';
+      res.forEach(c => {
+        htmlString+=`<li class="flex items-center gap-2">
+        <input type="radio"
+               name="sub_category"
+               value="${c._id}">
+        <span>${c.name}</span>
+      </li>`
+      });
+      document.querySelector('#sub_category').innerHTML=htmlString;
+    })
+    .catch((err)=>console.log(err))
+  }
 </script>

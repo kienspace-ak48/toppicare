@@ -30,7 +30,9 @@ router.get('/blog/category', blogController.Category);
 router.get('/blog/category/add', blogController.CategoryAdd);
 router.get('/blog', blogController.Index);
 // CATEGORY ROUTE 
-
+// category/get-menu?root=${name}
+router.get('/category/get-menu/filter', categoryController.getMenuFilterByRoot);
+router.get('/category/get-menu', categoryController.getMenu);
 router.get('/category/get-all', categoryController.Categories);
 router.delete('/category/delete/:id', categoryController.Delete);
 router.get('/category/edit/:id', categoryController.Edit)

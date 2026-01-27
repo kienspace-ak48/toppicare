@@ -21,7 +21,7 @@ export default defineConfig({
     // outDir: path.resolve(__dirname, '../server/public'),
     outDir: path.resolve(__dirname, '../server/public/disk'),
 
-    emptyOutDir: false,
+    emptyOutDir: true,
   },
   server: {
     // historyApiFallback: true

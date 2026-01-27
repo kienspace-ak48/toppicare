@@ -1,13 +1,21 @@
 const categoryModel = require("../model/category.model");
 const categoryService = require("../services/category.service");
 
+
 const CNAME = "blog.controller.js ";
 const VNAME = "admin/blog/";
 
 const BlogController = () => {
   return {
     Index: async (req, res) => {
-      res.render(VNAME + "index");
+      try {
+        const menu = await categoryService.getMenu();
+        console.log(menu)
+        res.render(VNAME + "index", {menu: menu});
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.render(VNAME + "index", {menu:[]});
+      }
     },
     Category: async (req, res) => {
       res.render(VNAME + "category");
