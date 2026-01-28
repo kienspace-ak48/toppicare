@@ -25,6 +25,9 @@ router.get("/gallery", galleryController.Index);
 router.get('/gallery/image-getall', galleryController.GetAll);
 // blog
 // POSTS controller 
+router.get('/blog/edit-blog/:id', blogController.EditBlog);
+router.put('/blog/update-blog/:id', blogController.UpdateBlog);
+router.post('/blog/add-blog', blogController.AddBlog);
 router.get('/blog/category/getall', blogController.CategoryGetAll);
 router.get('/blog/category', blogController.Category);
 router.get('/blog/category/add', blogController.CategoryAdd);

@@ -24,20 +24,31 @@ const ASSET_URL = window.__ENV__.API_URL;
 
 import useServices from "../../hooks/useServices";
 import usePageConfig from "../../hooks/usePageConfig";
+import { useNews, useThreeBlogHomePage } from "../../hooks/useNews";
+import { formatDate } from "../utils/formatDate";
 
 function HomePage() {
+  console.log(useThreeBlogHomePage())
+  const {
+  data: dataNews,
+  loading: loadingNews,
+  error: errNews
+} = useThreeBlogHomePage();
+  const newsArticles_2 = dataNews?.data;
+  console.log(dataNews?.data)
   // const { data, loading, error } = useServices();
   const{data, loading, error} = usePageConfig();
   console.log(data)
   const [pageConfig, setPageConfig] = useState(null);
   let heroSlides =data.data?.homepage?.banner??[];
-  let intro_app_benefits = data.data?.homepage?.intro_app?.benefits ??[]
+  let intro_app_benefits = data.data?.homepage?.intro_app?.benefits ??[];
   useEffect(() => {
     if (data) {
       setPageConfig(data.data);
     }
   }, [data]);
-
+  
+  
   // console.log(data)
   // const heroSlides = [
   //   {
@@ -433,14 +444,14 @@ function HomePage() {
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {newsArticles.map((article) => (
+            {newsArticles_2?.map((article) => (
               <div
-                key={article.id}
+                key={article._id}
                 className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
               >
                 <div className="aspect-video overflow-hidden">
                   <ImageWithFallBack
-                    src={article.image}
+                    src={ASSET_URL+article.img}
                     alt={article.title}
                     className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                   />
@@ -448,15 +459,15 @@ function HomePage() {
         <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 text-white rounded-full text-sm flex items-center gap-2 shadow-sm">
           <Eye className="w-4 h-4" />
           {/* Bạn thay 'article.views' bằng biến chứa lượt xem thực tế */}
-          <span>{article.views || '1.2k'}</span>
+          <span>{article.views || '120'}</span>
         </div>
         {/* ----------------------------------- */}
                 </div>
                 
                 <div className="p-6">
-                  <p className="text-sm text-[rgb(45,189,182)] mb-2">{article.date}</p>
+                  <p className="text-sm text-[rgb(45,189,182)] mb-2">{formatDate(article.createdAt)}</p>
                   <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold">{article.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">{article.excerpt}</p>
+                  <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">{article.desc}</p>
                 </div>
               </div>
             ))}

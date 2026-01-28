@@ -3,7 +3,8 @@ import { ImageWithFallBack } from '../fallback/ImageWithFallback';
 import { Calendar, Tag, TrendingUp,Eye } from 'lucide-react';
 
 const newsCategories = ['Tất cả', 'Tin tức', 'Hoạt động', 'Khuyến mãi', 'Sức khỏe', 'Mẹo hay'];
-
+import {useNews, useThreeBlogHomePage} from '../../hooks/useNews';
+import { formatDate, formatDateTime } from '../utils/formatDate';
 const newsArticles = [
   {
     id: 1,
@@ -87,9 +88,15 @@ const newsArticles = [
     featured: false,
   },
 ];
-function News() {
-    const [selectedCategory, setSelectedCategory] = useState('Tất cả');
 
+function News() {
+  const ASSET_URL = window.__ENV__.API_URL;
+    const{data, loading, error} = useNews();
+    console.log(data);
+    const [selectedCategory, setSelectedCategory] = useState('Tất cả');
+    var newsArticles_2= data?.data; 
+    console.log(newsArticles_2)
+    // 
   const filteredArticles = selectedCategory === 'Tất cả' 
     ? newsArticles 
     : newsArticles.filter(article => article.category === selectedCategory);
@@ -200,31 +207,31 @@ function News() {
           <h2 className="text-3xl md:text-4xl mb-12 bg-[#2dbdb6] bg-clip-text text-transparent font-bold">
             {selectedCategory === 'Tất cả' ? 'Tất cả bài viết' : selectedCategory}
           </h2>
-
-          {regularArticles.length > 0 ? (
+          {/* edit here */}
+          {regularArticles  .length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {regularArticles.map((article) => (
+              {newsArticles_2?.map((article) => (
                 <div
-                  key={article.id}
+                  key={article._id}
                   className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
                 >
                   <div className="relative aspect-video overflow-hidden">
                     <ImageWithFallBack
-                      src={article.image}
+                      src={ASSET_URL+article.img}
                       alt={article.title}
                       className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                     />
                     {/* Category (Góc trái trên - Giữ nguyên) */}
         <div className="absolute top-4 left-4 px-3 py-1 bg-[#2dbdb6] text-white rounded-full text-sm flex items-center gap-2 shadow-sm">
           <Tag className="w-4 h-4" />
-          {article.category}
+          {article.category_id.name}
         </div>
 
         {/* --- MỚI: Mắt xem (Góc phải trên) --- */}
         <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 text-white rounded-full text-sm flex items-center gap-2 shadow-sm">
           <Eye className="w-4 h-4" />
           {/* Bạn thay 'article.views' bằng biến chứa lượt xem thực tế */}
-          <span>{article.views || '1.2k'}</span>
+          <span>{article.views || '120'}</span>
         </div>
         {/* ----------------------------------- */}
                     
@@ -232,10 +239,10 @@ function News() {
                   <div className="p-6">
                     <div className="flex items-center gap-2 text-gray-600 text-sm mb-3">
                       <Calendar className="w-4 h-4" />
-                      <span>{article.date}</span>
+                      <span>{formatDate(article.createdAt)}</span>
                     </div>
                     <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold">{article.title}</h3>
-                    <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">{article.excerpt}</p>
+                    <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">{article.desc}</p>
                   </div>
                 </div>
               ))}

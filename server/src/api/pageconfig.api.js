@@ -11,6 +11,7 @@ const PageConfigApi = () => {
         console.log(CNAME, error.message);
       }
     },
+    
   };
 };
 
