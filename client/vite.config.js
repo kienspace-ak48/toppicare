@@ -14,6 +14,8 @@ export default defineConfig({
       'slider_1': path.resolve(__dirname,'./src/assets/imgs/slider_1.jpg'),
       'slider_2': path.resolve(__dirname,'./src/assets/imgs/slider_2.jpg'),
       'slider_3': path.resolve(__dirname,'./src/assets/imgs/slider_3.jpg'),
+      'chplay_qr': path.resolve(__dirname, './src/assets/imgs/toppi_ggplay.png'),
+      'chplay_qr2': path.resolve(__dirname, './src/assets/imgs/toppi_ggplay2.png'),
     }
   },
   build: {

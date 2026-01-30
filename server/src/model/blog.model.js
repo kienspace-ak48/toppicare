@@ -5,7 +5,7 @@ const BlogSchema = new mongoose.Schema({
     title: String,
     desc: String,
     slug: {type: String},
-    status: String,
+    status: {type: Boolean, default: false},
     content: String,
     img: String,
     category_id: {

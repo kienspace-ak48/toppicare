@@ -64,9 +64,17 @@
             </h1>
           </div>
           <!--  -->
+          <style>
+            .navbar i{
+              font-size: 17px !important;
+            }
+            .navbar span.lable{
+              font-size: 17px !important;
 
+            }
+          </style>
           <!-- NAV -->
-          <nav class="flex-col flex-1 space-y-1">
+          <nav class="navbar flex-col flex-1 space-y-1">
             <div class="flex flex-col">
               <!-- Dashboard -->
               <a
@@ -144,14 +152,21 @@
                   href="/admin/blog"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
-                  Post
+                  Blog list
                 </a>
+                <!-- <a
+                  href="/admin/category"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  
+                </a> -->
                 <a
                   href="/admin/category"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
                   Category
                 </a>
+                
               </div>
 
               <!-- END =============== -->
@@ -161,14 +176,14 @@
                 class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
               >
                 <i class="fa-regular fa-images text-blue-600 text-2xl"></i>
-                <span class="label">Gallery</span>
+                <span class="label ml-2">Gallery</span>
               </a>
               <a
                 href="#"
                 class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
               >
                 <i class="fa-solid fa-clapperboard text-blue-600 text-2xl"></i>
-                <span class="label">Videos</span>
+                <span class="label ml-2">Videos</span>
               </a>
               <!-- Videos -->
               <!-- <button class="menu-item">

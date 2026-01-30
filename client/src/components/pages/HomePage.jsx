@@ -445,7 +445,8 @@ function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {newsArticles_2?.map((article) => (
-              <div
+              <Link to={`/blog-detail/${article.slug}`}>
+                <div
                 key={article._id}
                 className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
               >
@@ -470,6 +471,7 @@ function HomePage() {
                   <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">{article.desc}</p>
                 </div>
               </div>
+              </Link>
             ))}
           </div>
         </div>

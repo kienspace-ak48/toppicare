@@ -15,7 +15,24 @@ class BlogService {
             return false;
         }
     }
-    async getAll(){}
+    async getAllMergeCaregory(){
+        try {
+            const blogs = await BlogEntity.find().populate('category_id', 'name slug category_root' ).sort({createdAt: 1});
+            return blogs;
+        } catch (error) {
+            console.log(CNAME, error.message);
+            return []
+        }
+    }
+    async getAll(){
+        try {
+            const result = await BlogEntity.find().sort({createdAt: 1});
+            return result;
+        } catch (error) {
+            console.log(CNAME, error.message);
+            return [];
+        }
+    }
     async getById(id){
         try {
             const b = await BlogEntity.findById(id);
@@ -39,7 +56,16 @@ class BlogService {
             return {success: false, mess: error.message}
         }
     }
-    async delete(id){}
+    async delete(id){
+        try {
+            const result = await BlogEntity.findByIdAndDelete(id);
+            return true;
+        } catch (error) {
+            console.log(CNAME, error.message);
+            return false;
+        }
+    }
+    
 }
 
 module.exports = new BlogService();

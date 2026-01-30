@@ -1,7 +1,7 @@
 <script src="/libs/tinymce/tinymce.min.js"></script>
-<h1>Edit blog</h1>
+<h1>blog bai viet</h1>
 <div>
-  <button id="btn_edit_blog" class="font-bold px-4 py-3 border border-gray-300 bg-yellow-400 rounded-lg hover:cursor-pointer">Edit blog</button>
+  <button id="btn_create_blog" class="font-bold px-4 py-3 border border-gray-300 bg-green-500 rounded-lg hover:cursor-pointer">Add blog</button>
 </div>
 <div class="w-full mx-auto px-4 py-6">
     <div class="grid grid-cols-12 gap-4">
@@ -18,12 +18,13 @@
             <option value="#">--choose category--</option>
             <%if(menu){%>
               <%Object.entries(menu).forEach(([root, cat])=>{%>
-                <option value="<%=root%>" <%= blog.category_id.category_root === root ? 'selected' :'' %> ><%=root%></option>
+                <option value="<%=root%>"><%=root%></option>
               <%})%>
             <%}%>
            </select>
            <hr class="my-3">
-           <ul id="sub_category_list" class="overflow-y-auto h-60 border border-gray-300 bg-transparent rounded-lg shadow-lg">
+           <!-- h-60 border border-gray-300 bg-transparent -->
+           <ul id="sub_category_list" class="overflow-y-auto  rounded-lg shadow-lg">
 
            </ul>
 
@@ -31,23 +32,23 @@
          <!-- MAIN CONTENT -->
           <main class="col-span-6 rounded-lg p-4 shadow">
             <h2 class="text-xl font-bold mb-3">Title</h2>
-            <input type="text" name="title" value="<%=blog.title%>" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
+            <input type="text" name="title" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
             <h2 class="text-xl font-bold mb-3">Slug</h2>
-            <input type="text" value="<%=blog.slug%>" name="slug" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
+            <input type="text" name="slug" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
             <h2 class="text-xl font-bold mb-3">Description</h2>
-            <textarea name="desc" id="" class="px-4 py-3 w-full border border-gray-300 rounded-lg" placeholder="Enter Description..."><%=blog.desc%></textarea>
+            <textarea name="desc" id="" class="px-4 py-3 w-full border border-gray-300 rounded-lg" placeholder="Enter Description..."></textarea>
             <h2 class="text-xl font-bold mb-4">Nội dung bài viết</h2>
-            <textarea name="content" id="editor" class="w-full"><%-blog.content%></textarea>
+            <textarea name="content" id="editor" class="w-full">Nội dung bài viết....</textarea>
           </main>
           <!-- RIGHT SIDEBAR -->
            <aside class="col-span-3 rounded-lg p-4 shadow">
-            <!-- <h3 class="font-semibold mb-3">Author</h3>
-            <p class="text-sm">KienVu</p> -->
+            <h3 class="font-semibold mb-3">Author</h3>
+            <p class="text-sm">KienVu</p>
             <hr class="my-3">
             <h3 class="font-semibold mb-2">Status</h3>
             <select name="" id="status" class="w-full border rounded px-4 py-3 border-gray-300 text-sm" id="">
-                <option value="0" <%= !blog.status ? 'selected' : '' %> >Draft</option>
-                <option value="1" <%= blog.status ? 'selected' : '' %> >Publish</option>
+                <option value="0">Draft</option>
+                <option value="1">Publish</option>
             </select>
             <!--  -->
             <!-- image handle action -->
@@ -58,19 +59,18 @@
               type="text"
               id="img_thumb"
               name="home_intro_img"
-              value="<%=(blog.img)?blog.img:''%>"
+              value=""
               class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
               placeholder="img"
             />
           </div>
           <div class="img_preview border border-gray-300 w-full h-[200px]">
-            <img src="/<%=(blog.img)?blog.img:''%>" alt="" class="w-full object-cover max-h-[200px]">
+            <img src="/<%#=(pc && pc.homepage)?pc.homepage?.intro_app?.img:''%>" alt="" class="w-full object-cover max-h-[200px]">
           </div>
         </div>
         <!--  -->
            </aside>
     </div>
-    <input type="hidden" name="" id="id_blog_hidden" value="<%=blog._id%>">
 </div>
 <!-- =================MODAL===================== -->
 <div
@@ -88,7 +88,6 @@
 </div>
 <!-- SCRIPT HERE -->
 <script>
-  // tinyMCE
   tinymce.init({
     selector: '#editor',
     height: 500,
@@ -108,17 +107,7 @@
     }
     getSubCategory(root);
   })
-  // edit
-  //
-  const currentRoot = "<%= blog.category_id.category_root %>";
-const currentSub  = "<%= blog.category_id._id %>";
-
-if (currentRoot) {
-  selectRoot.value = currentRoot;
-  getSubCategory(currentRoot, currentSub);
-}
-  // 
-  function getSubCategory(name, selectedId){
+  function getSubCategory(name){
     fetch(
       `/admin/category/get-menu/filter?root=${name}`,
       {
@@ -132,9 +121,7 @@ if (currentRoot) {
         htmlString+=`<li class="flex items-center gap-2">
         <input type="radio"
                name="sub_category"
-               value="${c._id}"
-               ${selectedId === c._id ? 'checked' : ''}
-               >
+               value="${c._id}">
         <span>${c.name}</span>
       </li>`
       });
@@ -144,7 +131,8 @@ if (currentRoot) {
     .catch((err)=>console.log(err))
   }
   // 
-  document.querySelector('#btn_edit_blog').addEventListener('click', ()=>{
+  document.querySelector('#btn_create_blog').addEventListener('click', ()=>{
+    
 const root = document.querySelector('#category_root').value;
 
     // alert('submit bai viet')
@@ -167,19 +155,19 @@ const root = document.querySelector('#category_root').value;
     submitData(payload);
   });
   function submitData(payload){
-    const id = document.querySelector('#id_blog_hidden').value;
-    fetch(`/admin/blog/update-blog/${id}`, {
-      method: "PUT",
+    fetch(`/admin/blog/add-blog`, {
+      method: "POST",
       headers: {
         'Content-Type': 'application/json'
       },
         
       body: JSON.stringify(payload)
     }).then(res=>res.json())
-    .then(res=>{console.log(res); myNotification('Edit success', 'success'); document.location.reload();})
+    .then(res=>{console.log(res); if(res.success){myNotification('Create success', 'success'); window.location.reload();}})
     .catch(err=>{
-      console.log(err);
-      myNotification('Edit failed', 'danger')
+      console.log(err)
+      myNotification('Create blog faield ','danger')
+      window.location.reload();
     })
   }
   // slug
@@ -260,7 +248,5 @@ titleInput.addEventListener('input', () => {
      imgInputIsFocusing.querySelector('.img_preview img').src ="/"+src;
     closeChooseImgModal();
   }
-  
-
   // 
 </script>

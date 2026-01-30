@@ -63,14 +63,15 @@ class CategoryService {
       return false;
     }
   }
-  async getMenuFilterByRoot(root){
+  async getMenuFilterByRoot(root) {
     try {
-        const categories = await CategoryEntity.find({category_root : root})
-        .sort({createdAt: 1});
-        return categories;
+      const categories = await CategoryEntity.find({
+        category_root: root,
+      }).sort({ createdAt: 1 });
+      return categories;
     } catch (error) {
-        console.log(CNAME, error);
-        return []
+      console.log(CNAME, error);
+      return [];
     }
   }
   async getMenu() {
@@ -95,6 +96,33 @@ class CategoryService {
       return [];
     }
   }
+  async increaseCountCategory(id) {
+    try {
+      const result  = await CategoryEntity.findByIdAndUpdate(
+        id,
+        {$inc: {quantity: 1}}
+      );
+      console.log(result);
+      return true;
+    } catch (error) {
+      console.log(CNAME, error.message);
+      return false;
+    }
+  }
+  async reduceCountCategory(id){
+    try {
+      const result = await CategoryEntity.findByIdAndUpdate(
+        id,
+        {$inc: {quantity: -1}}
+      )
+      console.log(result);
+      return true;
+    } catch (error) {
+      console.log(CNAME, error.message);
+      return false;
+    }
+  }
+
 }
 
 module.exports = new CategoryService();

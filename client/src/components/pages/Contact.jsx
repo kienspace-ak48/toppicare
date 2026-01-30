@@ -6,17 +6,17 @@ const contactInfo = [
   {
     icon: MapPin,
     title: 'Địa chỉ trụ sở chính',
-    content: '123 Đường ABC, Phường Bến Nghé, Quận 1, TP. Hồ Chí Minh, Việt Nam',
+    content: '16A Lê Hồng Phong, Phường Hòa Hưng, Ho Chi Minh City, Vietnam',
   },
   {
     icon: Phone,
     title: 'Số điện thoại',
-    content: 'Hotline: 1900 xxxx\nPhone: (028) 3xxx xxxx',
+    content: 'Hotline: 0862.4848.98\nPhone: 0862.4848.98',
   },
   {
     icon: Mail,
     title: 'Email',
-    content: 'contact@toppicare.vn\nsupport@toppicare.vn',
+    content: 'info@toppicare.vn',
   },
   {
     icon: Clock,
@@ -198,11 +198,21 @@ function Contact() {
 
               <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl mb-6">
                 <div className="w-full h-full bg-gradient-to-br from-purple-200 via-pink-200 to-blue-200 flex items-center justify-center">
-                  <div className="text-center">
+                  {/* <div className="text-center">
                     <MapPin className="w-16 h-16 mx-auto mb-4 text-green-600" />
                     <p className="text-gray-700 text-lg">Bản đồ Google Maps</p>
                     <p className="text-gray-600 text-sm mt-2">123 Đường ABC, Quận 1, TP.HCM</p>
                   </div>
+                   */}
+                   <iframe
+      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4907322578797!2d106.66947347553914!3d10.77367665924344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752edec7cd6b63%3A0xda47505a46e0b024!2zMTZBIEzDqiBI4buTbmcgUGhvbmcsIFBoxrDhu51uZyAxMiwgUXXhuq1uIDEwLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmggNzAwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1769746197471!5m2!1svi!2s"
+      className="w-full h-full"
+      style={{ border: 0 }}
+      allowFullScreen
+      loading="lazy"
+      referrerPolicy="no-referrer-when-downgrade"
+      title="Google Map"
+    />
                 </div>
               </div>
 

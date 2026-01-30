@@ -7,7 +7,7 @@ require("dotenv").config({
 const http = require("http");
 const https = require("https");
 const app = require("./app");
-const HTTP_PORT = process.env.HTTP_PORT;
+const HTTP_PORT = process.env.HTTP_PORT || 3000;
 const HOST = "0.0.0.0";
 
 // initial server

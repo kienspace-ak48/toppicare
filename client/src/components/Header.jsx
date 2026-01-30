@@ -69,26 +69,31 @@ export function Header() {
             </div>
 
             <div className="flex items-center justify-end gap-4 md:gap-6 text-sm ml-auto">
-              {horizontalMenuItems.map((item) =>
-                item.path ? (
-                  <Link key={item.name} to={item.path} className=""></Link>
-                ) : (
-                  <button
-                    key={item.name}
-                    onClick={() => {
-                      if (item.action === "download") {
-                        window.open("https://play.google.com", "_blank");
-                      }
-                    }}
-                    className="flex items-center gap-1 hover:opacity-80 transition-opacity"
-                  >
-                    <item.icon className="w-4 h-4" />
-                    <span className="hidden sm:inline text-[16px]">
-                      {item.name}
-                    </span>
-                  </button>
-                )
-              )}
+              {horizontalMenuItems.map((item) => (
+                              item.path ? (
+                                <Link
+                                  key={item.name}
+                                  to={item.path}
+                                  className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                                >
+                                  <item.icon className="w-4 h-4" />
+                                  <span className="hidden sm:inline text-[16px]">{item.name}</span>
+                                </Link>
+                              ) : (
+                                <button
+                                  key={item.name}
+                                  onClick={() => {
+                                    if (item.action === 'download') {
+                                      window.open('https://play.google.com/store/apps/details?id=com.viettrace.toppicare&pcampaignid=web_share', '_blank');
+                                    }
+                                  }}
+                                  className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                                >
+                                  <item.icon className="w-4 h-4" />
+                                  <span className="hidden sm:inline text-[16px]">{item.name}</span>
+                                </button>
+                              )
+                            ))}
               <button className="flex items-center gap-1 hover:opacity-80 transition-opacity">
                 <Globe className="w-4 h-4" />
                 <span className="hidden sm:inline text-[16px] ">VI</span>

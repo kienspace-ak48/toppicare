@@ -1,6 +1,8 @@
 import imgLogo from "t_logo";
 import { Link } from "react-router-dom";
 import imgLogo2 from "t_logo2";
+import chplay_qr from 'chplay_qr';
+import chplay_qr2 from 'chplay_qr2';
 import { Facebook, Mail, MapPin, Phone, Youtube } from "lucide-react";
 
 function Footer() {
@@ -38,17 +40,17 @@ function Footer() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0 text-white-200" />
                     <span className="text-[rgb(255,255,255)]">
-                      123 Đường ABC, Quận 1, TP. Hồ Chí Minh, Việt Nam
+                      16A Lê Hồng Phong, Phường Hòa Hưng, Ho Chi Minh City, Vietnam
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 flex-shrink-0 text-white-200" />
-                    <span className="text-[rgb(255,255,255)]">1900 xxxx</span>
+                    <span className="text-[rgb(255,255,255)]">0862.4848.98</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 flex-shrink-0 text-white-200" />
                     <span className="text-[rgb(255,255,255)]">
-                      contact@toppicare.vn
+                      info@toppicare.vn
                     </span>
                   </div>
                 </div>
@@ -142,7 +144,7 @@ function Footer() {
                   {/* QR Code */}
                   <div className="w-16 h-16 bg-white rounded-xl p-1.5 flex-shrink-0 shadow-md">
                     <div className="w-full h-full bg-gradient-to-br from-teal-500 to-cyan-500 rounded-lg flex items-center justify-center">
-                      <svg
+                      {/* <svg
                         className="w-8 h-8 text-white"
                         fill="none"
                         stroke="currentColor"
@@ -154,7 +156,8 @@ function Footer() {
                           strokeWidth={2}
                           d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
                         />
-                      </svg>
+                      </svg> */}
+                      <img src={chplay_qr2} alt="qr code" />
                     </div>
                   </div>
 
@@ -172,7 +175,7 @@ function Footer() {
                 {/* Buttons */}
                 <div className="flex gap-2 w-full xl:w-auto">
                   <a
-                    href="https://play.google.com"
+                    href="https://play.google.com/store/apps/details?id=com.viettrace.toppicare&pcampaignid=web_share"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 xl:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white rounded-xl px-3 py-2 hover:bg-gray-800 transition-colors shadow-lg"
@@ -193,7 +196,7 @@ function Footer() {
                   </a>
 
                   <a
-                    href="https://apps.apple.com"
+                    href="https://apps.apple.com/vn/app/toppicare/id6755223405?l=vi"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="flex-1 xl:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white rounded-xl px-3 py-2 hover:bg-gray-800 transition-colors shadow-lg"

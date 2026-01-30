@@ -11,6 +11,9 @@ import Traning from "./components/pages/Traning";
 import News from "./components/pages/News";
 import Contact from "./components/pages/Contact";
 import HomeAdminConfig from './components/admin/pageconfig/HomeCF'
+import BlogDetail from "./components/pages/BlogDetail";
+import PolicyPage from "./components/pages/PolicyPage";
+import PocicyPartner from './components/pages/PolicyPartner';
 
 import Dashboard from "./pages/admin/Dashboard";
 // import Users from "./pages/admin/Users";
@@ -29,6 +32,9 @@ export default function App() {
           <Route path="/training" element={<Traning />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/blog-detail/:slug" element={<BlogDetail/>}/>
+          <Route path="/policy/customer" element={<PolicyPage/>}></Route>
+          <Route path="/policy/partner" element={<PocicyPartner/>}></Route>
           <Route path="*" element={<NotFound/>}></Route>
         </Route>
 
