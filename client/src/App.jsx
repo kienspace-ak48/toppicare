@@ -14,6 +14,7 @@ import HomeAdminConfig from './components/admin/pageconfig/HomeCF'
 import BlogDetail from "./components/pages/BlogDetail";
 import PolicyPage from "./components/pages/PolicyPage";
 import PocicyPartner from './components/pages/PolicyPartner';
+import ServiceDetail from "./components/pages/ServiceDetail";
 
 import Dashboard from "./pages/admin/Dashboard";
 // import Users from "./pages/admin/Users";
@@ -29,6 +30,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Service />} />
+          <Route path="/services/detail/:slug" element={<ServiceDetail />} />
           <Route path="/training" element={<Traning />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />

@@ -39,8 +39,8 @@ const galleryController = () => {
         const physicalDir = uploadDir+fUnique;
         //lu vao bo nho vat ly
         await sharp(req.file.buffer)
-        .resize(800)
-        .webp({quality: 80})
+        // .resize(800)
+        .webp({quality: 85})
         .toFile(physicalDir)
         // luu vao DB
         const image = new ImageEntity({

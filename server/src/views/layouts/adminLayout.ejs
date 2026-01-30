@@ -13,6 +13,62 @@
     <!-- <script src="/libs/js/dataTables.bootstrap5.min.js"></script> -->
     <!-- icon fs -->
     <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css" />
+    <style>
+      /* container */
+.dt-paging nav {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+/* button chung */
+.dt-paging-button {
+  min-width: 36px;
+  height: 36px;
+  padding: 0 12px;
+  border-radius: 9999px;
+  background-color: #f3f4f6;
+  color: #374151;
+  font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all .2s ease;
+  border: none;
+}
+
+/* hover */
+.dt-paging-button:not(.disabled):hover {
+  background-color: #e5e7eb;
+}
+
+/* current page */
+.dt-paging-button.current {
+  background-color: #2dbdb6; /* đổi theo brand */
+  color: white;
+  font-weight: 600;
+}
+
+/* disabled */
+.dt-paging-button.disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* my config */
+.dt-search{
+  padding: 20px 0;
+}
+.dt-search .dt-input{
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 6px 10px;
+  background-color: white;
+  font-size: 14px;
+  cursor: pointer;
+}
+    </style>
     <script>
       function myNotification(text, icon, timer = 2500, position = "top-end") {
         Swal.fire({

@@ -28,7 +28,7 @@ import { useNews, useThreeBlogHomePage } from "../../hooks/useNews";
 import { formatDate } from "../utils/formatDate";
 
 function HomePage() {
-  console.log(useThreeBlogHomePage())
+  // console.log(useThreeBlogHomePage())
   const {
   data: dataNews,
   loading: loadingNews,
@@ -226,7 +226,7 @@ function HomePage() {
   return (
     <div className="">
       {/* Hero slider */}
-      <section className="relative h-[500px] md:h-[600px] overflow-hidden ">
+      {/* <section className="relative h-[500px] md:h-[600px] overflow-hidden ">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
@@ -237,22 +237,16 @@ function HomePage() {
             <ImageWithFallBack
               src={ASSET_URL+slide.banner_img}
               alt={slide.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover md:object-contain"
             />
-            <div className="absolute inset-0 bg-gradient-to-r from-black/60 via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 "></div>
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-7xl mx-auto px-4 w-full">
-                <h2 className="text-white text-4xl md:text-6xl max-w-2xl mb-6 font-bold">
-                  {slide.title}
-                </h2>
-                <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all">
-                  Đặt lịch ngay
-                </button>
               </div>
             </div>
           </div>
         ))}
-        {/* button  */}
+        
         <button
           onClick={prevSlide}
           className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all"
@@ -265,7 +259,7 @@ function HomePage() {
         >
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
-        {/* control slide */}
+        
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
           {heroSlides.map((_, index) => (
             <button
@@ -277,7 +271,49 @@ function HomePage() {
             />
           ))}
         </div>
-      </section>
+      </section> */}
+      <section className="relative h-[32vh] min-h-[260px] md:h-[80vh] overflow-hidden">
+  {heroSlides.map((slide, index) => (
+    <div
+      key={index}
+      className={`absolute inset-0 transition-opacity duration-700 ${
+        index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
+      }`}
+    >
+      <ImageWithFallBack
+        src={ASSET_URL + slide.banner_img}
+        alt={slide.title}
+        className="w-full h-full object-contain bg-transparent md:object-cover object-center"
+      />
+    </div>
+  ))}
+
+  <button
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all z-20"
+        >
+          <ChevronLeft className="w-6 h-6 text-white" />
+        </button>
+        <button
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2  w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all z-20"
+        >
+          <ChevronRight className="w-6 h-6 text-white" />
+        </button>
+        
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {heroSlides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                index === currentSlide ? "bg-white w-8" : "bg-white/50"
+              }`}
+            />
+          ))}
+        </div>
+</section>
+
       {/* Slogan */}
       <section className="py-6 bg-[#2bdbd6]">
         <div className="max-w-7xl mx-auto px-4 text-center">

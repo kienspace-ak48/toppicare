@@ -96,6 +96,12 @@
       url: "/admin/blog/get-all",
       dataSrc: "data",
     },
+    layout: {
+    topStart: 'pageLength',
+    topEnd: 'search',
+    bottomStart: 'info',
+    bottomEnd: 'paging'
+  },
     info: false,
     columns: [
       { data: "title", render: (v) => `<p class="px-4 py-6 ">${v}</p>` },

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-export function useFetch(apiFn, deps = []) {
+export function useFetch(apiFn, params=null, deps = []) {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -7,7 +7,7 @@ export function useFetch(apiFn, deps = []) {
   useEffect(() => {
     let mounted = true;
 
-    apiFn()
+    apiFn(params)
       .then((res) => {
         if (mounted) setData(res.data);
       })

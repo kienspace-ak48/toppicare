@@ -3,17 +3,17 @@ const slugify = require('slugify');
 
 const CategorySchema = new mongoose.Schema({
     name: String,
-    slug: String,
+    slug: {type: String, unique: true, index: true},
     category_root: {
         type: String,
         enum: ["training","service", "news"],
-        require: true
+        required: true
     },
     quantity: {
         type: Number,
         default: 0
     },
-    DeletedAt: Date
+    deletedAt: Date
 }, {timestamps: true})
 
 // Chỉ giữ lại 1 middleware pre('save')

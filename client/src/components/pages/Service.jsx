@@ -13,11 +13,13 @@ import imgChanCopy21 from "slider_1";
 import imgBodyCopy21 from "slider_1";
 import imgPhuKhoaCopy1 from "slider_1";
 import imgThietBiChamSocCopy21 from "slider_1";
+import { useNews, useThreeBlogHomePage, useGetAllServiceBlog } from "../../hooks/useNews";
+import { formatDate } from "../utils/formatDate";
 
 import usePageConfig from "../../hooks/usePageConfig";
 // const ASSET_URL = import.meta.env.VITE_API_URL;
 const ASSET_URL = window.__ENV__.API_URL;
-const services = [
+const services0 = [
   {
     id: "liet-trinh-ket-hop",
     name: "Liệu trình kết hợp",
@@ -128,11 +130,15 @@ const bookingSteps = [
 
 
 function Service() {
+  const {data : dataS, loading: loadingS, error: errorS} = useGetAllServiceBlog();
+  // console.log('AAA')
+  console.log(dataS);
+  const services = dataS?.data;
   const [selectedStep, setSelectedStep] = useState(1);
   // 
   const {data, loading, status } = usePageConfig();
   const serviceSection = data?.data?.service;
-  console.log('data o services ',serviceSection)
+  // console.log('data o services ',serviceSection)
   // 
   return (
     <div className="">
@@ -169,27 +175,27 @@ function Service() {
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {services.map((service) => (
+            {services?.map((service) => (
               <Link
-                key={service.id}
-                to={`/services/${service.id}`}
+                key={service._id}
+                to={`/services/detail/${service._id}`}
                 className="group backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105"
               >
                 <div className="relative aspect-video overflow-hidden">
                   <ImageWithFallBack
-                    src={service.image}
-                    alt={service.name}
+                    src={ASSET_URL+service.img}
+                    alt={service.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
-                  <div className={`absolute top-4 left-4 w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center shadow-lg overflow-hidden`}>
+                  {/* <div className={`absolute top-4 left-4 w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center shadow-lg overflow-hidden`}>
                     <img src={service.icon} alt={service.name} className="w-12 h-12 object-contain" />
-                  </div>
+                  </div> */}
                 </div>
                 <div className="p-6">
                   <h3 className="text-xl mb-2 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
-                    {service.name}
+                    {service.title}
                   </h3>
-                  <p className="text-gray-600 mb-4 text-[16px]">{service.description}</p>
+                  <p className="text-gray-600 mb-4 text-[16px]">{service.desc}</p>
                   <div className="flex items-center text-[#2dbdb6] group-hover:gap-2 transition-all">
                     <span>Xem chi tiết</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />

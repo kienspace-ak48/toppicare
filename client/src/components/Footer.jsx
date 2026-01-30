@@ -104,7 +104,7 @@ function Footer() {
                   </h3>
                   <div className="flex gap-4">
                     <a
-                      href="https://facebook.com"
+                      href="https://www.facebook.com/toppicare/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all hover:scale-110"
@@ -112,7 +112,7 @@ function Footer() {
                       <Facebook className="w-5 h-5" />
                     </a>
                     <a
-                      href="https://youtube.com"
+                      href="https://www.youtube.com/@ToppiCare"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all hover:scale-110"
@@ -120,7 +120,7 @@ function Footer() {
                       <Youtube className="w-5 h-5" />
                     </a>
                     <a
-                      href="https://tiktok.com"
+                      href="https://www.tiktok.com/@toppicare"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all hover:scale-110"

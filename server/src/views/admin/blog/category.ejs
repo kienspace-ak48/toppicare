@@ -7,7 +7,7 @@
 </div>
 
 <div class="wrapper_table overflow-x-auto">
-  <table id="category_tbl" class="min-w-full text-sm text-left text-gray-600">
+  <table id="category_tbl" class="w-full text-sm min-w-full text-left text-gray-600">
     <thead class="bg-gray-100 font-semibold text-gray-700 uppercase text-xs">
       <tr>
         <th class="px-6 py-4">Name</th>
@@ -197,6 +197,7 @@
       url: "/admin/category/get-all",
       dataSrc: "data",
     },
+    autoWidth: false,
     info: false,
     columns: [
       { data: "name", render: (v) => `<p class="px-4 py-6 ">${v}</p>` },

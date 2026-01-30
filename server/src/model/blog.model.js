@@ -4,14 +4,14 @@ const slugify = require('slugify')
 const BlogSchema = new mongoose.Schema({
     title: String,
     desc: String,
-    slug: {type: String},
+    slug: {type: String, unique: true, index: true},
     status: {type: Boolean, default: false},
     content: String,
     img: String,
     category_id: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'category',
-        require: true
+        required: true
     },
     isFeatured: {
         type: Boolean,

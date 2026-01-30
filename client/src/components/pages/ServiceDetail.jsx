@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-
 import { useGetOneServiceBlog } from "../../hooks/useNews";
-function BlogDetail() {
+
+function ServiceDetail() {
   const ASSET_URL = window.__ENV__.API_URL;
   const { slug } = useParams();
   console.log(slug);
 
   const {data: dataB, loading: loadingB, error: errorB} = useGetOneServiceBlog(slug);
-  console.log(dataB)
-  //
+    console.log(dataB);
+    const blogData = dataB?.data;
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
   const mockBlogDetail = {
@@ -62,7 +62,7 @@ function BlogDetail() {
     return <div className="text-center py-20">Loading...</div>;
   }
 
-  if (!blog) {
+  if (!blogData) {
     return <div className="text-center py-20">Bài viết không tồn tại</div>;
   }
 
@@ -71,31 +71,31 @@ function BlogDetail() {
       {/* CATEGORY */}
       <div className="mb-3">
         <span className="text-sm text-blue-600 font-medium uppercase">
-          {blog.category_id?.name}
+          {blogData.category_id?.name}
         </span>
       </div>
 
       {/* TITLE */}
       <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-        {blog.title}
+        {blogData.title}
       </h1>
 
       {/* META */}
       <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-        <span>{blog.author || "Admin"}</span>
+        <span>{blogData.author || "Admin"}</span>
         <span>•</span>
-        <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+        <span>{new Date(blogData.createdAt).toLocaleDateString()}</span>
         <span>•</span>
-        <span>{blog.views} lượt xem</span>
+        <span>{blogData.views} lượt xem</span>
       </div>
 
       {/* IMAGE */}
-      {blog.img && (
+      {blogData.img && (
   <div className="mb-8">
     <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
       <img
-        src={`${ASSET_URL + blog.img}`}
-        alt={blog.title}
+        src={`${ASSET_URL + blogData.img}`}
+        alt={blogData.title}
         className="absolute inset-0 w-full h-full object-cover"
       />
     </div>
@@ -105,10 +105,10 @@ function BlogDetail() {
       {/* CONTENT */}
       <article
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: blog.content }}
+        dangerouslySetInnerHTML={{ __html: blogData.content }}
       />
     </div>
   );
 }
 
-export default BlogDetail;
+export default ServiceDetail;
