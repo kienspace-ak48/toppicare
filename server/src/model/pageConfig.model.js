@@ -106,10 +106,9 @@ const pageConfig = new mongoose.Schema({
     },
   },
   news: {
-    banner: {
-      title: String,
-      desc: String,
-    },
+    title: String,
+    desc: String,
+    img_url: String,
     cta: {
       title: String,
       desc: String,

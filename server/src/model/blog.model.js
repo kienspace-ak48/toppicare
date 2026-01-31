@@ -13,7 +13,7 @@ const BlogSchema = new mongoose.Schema({
         ref: 'category',
         required: true
     },
-    isFeatured: {
+    featured: {
         type: Boolean,
         default: false
     },
@@ -21,6 +21,7 @@ const BlogSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    tags: [],
     author: String,
     deletedAt: Date
 }, {timestamps: true})

@@ -4,11 +4,15 @@ const homeController = require("../controller/home.controller")();
 const galleryController = require("../controller/gallery.controller")();
 const blogController = require('../controller/blog.controller')();
 const categoryController = require('../controller/category.controller')();
-
+const PageConfigController = require('../controller/pageconfig.controller')();
 const uploadImage = require("../config/uploadImage.config");
 
-//
-router.post("/page-config", homeController.CreatePageConfig)
+//page config
+//new
+router.get('/page-config/news-section', PageConfigController.NewSection);
+router.put('/page-config/news-section', PageConfigController.SaveNewSection);
+
+router.post("/page-config", homeController.CreatePageConfig);
 router.get("/page-config", homeController.PageConfig);
 // gallery
 router.post(

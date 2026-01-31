@@ -9,8 +9,8 @@
   Save Config
 </button>
 
-<details class="accordion group border rounded-lg  my-4">
-  <summary
+<!-- <details class="accordion group border rounded-lg  my-4"> -->
+  <!-- <summary
     class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
   >
     <div class="flex items-center gap-2">
@@ -18,15 +18,15 @@
       <span class="font-medium">Hero</span>
     </div>
     <span class="transition-transform group-open:rotate-180">▼</span>
-  </summary>
+  </summary> -->
 
   <!-- <div class="px-4 pb-4 pt-2 space-y-3">
       <input class="w-full border rounded px-3 py-2" placeholder="Hero title" />
       <textarea class="w-full border rounded px-3 py-2"></textarea>
     </div> -->
-  <div class="homepage_container px-4 pb-4 pt-2 space-y-3">
+  <!-- <div class="homepage_container px-4 pb-4 pt-2 space-y-3"> -->
     <!-- banner slider -->
-     <div class="flex items-center gap-x-5">
+     <div class="flex justify-between items-center gap-x-5">
        <label for="">Slider hero</label>
        <button id="btnAdd" class="px-4 py-3 bg-green-600 text-white rounded-lg mb-4">Thêm +</button>
      </div>
@@ -211,57 +211,10 @@
         
       </div>
     <!--  -->
-  </div>
-</details>
+  <!-- </div> -->
+<!-- </details> -->
 
-<details class="accordion group border rounded-lg bg-white my-4">
-  <summary
-    class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
-  >
-    <div class="flex items-center gap-2">
-      <span class="text-purple-500">⚙️</span>
-      <span class="font-medium">About</span>
-    </div>
-
-    <span class="transition-transform group-open:rotate-180">▼</span>
-  </summary>
-  <div class="px-4 pb-4 pt-2">
-    <div class="grid grid-cols-2">
-      <div>
-        <label for="" class="px-4 py-3">Banner</label>
-        <!-- image handle action -->
-        <div class="image_action">
-          <div class="flex justify-between items-center ">
-            <button class="flex-1 px-4 py-3  chooseImg rounded-lg border border-green-500">Chọn ảnh</button>
-            <input
-              type="text"
-              value="<%=(pc &&pc.homepage)?pc.homepage?.banner[0]?.banner_img :'' %>"
-              class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg "
-              placeholder="img"
-            />
-          </div>
-          <div class="img_preview border border-gray-300 w-full h-[200px]">
-            <img src="/<%=(pc && pc.homepage)?pc.homepage?.banner[0]?.banner_img:''%>" alt="" class="w-full object-cover max-h-[200px]">
-          </div>
-        </div>
-        <!-- end -->
-      </div>
-      <div>
-        b
-      </div>
-    </div>
-  </div>
-</details>
-
-<details class="accordion group border rounded-lg bg-white my-4">
-  <summary
-    class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
-  >
-    <span class="font-medium">Product</span>
-    <span class="transition-transform group-open:rotate-180">▼</span>
-  </summary>
-  <div class="px-4 pb-4 pt-2">Nội dung Product</div>
-</details>
+<!--  -->
 <!-- ==============TEAMPLATE================= -->
  <template id="homepage_introapp_benefit">
   <div class="relative benefit_input_template" >
