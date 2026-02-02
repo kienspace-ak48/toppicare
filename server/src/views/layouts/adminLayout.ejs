@@ -226,6 +226,48 @@
               </div>
 
               <!-- END =============== -->
+              <!-- Service ================= -->
+              <button
+                onclick="toggleSubmenu('serviceSub', this)"
+                class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-cubes text-blue-600 text-2xl"></i>
+                  <span class="label">Services</span>
+                </div>
+
+                <!-- Chevron -->
+                <i
+                  class="fa-solid fa-chevron-down chevron transition-transform duration-200"
+                ></i>
+              </button>
+              <!-- sub -->
+              <div
+                id="serviceSub"
+                class="hidden ml-6 mt-1 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
+              >
+                <a
+                  href="/admin/service"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Service list
+                </a>
+                <!-- <a
+                  href="/admin/category"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  
+                </a> -->
+                <a
+                  href="/admin/service/add"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Add
+                </a>
+                
+              </div>
+
+              <!-- END =============== -->
               <!-- Gallery -->
               <a
                 href="/admin/gallery"

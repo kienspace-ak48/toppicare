@@ -220,10 +220,10 @@ function News() {
                         <Calendar className="w-4 h-4" />
                         <span>{formatDate(article.updatedAt)}</span>
                       </div>
-                      <h3 className="text-2xl mb-3 text-gray-800 text-[18px] font-bold">
+                      <h3 className="text-2xl mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">
                         {article.title}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3 text-[16px] text-[15px]">
+                      <p className="text-gray-600 line-clamp-3 text-[16px] text-[15px] line-clamp-2">
                         {article.desc}
                       </p>
                     </div>
@@ -274,10 +274,10 @@ function News() {
                         <Calendar className="w-4 h-4" />
                         <span>{formatDate(article.createdAt)}</span>
                       </div>
-                      <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold">
+                      <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">
                         {article.title}
                       </h3>
-                      <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">
+                      <p className="text-gray-600 text-sm line-clamp-2 text-[16px] line-clamp-2">
                         {article.desc}
                       </p>
                     </div>

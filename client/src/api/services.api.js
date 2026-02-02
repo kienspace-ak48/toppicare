@@ -1,4 +1,4 @@
 import api from "./axios";
 
-export const getServices = () => api.get("/commitments");
-export const getServicesById = (id) => api.get(`/commitments/${id}`);
+export const getAllServices = () => api.get("/services/get-all");
+// export const getServicesById = (id) => api.get(`/commitments/${id}`);

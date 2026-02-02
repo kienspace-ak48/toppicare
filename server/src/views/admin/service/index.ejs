@@ -1,0 +1,71 @@
+<div class="p-6">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-semibold">Danh sách dịch vụ</h1>
+
+    <a href="/admin/service/add"
+       class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+      + Thêm dịch vụ
+    </a>
+  </div>
+
+  <div class="overflow-x-auto bg-white rounded shadow">
+    <table class="min-w-full text-sm">
+      <thead class="bg-gray-100 text-left">
+        <tr>
+          <th class="px-4 py-3">Tên</th>
+          <th class="px-4 py-3">Nổi bật</th>
+          <th class="px-4 py-3">Trạng thái</th>
+          <th class="px-4 py-3 text-center">Hành động</th>
+        </tr>
+      </thead>
+      <tbody id="serviceTable"></tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+fetch("/admin/service/list")
+  .then(res => res.json())
+  .then(res => {
+    if(!res.success) return;
+
+    const tbody = document.getElementById("serviceTable");
+    tbody.innerHTML = "";
+
+    res.data.forEach(s => {
+      tbody.innerHTML += `
+        <tr class="border-t hover:bg-gray-50">
+          <td class="px-4 py-3 font-medium">${s.name}</td>
+          <td class="px-4 py-3">${s.isFeatured ? "⭐" : ""}</td>
+          <td class="px-4 py-3">
+            <span class="px-2 py-1 rounded text-xs 
+              ${s.status ? "bg-green-100 text-green-700" : "bg-gray-200 text-gray-600"}">
+              ${s.status ? "Hiển thị" : "Ẩn"}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-center space-x-2">
+            <a href="/admin/service/edit/${s._id}"
+               class="text-blue-600 hover:underline">Sửa</a>
+
+            <a href="/admin/service-package/${s._id}"
+               class="text-green-600 hover:underline">Gói</a>
+
+            <button onclick="deleteService('${s._id}')"
+                    class="text-red-600 hover:underline">Xóa</button>
+          </td>
+        </tr>
+      `;
+    });
+  });
+
+function deleteService(id){
+  if(!confirm("Xóa dịch vụ này?")) return;
+
+  fetch(`/admin/service/delete/${id}`, { method: "DELETE" })
+    .then(res => res.json())
+    .then(res => {
+      if(res.success) location.reload();
+      else alert("Xóa thất bại");
+    });
+}
+</script>

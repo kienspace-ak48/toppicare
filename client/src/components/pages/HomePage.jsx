@@ -22,7 +22,6 @@ import {Link} from 'react-router-dom';
 // const ASSET_URL = import.meta.env.VITE_API_URL;
 const ASSET_URL = window.__ENV__.API_URL;
 
-import useServices from "../../hooks/useServices";
 import usePageConfig from "../../hooks/usePageConfig";
 import { useNews, useThreeBlogHomePage } from "../../hooks/useNews";
 import { formatDate } from "../utils/formatDate";
@@ -36,7 +35,6 @@ function HomePage() {
 } = useThreeBlogHomePage();
   const newsArticles_2 = dataNews?.data;
   console.log(dataNews?.data)
-  // const { data, loading, error } = useServices();
   const{data, loading, error} = usePageConfig();
   console.log(data)
   const [pageConfig, setPageConfig] = useState(null);
@@ -505,8 +503,8 @@ function HomePage() {
                 
                 <div className="p-6">
                   <p className="text-sm text-[rgb(45,189,182)] mb-2">{formatDate(article.createdAt)}</p>
-                  <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold">{article.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 text-[16px]">{article.desc}</p>
+                  <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">{article.title}</h3>
+                  <p className="text-gray-600 text-sm line-clamp-2 text-[16px] line-clamp-2">{article.desc}</p>
                 </div>
               </div>
               </Link>

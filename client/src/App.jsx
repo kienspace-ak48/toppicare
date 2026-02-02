@@ -15,8 +15,9 @@ import BlogDetail from "./components/pages/BlogDetail";
 import PolicyPage from "./components/pages/PolicyPage";
 import PocicyPartner from './components/pages/PolicyPartner';
 import ServiceDetail from "./components/pages/ServiceDetail";
-
 import Dashboard from "./pages/admin/Dashboard";
+import ServiceDetailPage from "./components/pages/ServiceDetailPage";
+
 // import Users from "./pages/admin/Users";
 import NotFound from "./components/pages/NotFound";
 import './index_original.css'
@@ -30,7 +31,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<About />} />
           <Route path="/services" element={<Service />} />
-          <Route path="/services/detail/:slug" element={<ServiceDetail />} />
+          <Route path="/services/detail/:slug" element={<ServiceDetailPage />} />
           <Route path="/training" element={<Traning />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />

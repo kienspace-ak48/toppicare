@@ -15,7 +15,7 @@ const serviceSchema = new mongoose.Schema({
     thumbnail: String,
     icon: String,
 
-    benefits: [Stirng],// loi ich ring cua dich vu
+    benefits: [String],// loi ich ring cua dich vu
     isFeatured: {
         type: Boolean,
         default: false
@@ -31,4 +31,10 @@ const serviceSchema = new mongoose.Schema({
     }
 }, {timestamps: true})
 
+//auto slug
+serviceSchema.pre("save", async function(){
+  if(!this.slug){
+    this.slug = slugify(this.name, {lower: true, strict: true, locale: 'vi'});
+  }
+});
 module.exports = mongoose.model('service', serviceSchema);

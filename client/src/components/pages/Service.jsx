@@ -17,6 +17,7 @@ import { useNews, useThreeBlogHomePage, useGetAllServiceBlog } from "../../hooks
 import { formatDate } from "../utils/formatDate";
 
 import usePageConfig from "../../hooks/usePageConfig";
+import { useGetAllServices } from "../../hooks/useServices";
 // const ASSET_URL = import.meta.env.VITE_API_URL;
 const ASSET_URL = window.__ENV__.API_URL;
 const services0 = [
@@ -131,9 +132,12 @@ const bookingSteps = [
 
 function Service() {
   const {data : dataS, loading: loadingS, error: errorS} = useGetAllServiceBlog();
+  const {data : dataSv, loading: loadingSv, error: errorSv} = useGetAllServices();
+  console.log('data o day')
+  console.log(dataSv)
   // console.log('AAA')
   console.log(dataS);
-  const services = dataS?.data;
+  const services = dataSv?.data;
   const [selectedStep, setSelectedStep] = useState(1);
   // 
   const {data, loading, status } = usePageConfig();
@@ -178,13 +182,13 @@ function Service() {
             {services?.map((service) => (
               <Link
                 key={service._id}
-                to={`/services/detail/${service._id}`}
+                to={`/services/detail/${service.slug}`}
                 className="group backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105"
               >
                 <div className="relative aspect-video overflow-hidden">
                   <ImageWithFallBack
-                    src={ASSET_URL+service.img}
-                    alt={service.title}
+                    src={ASSET_URL+service.thumbnail}
+                    alt={service.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                   {/* <div className={`absolute top-4 left-4 w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center shadow-lg overflow-hidden`}>
@@ -192,10 +196,10 @@ function Service() {
                   </div> */}
                 </div>
                 <div className="p-6">
-                  <h3 className="text-xl mb-2 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
-                    {service.title}
+                  <h3 className="line-clamp-2 text-xl mb-2 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
+                    {service.name}
                   </h3>
-                  <p className="text-gray-600 mb-4 text-[16px]">{service.desc}</p>
+                  <p className="text-gray-600 mb-4 text-[16px] line-clamp-2">{service.shortDesc}</p>
                   <div className="flex items-center text-[#2dbdb6] group-hover:gap-2 transition-all">
                     <span>Xem chi tiết</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -285,8 +289,8 @@ function Service() {
                       <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-3">
                         <span className="text-sm">Bước {step.step}</span>
                       </div>
-                      <h3 className="text-2xl mb-2">{step.title}</h3>
-                      <p className="text-white/90">{step.description}</p>
+                      <h3 className="text-2xl mb-2 line-clamp-2">{step.title}</h3>
+                      <p className="text-white/90 line-clamp-2">{step.description}</p>
                     </div>
                   </div>
                 ))}

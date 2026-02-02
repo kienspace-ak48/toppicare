@@ -1,0 +1,81 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+  <h1 class="text-xl font-semibold mb-6">Chỉnh sửa gói</h1>
+
+  <form id="packageForm" class="space-y-4">
+    <div>
+      <label class="block mb-1 font-medium">Tên gói</label>
+      <input name="name" value="<%= pkg.name %>"
+        class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Giá</label>
+      <input name="price" type="number" value="<%= pkg.price %>"
+        class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Thời hạn</label>
+      <input name="duration" value="<%= pkg.duration %>"
+        class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Quyền lợi</label>
+      <textarea name="features" rows="4"
+        class="w-full border rounded px-3 py-2"><%= pkg.features?.join("\n") %></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block mb-1 font-medium">Nổi bật</label>
+        <select name="isPopular" class="w-full border rounded px-3 py-2">
+          <option value="1" <%= pkg.isPopular ? "selected" : "" %>>Có</option>
+          <option value="0" <%= !pkg.isPopular ? "selected" : "" %>>Không</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-1 font-medium">Trạng thái</label>
+        <select name="status" class="w-full border rounded px-3 py-2">
+          <option value="1" <%= pkg.status ? "selected" : "" %>>Hiển thị</option>
+          <option value="0" <%= !pkg.status ? "selected" : "" %>>Ẩn</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <button type="button" onclick="history.back()"
+        class="px-4 py-2 border rounded">Quay lại</button>
+
+      <button type="submit"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        Cập nhật
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById("packageForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target));
+  data.features = data.features
+    ? data.features.split("\n").filter(i => i.trim())
+    : [];
+
+  const res = await fetch("/admin/service-package/update/<%= pkg._id %>", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  if(result.success){
+    history.back();
+  } else {
+    alert("Cập nhật thất bại");
+  }
+});
+</script>

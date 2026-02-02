@@ -6,7 +6,8 @@ const blogController = require('../controller/blog.controller')();
 const categoryController = require('../controller/category.controller')();
 const PageConfigController = require('../controller/pageconfig.controller')();
 const uploadImage = require("../config/uploadImage.config");
-
+const ServicePackageController = require("../controller/servicePackage.controller")();
+const ServiceController = require('../controller/service.controller')();
 //page config
 //new
 router.get('/page-config/news-section', PageConfigController.NewSection);
@@ -39,6 +40,25 @@ router.get('/blog/category', blogController.Category);
 router.get('/blog/category/add', blogController.CategoryAdd);
 router.get('/blog/form-add', blogController.FormAdd);
 router.get('/blog', blogController.Index);
+// Service ROUTE
+router.get("/service/", ServiceController.Index);
+router.get("/service/list", ServiceController.GetAll);
+router.get("/service/add", ServiceController.FormAdd);
+router.post("/service/add", ServiceController.Add);
+router.get("/service/edit/:id", ServiceController.Edit);
+router.post("/service/update/:id", ServiceController.Update);
+router.delete("/service/delete/:id", ServiceController.Delete);
+//ServicePackage ROUTE 
+router.get("/service-package/:service_id", ServicePackageController.Index);
+router.get("/service-package/list/:service_id", ServicePackageController.GetByService);
+router.get("/service-package/add/:service_id", ServicePackageController.FormAdd);
+router.post("/service-package/add", ServicePackageController.Add);
+router.get("/service-package/edit/:id", ServicePackageController.Edit);
+router.post("/service-package/update/:id", ServicePackageController.Update);
+router.delete("/service-package/delete/:id", ServicePackageController.Delete);
+// frontend
+router.get("/featured", ServiceController.GetFeatured);
+
 
 // CATEGORY ROUTE 
 // category/get-menu?root=${name}

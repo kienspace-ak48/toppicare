@@ -1,0 +1,81 @@
+<div class="max-w-2xl mx-auto p-6 bg-white rounded shadow">
+  <h1 class="text-xl font-semibold mb-6">Thêm gói dịch vụ</h1>
+
+  <form id="packageForm" class="space-y-4">
+    <input type="hidden" name="service_id" value="<%= service._id %>">
+
+    <div>
+      <label class="block mb-1 font-medium">Tên gói</label>
+      <input name="name" required class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Giá</label>
+      <input name="price" type="number" required
+             class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Thời hạn</label>
+      <input name="duration" placeholder="VD: 1 tháng / 6 buổi"
+             class="w-full border rounded px-3 py-2">
+    </div>
+
+    <div>
+      <label class="block mb-1 font-medium">Quyền lợi (mỗi dòng 1 cái)</label>
+      <textarea name="features" rows="4"
+        class="w-full border rounded px-3 py-2"></textarea>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block mb-1 font-medium">Nổi bật</label>
+        <select name="isPopular" class="w-full border rounded px-3 py-2">
+          <option value="1">Có</option>
+          <option value="0">Không</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block mb-1 font-medium">Trạng thái</label>
+        <select name="status" class="w-full border rounded px-3 py-2">
+          <option value="1">Hiển thị</option>
+          <option value="0">Ẩn</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="flex justify-end gap-2">
+      <a href="/admin/service-package/<%=service._id %>"
+         class="px-4 py-2 border rounded">Hủy</a>
+      <button type="submit"
+        class="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+        Lưu
+      </button>
+    </div>
+  </form>
+</div>
+
+<script>
+document.getElementById("packageForm").addEventListener("submit", async e => {
+  e.preventDefault();
+
+  const data = Object.fromEntries(new FormData(e.target));
+  data.features = data.features
+    ? data.features.split("\n").filter(i => i.trim())
+    : [];
+
+  const res = await fetch("/admin/service-package/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+
+  const result = await res.json();
+  if(result.success){
+    window.location.href = `/admin/service-package/${data.service_id}`;
+  } else {
+    alert("Có lỗi xảy ra");
+  }
+});
+</script>

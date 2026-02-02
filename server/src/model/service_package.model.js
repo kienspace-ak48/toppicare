@@ -4,6 +4,7 @@ const slugify = require('slugify');
 const servicePackageSchema =new mongoose.Schema({
     service_id: {
         type: mongoose.Schema.Types.ObjectId,
+        ref: 'service',
         required: true,
     },
     name: {
@@ -11,7 +12,7 @@ const servicePackageSchema =new mongoose.Schema({
         required: true
     },
     duration: {
-        type: Number,
+        type: String,
         required: true
     },
     price: {
@@ -19,7 +20,7 @@ const servicePackageSchema =new mongoose.Schema({
         required: true
     },
     features: [String],
-    isPopular: {
+    is_popular: {
         type: Boolean,
         default: false
     },
@@ -28,10 +29,14 @@ const servicePackageSchema =new mongoose.Schema({
         default: 0
     },
     status: {
-        type: String,
-        enum: ['active', "inactive"],
-        default: 'active'
+        type: Boolean,
+        // enum: ['active', "inactive"],
+        default: 1
     }
 }, {timestamps: true})
+//auto slug
+// servicePackageSchema.pre("save", async function(){
+//     // if(!this.slu)
+// })
 
 module.exports = mongoose.model('service_package', servicePackageSchema);
