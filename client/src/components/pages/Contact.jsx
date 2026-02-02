@@ -280,7 +280,7 @@ function Contact() {
             Cần hỗ trợ ngay?
           </h2>
           <p className="text-white/90 text-lg mb-8 text-[16px]">
-            Gọi hotline 1900 xxxx để được tư vấn 24/7
+            Gọi hotline 0862.4848.98 để được tư vấn 24/7
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="px-8 py-3 bg-white text-[rgb(45,189,182)] rounded-full hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2">

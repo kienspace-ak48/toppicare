@@ -543,6 +543,7 @@ export default function PolicyPage() {
           Cập nhật lần cuối: 30/01/2026
         </p>
       </section>
+      {/* <div class="mt-10 backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-8"><h3 class="text-xl mb-4 text-gray-800">Lưu ý quan trọng</h3><div class="space-y-3 text-gray-600"><p>• Các chính sách trên có thể được cập nhật theo thời gian. Mọi thay đổi sẽ được thông báo trước.</p><p>• Nếu có bất kỳ thắc mắc nào về chính sách, vui lòng liên hệ hotline: 1900 xxxx</p><p>• ToppiCare có quyền giải thích cuối cùng về các chính sách này.</p></div></div> */}
     </div>
   );
 }

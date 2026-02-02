@@ -1,14 +1,18 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { useGetOneServiceBlog } from "../../hooks/useNews";
+import { useGetOneBlogBySlug, useGetOneServiceBlog } from "../../hooks/useNews";
 function BlogDetail() {
-  const ASSET_URL = window.__ENV__.API_URL;
+  const ASSET_URL =  window.__ENV__.API_URL;
   const { slug } = useParams();
-  console.log(slug);
+  console.log('slug ',slug)
 
-  const {data: dataB, loading: loadingB, error: errorB} = useGetOneServiceBlog(slug);
-  console.log(dataB)
+
+  // const {data: dataB, loading: loadingB, error: errorB} = useGetOneServiceBlog(slug);
+  const {data: dataB, loading: loadingB, error: errorB} = useGetOneBlogBySlug(slug);
+
+  const blogData = dataB?.data;
+  console.log(blogData)
   //
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -42,27 +46,40 @@ function BlogDetail() {
     createdAt: "2026-01-28T08:59:47.399Z",
     updatedAt: "2026-01-29T08:09:15.699Z",
   };
-
-  // useEffect(() => {
-  //   fetch(`/api/blog/${slug}`)
-  //     .then(res => res.json())
-  //     .then(res => {
-  //       setBlog(res.data);
-  //       setLoading(false);
-  //     });
-  // }, [slug]);
+  //fx tang view
+  const increaseView = async (slug) => {
+  try {
+    console.log('processing inscrease view ');
+    console.log(`${ASSET_URL}api/blog/${slug}/view`)
+    await fetch(`${ASSET_URL}api/blog/${slug}/view`, { //${'http://localhost:3500'}
+    method: "POST",
+  });
+  } catch (error) {
+    console.error('failed to increase view')
+  }
+};
   useEffect(() => {
     setTimeout(() => {
-      setBlog(mockBlogDetail);
+      setBlog(blogData);
       setLoading(false);
     }, 300);
-  }, [slug]);
+  }, [blogData]);
+  //
+  useEffect(() => {
+  if (!blogData?.slug) return;
 
-  if (loading) {
-    return <div className="text-center py-20">Loading...</div>;
+  const viewedKey = `viewed_blog_${blogData?.slug}`;
+
+  // nếu chưa từng xem bài này trên trình duyệt này
+  if (!localStorage.getItem(viewedKey)) {
+    increaseView(blogData.slug);
+    localStorage.setItem(viewedKey, "1");
   }
+}, [blogData?.slug]);
 
-  if (!blog) {
+
+
+  if (!blogData) {
     return <div className="text-center py-20">Bài viết không tồn tại</div>;
   }
 
@@ -71,31 +88,31 @@ function BlogDetail() {
       {/* CATEGORY */}
       <div className="mb-3">
         <span className="text-sm text-blue-600 font-medium uppercase">
-          {blog.category_id?.name}
+          {blogData?.category_id?.name}
         </span>
       </div>
 
       {/* TITLE */}
       <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-        {blog.title}
+        {blogData?.title}
       </h1>
 
       {/* META */}
       <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-        <span>{blog.author || "Admin"}</span>
+        <span>{blogData?.author || "Admin"}</span>
         <span>•</span>
-        <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+        <span>{new Date(blogData?.createdAt).toLocaleDateString()}</span>
         <span>•</span>
-        <span>{blog.views} lượt xem</span>
+        <span>{blogData?.views} lượt xem</span>
       </div>
 
       {/* IMAGE */}
-      {blog.img && (
+      {blogData?.img && (
   <div className="mb-8">
     <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
       <img
-        src={`${ASSET_URL + blog.img}`}
-        alt={blog.title}
+        src={`${ASSET_URL + blogData?.img}`}
+        alt={blogData?.title}
         className="absolute inset-0 w-full h-full object-cover"
       />
     </div>
@@ -105,7 +122,7 @@ function BlogDetail() {
       {/* CONTENT */}
       <article
         className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: blog.content }}
+        dangerouslySetInnerHTML={{ __html: blogData?.content }}
       />
     </div>
   );

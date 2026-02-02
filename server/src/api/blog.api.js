@@ -5,7 +5,6 @@ const CategoryEntity = require("../model/category.model");
 async function getAllCategoryByRoot(root){
   try {
     const categories = await CategoryEntity.find({category_root: root});
-    // console.log(categories);
     return categories
   } catch (error) {
     console.log(CNAME, error.message);
@@ -20,7 +19,6 @@ const BlogApi = () => {
           "category_id",
           "name slug category_root",
         );
-        // console.log(result)
         res.json({ success: true, data: result });
       } catch (error) {
         console.log(CNAME, error.message);
@@ -38,8 +36,6 @@ const BlogApi = () => {
           })
           .sort({ createdAt: -1 })
           .limit(3);
-        console.log("Data check here");
-        console.log(newThreeBlog);
         res.json({ success: true, data: newThreeBlog });
       } catch (error) {
         console.log(CNAME, error.message);
@@ -52,7 +48,6 @@ const BlogApi = () => {
           { category_root: "service" },
           "_id",
         );
-        // console.log('list category ', categories)
         const categoryIds = categories.map((c) => c._id);
         const blogs = await BlogEntity.find({
           category_id: { $in: categoryIds },
@@ -78,7 +73,6 @@ const BlogApi = () => {
           path: 'category_id',
           select: 'name slug category_root'
         })
-        console.log(blogs);
         res.json({success: true, data: blogs})
       } catch (error) {
         console.log(CNAME, error.message);
@@ -88,7 +82,6 @@ const BlogApi = () => {
     GetBlogById: async(req, res)=>{
         try {
             const _id = req.params.id;
-            console.log(_id)
             const blog =await BlogEntity.findById(_id);
             res.json({success: true, data: blog})
         } catch (error) {
@@ -99,10 +92,9 @@ const BlogApi = () => {
     GetBlogBySlug: async(req, res)=>{
         try {
             const cateogries =await getAllCategoryByRoot('news');
-            // console.log(cateogries)
             const _slug = req.params.slug;
-            console.log(_slug)
-            const blog =await BlogEntity.findOne({slug: _slug});
+            const blog =await BlogEntity.findOne({slug: _slug})
+            .populate('category_id');
             res.json({success: true, data: blog})
         } catch (error) {
             console.log(CNAME, error.message)
@@ -119,6 +111,21 @@ const BlogApi = () => {
             res.status(500).json({success: false, data: []})
         }
     },
+    IncreaseBlogView: async(req, res)=>{
+      try {
+        console.log('co run o day ko ?')
+        const _slug = req.params.slug;
+        console.log('id ',_slug);
+        await BlogEntity.updateOne(
+          {slug: _slug},
+          {$inc: {views: 1}}
+        );
+        res.json({success: true})
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.status(500).json({success: false, mess: error.message})
+      }
+    }
   };
 };
 

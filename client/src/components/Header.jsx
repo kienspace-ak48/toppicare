@@ -147,10 +147,10 @@ export function Header() {
                     Liên hệ hotline để được tư vấn
                   </p>
                   <a
-                    href="tel:1900xxxx"
+                    href="tel:0862484898"
                     className="inline-block px-6 py-2 bg-[#2dbdb6] text-white text-sm rounded-xl hover:shadow-lg transition-all"
                   >
-                    1900 xxxx
+                    0862.4848.98
                   </a>
                 </div>
               </div>

@@ -192,28 +192,29 @@ function HomePage() {
       date: "05/12/2024",
     },
   ];
-  const faqs = [
-    {
-      question: "Làm thế nào để đặt lịch dịch vụ?",
-      answer:
-        "Bạn có thể đặt lịch qua ứng dụng ToppiCare hoặc gọi số hotline 1900 xxxx",
-    },
-    {
-      question: "ToppiCare có phục vụ tại nhà không?",
-      answer:
-        "Có, chúng tôi cung cấp dịch vụ massage tại nhà trong khu vực nội thành TP.HCM. KTV sẽ mang theo đầy đủ dụng cụ chuyên nghiệp.",
-    },
-    {
-      question: "Giá dịch vụ của ToppiCare như thế nào?",
-      answer:
-        "Giá dịch vụ dao động từ 200.000đ - 800.000đ tùy theo loại dịch vụ và thời lượng. Bạn có thể xem chi tiết trong mục Dịch vụ.",
-    },
-    {
-      question: "Tôi có thể hủy lịch đã đặt không?",
-      answer:
-        "Bạn có thể hủy lịch trước 2 giờ so với giờ hẹn mà không mất phí. Hủy muộn hơn sẽ tính phí 30% giá trị dịch vụ.",
-    },
-  ];
+  // const faqs = [
+  //   {
+  //     question: "Làm thế nào để đặt lịch dịch vụ?",
+  //     answer:
+  //       "Bạn có thể đặt lịch qua ứng dụng ToppiCare hoặc gọi số hotline 1900 xxxx",
+  //   },
+  //   {
+  //     question: "ToppiCare có phục vụ tại nhà không?",
+  //     answer:
+  //       "Có, chúng tôi cung cấp dịch vụ massage tại nhà trong khu vực nội thành TP.HCM. KTV sẽ mang theo đầy đủ dụng cụ chuyên nghiệp.",
+  //   },
+  //   {
+  //     question: "Giá dịch vụ của ToppiCare như thế nào?",
+  //     answer:
+  //       "Giá dịch vụ dao động từ 200.000đ - 800.000đ tùy theo loại dịch vụ và thời lượng. Bạn có thể xem chi tiết trong mục Dịch vụ.",
+  //   },
+  //   {
+  //     question: "Tôi có thể hủy lịch đã đặt không?",
+  //     answer:
+  //       "Bạn có thể hủy lịch trước 2 giờ so với giờ hẹn mà không mất phí. Hủy muộn hơn sẽ tính phí 30% giá trị dịch vụ.",
+  //   },
+  // ];
+  const faqs= data?.data?.homepage?.faq?.sentences;
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState(null);
   const nextSlide = () => {
@@ -481,9 +482,10 @@ function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {newsArticles_2?.map((article) => (
-              <Link to={`/blog-detail/${article.slug}`}>
-                <div
+              <Link to={`/blog-detail/${article.slug}`}
                 key={article._id}
+              >
+                <div
                 className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
               >
                 <div className="aspect-video overflow-hidden">
@@ -521,7 +523,7 @@ function HomePage() {
           </h2>
 
           <div className="space-y-4">
-            {faqs.map((faq, index) => (
+            {faqs?.map((faq, index) => (
               <div
                 key={index}
                 className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-2xl overflow-hidden"
