@@ -4,6 +4,7 @@ const router = express.Router();
 const PageConfigApi = require('../api/pageconfig.api')();
 const NewsApi = require('../api/blog.api')();
 const ServicesApi = require('../api/services.api')();
+const LinkCTA = require('../api/linkCTA.api')();
 
 router.post('/blog/:slug/view', NewsApi.IncreaseBlogView);
 router.get('/menu/by-category-root/root', NewsApi.GetMenuByRoot);
@@ -16,4 +17,7 @@ router.get("/pageconfigs", PageConfigApi.Index);
 router.get('/news', NewsApi.Index);
 // Services api
 router.get('/services/get-all', ServicesApi.Index);
+router.get('/services/all-pkg/:slug', ServicesApi.ServicePackage);
+// Link Action api
+router.get('/action-link/download-app', LinkCTA.DownloadApp)
 module.exports = router;

@@ -14,6 +14,7 @@ import {
   Newspaper,
   Phone,
 } from "lucide-react";
+const ASSET_URL = window.__ENV__.API_URL;
 import imgLogo from "t_logo";
 export function Header() {
   const [dropdownOpen, setDropdownOpen] = useState();
@@ -84,7 +85,7 @@ export function Header() {
                                   key={item.name}
                                   onClick={() => {
                                     if (item.action === 'download') {
-                                      window.open('https://play.google.com/store/apps/details?id=com.viettrace.toppicare&pcampaignid=web_share', '_blank');
+                                      window.open(ASSET_URL+'api/action-link/download-app', '_blank');
                                     }
                                   }}
                                   className="flex items-center gap-1 hover:opacity-80 transition-opacity"

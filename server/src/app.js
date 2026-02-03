@@ -8,6 +8,7 @@ const dbConnection = require("./config/dbConnection");
 const UserEntity = require("./model/user.model");
 const myPath = require("./config/myPath.config");
 const routes = require("./routes/index");
+const deviceInfoMiddleware = require("./middlewares/clientInfo");
 
 // serve static frontend
 // app.use(express.static(path.join(__dirname, "../public")));
@@ -16,7 +17,7 @@ app.use(express.static(myPath.public, {
   index: false, // 🔥 CỰC QUAN TRỌNG
 }
 ));
-
+app.use(deviceInfoMiddleware);
 app.set("view engine", "ejs");
 // app.set('views',  myPath.root+'views');
 app.set("views", path.join(myPath.root, "src/views"));
@@ -31,7 +32,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 routes(app);
 
-//
+// test area 
 app.get("/api/commitments", (req, res) => {
   const commitments = [
     {
@@ -86,6 +87,12 @@ app.get("/api/user", async (req, res) => {
     res.json({ success: false, mess: error.message });
   }
 });
+app.get("/test", (req, res) => {
+  res.json({
+    deviceInfo: req.deviceInfo,
+  });
+});
+
 //
 // SPA fallback (React Router)
 let html = fs.readFileSync(

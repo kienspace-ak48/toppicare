@@ -2,6 +2,7 @@ import { useParams, Link } from "react-router-dom";
 import { Check, Clock, Apple, Smartphone } from "lucide-react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
 import { useEffect, useState } from "react";
+import { useGetAllServicesPkg } from "../../hooks/useServices";
 
 //
 const serviceDetailMock = {
@@ -47,14 +48,19 @@ const serviceDetailMock = {
   ]
 };
 
-
-
-
 export default function ServiceDetailPage() {
+  
+const ASSET_URL = window.__ENV__.API_URL;
+  const { slug } = useParams();
+  console.log(slug);
+
+  const {data: dataS, loading: loadingS, error: errorS} = useGetAllServicesPkg(slug);
+    console.log(dataS);
+  const service2 = dataS?.data;
+    // 
   const { serviceId } = useParams(); // slug
   const [service, setService] = useState(null);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     // MOCK DATA TẠI CHỖ
     const dataTest = {
@@ -98,51 +104,60 @@ export default function ServiceDetailPage() {
   }, []);
 
 
-  if (loading) {
+  // if (loading) {
+  //   return (
+  //     <div className="pt-24 text-center text-gray-500">
+  //       Đang tải dịch vụ...
+  //     </div>
+  //   );
+  // }
+  // var services = null;
+  console.log('service 2', service2)
+  if (!service2?.packages.length) {
     return (
-      <div className="pt-24 text-center text-gray-500">
-        Đang tải dịch vụ...
-      </div>
-    );
-  }
-
-  if (!service) {
-    return (
-      <div className="pt-24 text-center">
-        <p className="mb-4">Dịch vụ không tồn tại</p>
-        <Link to="/services" className="text-[#2dbdb6] underline">
-          Quay lại
+      <div className="pt-20 md:pt-24 min-h-screen flex flex-col items-center justify-center">
+        <p className="text-gray-600 text-xl mb-6">Dịch vụ không tồn tại</p>
+        <Link
+          to="/services"
+          className="px-6 py-3 bg-gradient-to-r from-green-500 to-teal-500 text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
+        >
+          Quay lại danh sách dịch vụ
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="pt-20 md:pt-24">
+    <div className="">
 
-      {/* BANNER */}
-      <section className="relative h-[400px] md:h-[500px]">
-        <ImageWithFallBack
-          src={service.image}
-          alt={service.name}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="absolute inset-0 flex items-center">
-          <div className="max-w-7xl mx-auto px-4">
-            <div className="flex items-center gap-3 bg-[#2dbdb6] px-6 py-3 rounded-full w-fit mb-4">
-              <img src={service.icon} className="w-8 h-8" />
-              <span className="text-white text-xl">{service.name}</span>
-            </div>
-            <h1 className="text-white text-4xl md:text-6xl font-bold mb-6">
-              Trải nghiệm dịch vụ {service.name.toLowerCase()}
-            </h1>
-            <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full">
-              Đặt lịch ngay
-            </button>
-          </div>
-        </div>
-      </section>
+      {/* Banner */}
+            <section className="relative h-[400px] md:h-[500px] overflow-hidden">
+              <ImageWithFallBack
+                // src={${ASSET_URL}service2?.thumbnail}
+                src={`${ASSET_URL + service2?.thumbnail}`}
+                alt={service2?.name}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
+              <div className="absolute inset-0 flex items-center">
+                <div className="max-w-7xl mx-auto px-4 w-full">
+                  <div className={`inline-flex items-center gap-3 px-6 py-3 bg-[#2dbdb6] rounded-full mb-4`}>
+                    {/* <img src={service?.icon} alt={service?.name} className="w-8 h-8 object-contain" /> */}
+                    <Clock className="text-white" />
+                    <span className="text-white text-xl">{service2?.name}</span>
+                  </div>
+                  <h1 className="text-white text-4xl md:text-6xl mb-6 max-w-2xl font-bold">
+                    Trải nghiệm dịch vụ {service2?.name.toLowerCase()} chuyên nghiệp
+                  </h1>
+                  <button 
+                    // onClick={handleAppStoreClick}
+                    className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
+                  >
+                    Đặt lịch ngay
+                  </button>
+                </div>
+              </div>
+            </section>
 
       {/* DESCRIPTION */}
       <section className="py-16">
@@ -151,7 +166,7 @@ export default function ServiceDetailPage() {
             <h2 className="text-3xl font-bold text-[#2dbdb6] mb-4">
               Mô tả dịch vụ
             </h2>
-            <p className="text-gray-700">{service.description}</p>
+            <p className="text-gray-700">{service2.desc}</p>
           </div>
 
           <div>
@@ -159,7 +174,7 @@ export default function ServiceDetailPage() {
               Lợi ích
             </h2>
             <ul className="space-y-3">
-              {service.benefits.map((b: string, i: number) => (
+              {service2.benefits.map((b: string, i: number) => (
                 <li key={i} className="flex gap-3">
                   <Check className="text-[#2dbdb6]" />
                   {b}
@@ -170,51 +185,57 @@ export default function ServiceDetailPage() {
         </div>
       </section>
 
-      {/* PACKAGES */}
-      <section className="py-16 bg-green-50">
+      {/* Service Packages */}
+      <section className="py-16 md:py-24 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4">
-          <h2 className="text-4xl font-bold text-center text-[#2dbdb6] mb-12">
+          <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2 leading-relaxed">
             Các gói dịch vụ
           </h2>
+          <p className="text-center text-gray-600 mb-12">
+            Lựa chọn gói phù hợp với nhu cầu của bạn
+          </p>
 
           <div className="grid md:grid-cols-3 gap-6">
-            {service.packages.map((pkg: any, i: number) => (
+            {service2?.packages?.map((pkg: any, index: number) => (
               <div
-                key={pkg._id}
-                className={`bg-white rounded-3xl p-8 border ${
-                  pkg.isPopular
-                    ? "border-[#2dbdb6] scale-105"
-                    : "border-gray-200"
+                key={index}
+                className={`backdrop-blur-lg bg-white/70 border-2 rounded-3xl p-8 hover:shadow-xl transition-all hover:scale-105 ${
+                  pkg.is_popular === true ? 'border-[#2dbdb6] transform scale-105' : 'border-white/20'
                 }`}
               >
-                {pkg.isPopular && (
-                  <span className="inline-block bg-[#2dbdb6] text-white px-4 py-1 rounded-full mb-4">
+                {pkg.is_popular === true && (
+                  <div className="inline-block px-4 py-1 bg-[#2dbdb6] text-white rounded-full text-sm mb-4">
                     Phổ biến nhất
-                  </span>
+                  </div>
                 )}
-
-                <h3 className="text-2xl font-semibold mb-2">{pkg.name}</h3>
-
+                <h3 className="text-2xl mb-2 text-gray-800">{pkg.name}</h3>
                 <div className="flex items-center gap-2 text-gray-600 mb-2">
-                  <Clock size={18} /> {pkg.duration} phút
+                  <Clock className="w-5 h-5" />
+                  <span>{pkg.duration +' phút'}</span>
                 </div>
-
-                <div className="text-4xl text-[#2dbdb6] mb-6">
-                  {pkg.price.toLocaleString()}đ
+                <div className="flex items-baseline gap-2 mb-6">
+                  <span className="text-4xl bg-[#2dbdb6] bg-clip-text text-transparent">
+                    {pkg.price}
+                  </span>
                 </div>
-
-                <ul className="space-y-2 mb-6">
-                  {pkg.features.map((f: string, idx: number) => (
-                    <li key={idx} className="flex gap-2">
-                      <Check className="text-[#2dbdb6]" />
-                      {f}
+                <ul className="space-y-3 mb-8">
+                  {pkg.features.map((feature: string, featureIndex: number) => (
+                    <li key={featureIndex} className="flex items-start gap-3">
+                      <Check className="w-5 h-5 text-[#2dbdb6] flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">{feature}</span>
                     </li>
                   ))}
                 </ul>
-
-                <button className="w-full py-3 rounded-full bg-[#2dbdb6] text-white">
+                {/* <button 
+                  onClick={handleAppStoreClick}
+                  className={`w-full py-3 rounded-full transition-all ${
+                    index === 1
+                      ? 'bg-[#2dbdb6] text-white hover:shadow-lg'
+                      : 'bg-gray-100 text-gray-800 hover:bg-gray-200'
+                  }`}
+                >
                   Đặt lịch ngay
-                </button>
+                </button> */}
               </div>
             ))}
           </div>
@@ -222,17 +243,30 @@ export default function ServiceDetailPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-16 bg-[#2dbdb6] text-center text-white">
-        <h2 className="text-4xl font-bold mb-4">
-          Đặt lịch qua ứng dụng
-        </h2>
-        <div className="flex justify-center gap-4">
-          <button className="flex items-center gap-2 bg-white text-[#2dbdb6] px-6 py-3 rounded-full">
-            <Apple /> App Store
-          </button>
-          <button className="flex items-center gap-2 bg-white text-[#2dbdb6] px-6 py-3 rounded-full">
-            <Smartphone /> Google Play
-          </button>
+      <section className="py-16 bg-[#2dbdb6] to-cyan-600">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <h2 className="text-white text-3xl md:text-4xl mb-4 font-bold">
+            Đặt lịch dễ dàng qua ứng dụng
+          </h2>
+          <p className="text-white/90 text-lg mb-8">
+            Tải app ToppiCare để đặt lịch và nhận ưu đãi đặc biệt
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <button 
+              // onClick={handleAppStoreClick}
+              className="inline-flex items-center justify-center gap-3 px-8 py-3 bg-white text-[#2dbdb6] rounded-full hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <Apple className="w-6 h-6" />
+              <span>Tải trên App Store</span>
+            </button>
+            <button 
+              // onClick={handleGooglePlayClick}
+              className="inline-flex items-center justify-center gap-3 px-8 py-3 bg-white text-[#2dbdb6] rounded-full hover:shadow-lg hover:scale-105 transition-all"
+            >
+              <Smartphone className="w-6 h-6" />
+              <span>Tải trên Google Play</span>
+            </button>
+          </div>
         </div>
       </section>
     </div>
