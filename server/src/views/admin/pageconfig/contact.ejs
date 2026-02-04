@@ -1,0 +1,246 @@
+<h1 class="text-lg font-bold">Contact section/ Trang liên hệ</h1>
+<div class="p-4">
+  <div class="my_header">
+    <button
+      id="btn_cta_save_config"
+      class="px-4 py-3 bg-blue-600 rounded-lg border border-gray-300 text-white"
+    >
+      Save Config
+    </button>
+  </div>
+  <div class="my_content">
+    <div class="mt-5">
+      <input
+        type="text"
+        name="news_title"
+        value="<%#=(data.news)?data.news?.title:''%>"
+        class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
+        placeholder="Title..."
+      />
+      <input
+        type="text"
+        name="news_desc"
+        value="<%#=(data.news)?data.news?.desc:''%>"
+        class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
+        placeholder="Description..."
+      />
+      <!-- <input type="text" name="news_" class="px-4 py-3 border border-gray-300 w-full rounded-lg "> -->
+      <!-- image handle action -->
+      <div class="image_action">
+        <label for="">Image banner</label>
+        <div class="flex justify-between items-center mt-3">
+          <button
+            class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+          >
+            Chọn ảnh
+          </button>
+          <input
+            type="text"
+            name="news_img_url"
+            value="<%#=(data.news)?data.news?.img_url:''%>"
+            class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+            placeholder="img"
+          />
+        </div>
+        <div class="img_preview border border-gray-300 w-full h-[200px]">
+          <img
+            src="/<%#=(data.news)?data.news?.img_url: ''%>"
+            alt=""
+            class="w-full object-cover max-h-[200px]"
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+       <hr class="my-4">
+  <section class="contact mt-4">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold">Contact</h3>
+      <button
+        id="btn_cta_contact_add_card"
+        class="font-bold px-4 py-3 rounded-lg bg-green-500 text-white"
+      >
+        Add contact component
+      </button>
+    </div>
+    <input
+      type="text"
+      class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
+      placeholder="Nhập contact title"
+    />
+    <input
+      type="text"
+      class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
+      placeholder="Nhập contact desc"
+    />
+    <div id="contact_wrapper" class="grid md:grid-cols-3 gap-5"></div>
+  </section>
+</div>
+<!-- =======TEMPLATE =========== -->
+<template id="contact_template">
+  <div class="contact_instance p-4 rounded shadow relative">
+    <span
+      class="btn_cta_contact_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input type="text" class="px-3 py-2 w-full border border-gray-300" />
+    <textarea
+      name=""
+      id=""
+      rows="2"
+      class="px-3 py-2 w-full border border-gray-300"
+    ></textarea>
+    <!-- image handle action -->
+    <div class="image_action">
+      <label for="">Image icon</label>
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="news_img_url"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</template>
+<!-- =================MODAL===================== -->
+<div
+  id="gallery_modal"
+  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+>
+  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
+    <div class="header flex justify-between mb-4">
+      <h2>Chon anh</h2>
+      <button onclick="closeChooseImgModal()">X</button>
+    </div>
+    <!--  -->
+    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+  </div>
+</div>
+<!-- =========================SCRIPT HERE================ -->
+<script>
+  //global scope
+  const btnCtaContactAddCard = document.querySelector(
+    "#btn_cta_contact_add_card",
+  );
+  const contactWrapper = document.querySelector("#contact_wrapper");
+  const contactTemplate = document.querySelector("#contact_template");
+  //
+  var ctaChooseImg = document.querySelectorAll(".chooseImg");
+  const chooseImgModal = document.querySelector("#gallery_modal");
+  let imgInputIsFocusing = null;
+  // combo choose image
+  function openChooseImgModal() {
+    chooseImgModal.classList.remove("hidden");
+    chooseImgModal.classList.add("flex");
+  }
+  function closeChooseImgModal() {
+    chooseImgModal.classList.remove("flex");
+    chooseImgModal.classList.add("hidden");
+  }
+  ctaChooseImg.forEach((el) => {
+    el.addEventListener("click", (ev) => {
+      console.log(el);
+      loadImage();
+      let input = el.closest(".image_action");
+      imgInputIsFocusing = input;
+      console.log("input ", input);
+      openChooseImgModal();
+    });
+  });
+  function selectImage(src) {
+    imgInputIsFocusing.querySelector(".img_input").value = src;
+    imgInputIsFocusing.querySelector(".img_preview img").src = "/" + src;
+    closeChooseImgModal();
+  }
+  //
+  function loadImage() {
+    imgList.innerHTML = "Loading...";
+    $.ajax({
+      url: "/admin/gallery/image-getall",
+      method: "GET",
+      success: (res) => {
+        if (res.success) {
+          imgList.innerHTML = "";
+          res.data.forEach((item) => {
+            const img = document.createElement("img");
+            img.src = "/" + item.path;
+            img.className = `
+            w-full h-32
+            object-cover
+            cursor-pointer rounded border
+            hover:ring-4 hover:ring-blue-500
+            transition
+          `;
+
+            img.onclick = () => selectImage(item.path);
+
+            imgList.appendChild(img);
+          });
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  //Tuy bien
+  contactWrapper.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  });
+  // end combo
+  //
+  btnCtaContactAddCard.addEventListener("click", (ev) => {
+    const clone = contactTemplate.content.cloneNode(true);
+    contactWrapper.appendChild(clone);
+  });
+  contactWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_contact_delete_card')){
+        ev.target.closest('.contact_instance').remove();
+    }
+  })
+
+  //
+  document
+    .querySelector("#btn_cta_save_config")
+    .addEventListener("click", (ev) => {
+      const payload = {
+        title: document.querySelector('input[name="news_title"]').value,
+        desc: document.querySelector('input[name="news_desc"]').value,
+        img_url: document.querySelector('input[name="news_img_url"]').value,
+      };
+      console.log(payload);
+      fetch("#/admin/page-config/news-section", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          myNotification("Success", "success");
+        })
+        .catch((err) => console.log(err));
+    });
+</script>

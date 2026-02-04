@@ -215,7 +215,7 @@ const ASSET_URL = window.__ENV__.API_URL;
                 </div>
                 <div className="flex items-baseline gap-2 mb-6">
                   <span className="text-4xl bg-[#2dbdb6] bg-clip-text text-transparent">
-                    {pkg.price}
+                    {pkg.price+'.000đ'}
                   </span>
                 </div>
                 <ul className="space-y-3 mb-8">

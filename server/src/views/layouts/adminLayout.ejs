@@ -9,65 +9,68 @@
     <!-- 2. datatable core -->
     <script src="/libs/js/dataTables.min.js"></script>
     <!-- have to loaded second -->
-     <link rel="stylesheet" href="https://cdn.datatables.net/2.3.4/css/dataTables.tailwindcss.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/2.3.4/css/dataTables.tailwindcss.min.css"
+    />
     <!-- <script src="/libs/js/dataTables.bootstrap5.min.js"></script> -->
     <!-- icon fs -->
     <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css" />
     <style>
       /* container */
-.dt-paging nav {
-  display: flex;
-  gap: 6px;
-  align-items: center;
-}
+      .dt-paging nav {
+        display: flex;
+        gap: 6px;
+        align-items: center;
+      }
 
-/* button chung */
-.dt-paging-button {
-  min-width: 36px;
-  height: 36px;
-  padding: 0 12px;
-  border-radius: 9999px;
-  background-color: #f3f4f6;
-  color: #374151;
-  font-size: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all .2s ease;
-  border: none;
-}
+      /* button chung */
+      .dt-paging-button {
+        min-width: 36px;
+        height: 36px;
+        padding: 0 12px;
+        border-radius: 9999px;
+        background-color: #f3f4f6;
+        color: #374151;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        border: none;
+      }
 
-/* hover */
-.dt-paging-button:not(.disabled):hover {
-  background-color: #e5e7eb;
-}
+      /* hover */
+      .dt-paging-button:not(.disabled):hover {
+        background-color: #e5e7eb;
+      }
 
-/* current page */
-.dt-paging-button.current {
-  background-color: #2dbdb6; /* đổi theo brand */
-  color: white;
-  font-weight: 600;
-}
+      /* current page */
+      .dt-paging-button.current {
+        background-color: #2dbdb6; /* đổi theo brand */
+        color: white;
+        font-weight: 600;
+      }
 
-/* disabled */
-.dt-paging-button.disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-}
+      /* disabled */
+      .dt-paging-button.disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+      }
 
-/* my config */
-.dt-search{
-  padding: 20px 0;
-}
-.dt-search .dt-input{
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  padding: 6px 10px;
-  background-color: white;
-  font-size: 14px;
-  cursor: pointer;
-}
+      /* my config */
+      .dt-search {
+        padding: 20px 0;
+      }
+      .dt-search .dt-input {
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 6px 10px;
+        background-color: white;
+        font-size: 14px;
+        cursor: pointer;
+      }
     </style>
     <script>
       function myNotification(text, icon, timer = 2500, position = "top-end") {
@@ -94,12 +97,12 @@
     </style>
   </head>
 
-  <body class="h-full bg-gray-100 dark:bg-gray-900">
+  <body class="h-screen bg-gray-100 dark:bg-gray-900">
     <div class="flex h-screen">
       <!-- SIDEBAR -->
       <aside
         id="sidebar"
-        class="w-64 bg-white dark:bg-gray-800 shadow-xl h-screen flex flex-col space-y-1 flex-shrink-0 transition-[width] duration-300 ease-in-out"
+        class="w-64 bg-white dark:bg-gray-800 shadow-xl  h-screen flex flex-col space-y-1 flex-shrink-0 transition-[width] duration-300 ease-in-out"
       >
         <div class="flex flex-col h-full px-3 py-4">
           <!-- LOGO -->
@@ -121,16 +124,15 @@
           </div>
           <!--  -->
           <style>
-            .navbar i{
+            .navbar i {
               font-size: 17px !important;
             }
-            .navbar span.lable{
+            .navbar span.lable {
               font-size: 17px !important;
-
             }
           </style>
           <!-- NAV -->
-          <nav class="navbar flex-col flex-1 space-y-1">
+          <nav class="navbar flex-col flex-1 space-y-1 overflow-y-auto scrollbar-hide">
             <div class="flex flex-col">
               <!-- Dashboard -->
               <a
@@ -143,7 +145,7 @@
 
               <button
                 onclick="toggleSubmenu('pageConfigSub', this)"
-                class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+                class="btn_root w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
               >
                 <div class="flex items-center gap-3">
                   <i class="fa-solid fa-pager text-blue-600 text-2xl"></i>
@@ -166,19 +168,36 @@
                 >
                   Homepage
                 </a>
+                <a
+                  href="/admin/page-config/about-section"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  About
+                </a>
 
+                <a
+                  href="/admin/page-config/services-section"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Services
+                </a>
+                <a
+                  href="/admin/page-config/training-section"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Training
+                </a>
                 <a
                   href="/admin/page-config/news-section"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
                   News
                 </a>
-
                 <a
-                  href="/admin/pageconfig/seo"
+                  href="/admin/page-config/contact-section"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
-                  Training
+                  Contact
                 </a>
               </div>
 
@@ -187,11 +206,11 @@
               <!-- NRW ================= -->
               <button
                 onclick="toggleSubmenu('blogSub', this)"
-                class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+                class="btn_root w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
               >
                 <div class="flex items-center gap-3">
                   <i class="fa-solid fa-newspaper text-blue-600 text-2xl"></i>
-                  <span class="label">Blog</span>
+                  <span class="label">Post</span>
                 </div>
 
                 <!-- Chevron -->
@@ -208,7 +227,7 @@
                   href="/admin/blog"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
-                  Blog list
+                  Post
                 </a>
                 <!-- <a
                   href="/admin/category"
@@ -222,14 +241,13 @@
                 >
                   Category
                 </a>
-                
               </div>
 
               <!-- END =============== -->
               <!-- Service ================= -->
               <button
                 onclick="toggleSubmenu('serviceSub', this)"
-                class="w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+                class="btn_root w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
               >
                 <div class="flex items-center gap-3">
                   <i class="fa-solid fa-cubes text-blue-600 text-2xl"></i>
@@ -262,9 +280,8 @@
                   href="/admin/service/add"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
                 >
-                  Add
+                  Add service
                 </a>
-                
               </div>
 
               <!-- END =============== -->
@@ -416,16 +433,15 @@
           link.classList.add("bg-blue-100", "text-blue-600");
           const parentSub = link.closest('[id$="Sub"]');
           if (parentSub) parentSub.classList.remove("hidden");
+          //
+          const btn = parentSub.previousElementSibling;
+          if(!btn || !btn.classList.contains("btn_root")) return;
+          //rotate
+          const chevron = btn.querySelector('.chevron');
+          chevron?.classList.add('rotate-180')
         }
       });
 
-      // function toggleSubmenu(id, btn) {
-      //   const submenu = document.getElementById(id);
-      //   submenu.classList.toggle("hidden");
-
-      //   const chevron = btn.querySelector(".chevron");
-      //   chevron.classList.toggle("rotate-180");
-      // }
       function toggleSubmenu(id, btn) {
         if (collapsed) return; // ❗ giống React: collapse thì không mở submenu
 
@@ -434,7 +450,6 @@
 
         const chevron = btn.querySelector(".chevron");
         chevron.classList.toggle("rotate-180");
-        c.classList.toggle("hidden", collapsed);
       }
       document
         .querySelector("#toggleDarkMode")
@@ -442,10 +457,6 @@
           console.log("click");
           document.documentElement.classList.toggle("dark");
         });
-      // function toggleDarkMode() {
-      //   console.log('click me')
-      //   document.documentElement.classList.toggle("dark");
-      // }
     </script>
   </body>
 </html>

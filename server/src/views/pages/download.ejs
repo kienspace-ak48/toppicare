@@ -1,9 +1,9 @@
 <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
-<section class="w-full bg-gradient-to-br from-[#E6F7F4] to-white py-16 h-full">
+<section class="w-full bg-gradient-to-br from-[#E6F7F4] to-white py-16 h-auto min-h-full">
   <div class="max-w-7xl mx-auto px-4">
     <div class="flex flex-col lg:flex-row items-center justify-between gap-16">
       <!-- LEFT -->
-      <div class="w-full">
+      <div class="w-full ">
         <h2
           class="text-[36px] md:text-[48px] lg:text-[60px] font-bold leading-tight text-gray-900 mb-4"
         >
@@ -18,16 +18,16 @@
           Trải nghiệm thuận tiện, thêm nhiều ưu đãi
         </p>
 
-        <div class="flex items-center gap-6">
+        <div class="flex items-center justify-center md:justify-start flex-wrap gap-6">
           <!-- QR -->
           <img
             src="/imgs/toppi_ggplay2.png"
             alt="QR download"
-            class="hidden md:block w-40 h-40 rounded-xl shadow-lg"
+            class=" md:block w-40 h-40 rounded-xl shadow-lg"
           />
 
           <!-- Store buttons -->
-          <div class="hidden md:flex flex-col gap-4">
+          <div class=" flex flex-col gap-4">
             <!-- App Store -->
             <div
               class="group relative flex items-center justify-center gap-4 bg-[#FBCD48] rounded-xl p-4 min-w-[320px] shadow-md"
@@ -45,7 +45,7 @@
 
               <!-- Hover QR -->
               <div
-                class="absolute top-full left-0 mt-3 hidden lg:group-hover:block bg-white p-2 rounded-md shadow-lg z-40"
+                class="absolute top-full left-0 mt-3 hidden group-hover:block bg-white p-2 rounded-md shadow-lg z-40"
               >
                 <img
                   src="/imgs/toppi_appstore.png"
@@ -73,7 +73,7 @@
               />
 
               <div
-                class="absolute top-full left-0 mt-3 hidden lg:group-hover:block bg-white p-2 rounded-md shadow-lg z-40"
+                class="absolute top-full left-0 mt-3 hidden group-hover:block bg-white p-2 rounded-md shadow-lg z-40"
               >
                 <img
                   src="/imgs/toppi_ggplay.png"
@@ -86,10 +86,10 @@
         </div>
 
         <!-- Mobile buttons -->
-        <div class="flex md:hidden flex-col gap-4 mt-8">
-          <img src="https://via.placeholder.com/160x48" class="h-12 w-auto" />
-          <img src="https://via.placeholder.com/160x48" class="h-12 w-auto" />
-        </div>
+        <!-- <div class="flex md:hidden flex-col gap-4 mt-8">
+          <img src="/imgs/apple-store.webp" class="h-12 w-auto" />
+          <img src="/imgs/google-play.webp" class="h-12 w-auto" />
+        </div> -->
       </div>
 
       <!-- RIGHT -->

@@ -1,5 +1,19 @@
+<style>
+  .dt-layout-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .dt-search label{
+    display: none !important;
+  }
+  .dt-search input{
+    
+  }
+</style>
 <div class="flex justify-between items-center mb-5">
-  <h3 class="text-xl font-bold">Blog list</h3>
+  <h3 class="text-xl font-bold">Posts/ Danh sách bài viết</h3>
   <button
     id="btn_cta_add_blog"
     class="font-bold text-white px-4 py-3 border border-gray-300 shadow bg-blue-500 rounded-lg"
@@ -104,37 +118,31 @@
   },
     info: false,
     columns: [
-      { data: "title", render: (v) => `<p class="px-4 py-6 ">${v}</p>` },
-      { data: "slug", render: (v) => `<p class="px-4 py-6">${v}</p>` },
+      { data: "title", render: (v) => `<p class="line-clamp-2 px-4 py-6 ">${v}</p>` },
+      { data: "slug", render: (v) => `<p class="line-clamp-2 px-4 py-6">${v}</p>` },
       {
         data: "img",
         render: (v) => `<div class="py-1">
           <img
             src="/${v}"
             alt=""
-            style="width: 100px; height: 100px; object-fit: cover"
+            style="width: 80px; height: 80px; object-fit: cover"
           />
         </div>`,
       },
-      { data: "category_id", render: (v) => `<p clasa="px-4 py-6">${v.category_root}</p>` },
-      { data: "category_id", render: (v) => `<p clasa="px-4 py-6">${v.name}</p>` },
-      { data: "isFeatured", render: (v) => `<p clasa="px-4 py-6">${v}</p>` },
-      { data: "status", render: (v) => `<p clasa="px-4 py-6">${v}</p>` },
+      { data: "category_id", render: (v) => `<p class="text-center  px-4 py-6">${v.category_root}</p>` },
+      { data: "category_id", render: (v) => `<p class="text-center px-4 py-6">${v.name}</p>` },
+      { data: "isFeatured", render: (v) => `<p class="text-center px-4 py-6">${v}</p>` },
+      { data: "status", render: (v) => `<p class="text-center px-4 py-6">${v}</p>` },
       {
         data: null,
         render: (data, type, row) =>
-          `<a href="/admin/blog/edit-blog/${row._id}"
-            ><button
-              class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-yellow-500 hover:text-white"
-            >
-              Edit
-            </button></a
+          `<p class="text-center">
+            <a href="/admin/blog/edit-blog/${row._id}"
+            ><i class="fa-solid fa-pen-to-square hover:text-blue-600"></i></a
           >
-          <button
-              class="btn_delete_blog border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-red-500 hover:text-white"
-            >
-              Delete
-            </button>`,
+          <i class="fa-solid fa-trash-can btn_delete_blog hover:text-blue-600"></i>
+            </p>`,
       },
     ],
   });

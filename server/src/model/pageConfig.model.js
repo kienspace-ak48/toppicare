@@ -37,10 +37,14 @@ const pageConfig = new mongoose.Schema({
   },
   about: {
     slider: [
-      {title: "String", img: "String", _id: false}, 
+      {title: String, img: String, _id: false}, 
     ],
-    vision:[],
-    stats: []
+    vision:[
+      {title: String, img: String, desc: [], _id: false}
+    ],
+    stats: [
+      {title: String, number: String, _id: false}
+    ]
   },
   intro: {
     slider: [
@@ -83,7 +87,7 @@ const pageConfig = new mongoose.Schema({
     booking_guide: {
       title: String,
       desc: String,
-      steps: [{ title: String, desc: String, img: String }],
+      steps: [{ title: String, desc: String,step_number: Number ,img: String, _id: false }],
     },
     cta: {
       title: String,
@@ -94,7 +98,14 @@ const pageConfig = new mongoose.Schema({
     banner: {
       title: String,
       desc: String,
+      img: String
     },
+    benefit: {
+      title: String,
+      
+      benefit: [
+      {icon: String, title: String, desc: String, _id: false}
+    ]}
   },
   benefits: {
     title: String,

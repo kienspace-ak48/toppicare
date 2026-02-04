@@ -1,0 +1,362 @@
+<h1 class="text-lg font-bold">Services section/ Trang dịch vụ</h1>
+<div class="p-4">
+  <div class="my_header">
+    <button
+      id="btn_cta_save_config"
+      class="px-3 py-2 bg-blue-600 rounded-lg border border-gray-300 text-white"
+    >
+      Save Config
+    </button>
+  </div>
+  <div class="my_content">
+    <div class="mt-5">
+      <label for="">Title</label>
+      <input
+        name="service_title"
+        type="text"
+        value="<%=data.service.banner.title%>"
+        class="border border-gray-300 w-full rounded-lg px-3 py-2"
+      />
+      <label for="">Desc</label>
+      <input type="text" value="<%=data.service.banner.desc%>" name="service_desc" class="px-3 py-2 rounded-lg border border-gray-300 w-full">
+      <!-- <textarea
+        name="service_desc"
+        rows="2"
+        id=""
+        class="px-3 py-2 rounded-lg border border-gray-300 w-full"
+      ></textarea> -->
+
+      <!-- <input type="text" name="news_" class="px-3 py-2 border border-gray-300 w-full rounded-lg "> -->
+      <!-- image handle action -->
+      <div class="image_action">
+        <label for="">Image banner</label>
+        <div class="flex justify-between items-center mt-3">
+          <button
+          id="choose_img_banner"
+            class="flex-1 px-3 py-2 chooseImg rounded-lg border border-green-500"
+          >
+            Chọn ảnh
+          </button>
+          <input
+            type="text"
+            name="service_img"
+            value="<%=data.service.banner.img%>"
+            class="flex-3 img_input w-full px-3 py-2 border border-gray-300 rounded-lg hidden"
+            placeholder="img"
+          />
+        </div>
+        <div class="img_preview border border-gray-300 w-full h-[200px]">
+          <img
+            src="/<%=(data.service.banner.img)?data.service.banner.img : ''%>"
+            alt=""
+            class="w-full object-cover max-h-[200px]"
+          />
+        </div>
+      </div>
+      <!--  -->
+      <label for="">Service title</label>
+      <input
+        type="text"
+        value="<%=data.service.services.title%>"
+        name="service_s_title"
+        class="border border-gray-300 w-full rounded-lg px-3 py-2"
+      />
+      <label for="">Service desc </label>
+      <input
+        type="text"
+        name="service_s_desc"
+        value="<%=data.service.services.desc%>"
+        class="border border-gray-300 w-full rounded-lg px-3 py-2"
+      />
+      <!--  -->
+      <!-- ====Booking==== -->
+       <hr class="my-4">
+      <div class="flex mt-5 justify-between">
+        <label for="" class="text-[18px] font-bold">Step to booking</label>
+        <button
+          class="px-3 py-2 rounded-lg border border-gray-300 bg-blue-600 text-white"
+          id="btn_cta_add_step"
+        >
+          Add Step
+        </button>
+      </div>
+      <input
+        type="text"
+        name="service_booking_title"
+        value="<%=data.service.booking_guide.title%>"
+        class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
+        placeholder="Nhập benefit title"
+      />
+      <input
+        name="service_booking_desc"
+        type="text"
+        value="<%=data.service.booking_guide.desc%>"
+        class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
+        placeholder="Nhập benefit desc"
+      />
+      <div
+        id="step_wrapper"
+        class="grid grid-cols-2 lg:grid-cols-3 gap-4 mt-5"
+      >
+        <%if(data.service.booking_guide&& data.service.booking_guide.steps.length>0){%>
+          <%data.service.booking_guide.steps.forEach(s=>{%>
+            <div
+    class="add_step_item bg-white p-6 border border-gray-300 rounded-lg shadow relative"
+  >
+    <div
+      class="btn_cta_add_step_remove text-red-500 absolute top-3 right-2 px-2 rounded-lg hover:cursor-pointer hover:bg-red-300 font-bold"
+    >
+      X
+    </div>
+    <label for="">Step</label>
+    <div class="flex">
+      <input
+        type="text"
+        value="<%=s.title%>"
+        name="step_title"
+        class="flex-3 w-full border border-gray-300 px-3 py-2"
+      />
+      <input
+        type="number"
+        name="step_number"
+        value="<%=s.step_number%>"
+        id=""
+        class="flex-1 w-full border border-gray-300 px-3 py-2"
+      />
+    </div>
+    <input type="text" value="<%s.desc%>" name="step_desc" class="w-full border border-gray-300 px-3 py-2" />
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-3 py-2 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="step_img"
+          value="<%=(s.img)?s.img:''%>"
+          class="flex-3 img_input w-full px-3 py-2 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%=(s.img)?s.img:''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+    <!--  -->
+  </div>
+          <%})%>
+        <%}else{%>
+
+        <%}%>
+    </div>
+
+      <!-- ========= -->
+    </div>
+  </div>
+</div>
+
+<!-- =================MODAL===================== -->
+<div
+  id="gallery_modal"
+  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+>
+  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
+    <div class="header flex justify-between mb-4">
+      <h2>Chon anh</h2>
+      <button onclick="closeChooseImgModal()">X</button>
+    </div>
+    <!--  -->
+    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+  </div>
+</div>
+<!-- ==============TEAMPLATE================= -->
+<template id="service_step_template">
+  <!-- step -->
+  <div
+    class="add_step_item bg-white p-6 border border-gray-300 rounded-lg shadow relative"
+  >
+    <div
+      class="btn_cta_add_step_remove text-red-500 absolute top-3 right-2 px-2 rounded-lg hover:cursor-pointer hover:bg-red-300 font-bold"
+    >
+      X
+    </div>
+    <label for="">Step</label>
+    <div class="flex">
+      <input
+        type="text"
+        name="step_title"
+        class="flex-3 w-full border border-gray-300 px-3 py-2"
+      />
+      <input
+        type="number"
+        name="step_number"
+        id=""
+        class="flex-1 w-full border border-gray-300 px-3 py-2"
+      />
+    </div>
+    <input type="text" name="step_desc" class="w-full border border-gray-300 px-3 py-2" />
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-3 py-2 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="step_img"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-3 py-2 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+    <!--  -->
+  </div>
+</template>
+<!-- =========================SCRIPT HERE================ -->
+<script>
+  const addStepWrapper = document.querySelector("#step_wrapper");
+  const btnCtaAddStep = document.querySelector("#btn_cta_add_step");
+  const addStepTemplate = document.querySelector("#service_step_template");
+
+  // combo choose image
+  const chooseImgModal = document.querySelector("#gallery_modal");
+  var ctaChooseImg = document.querySelectorAll(".chooseImg");
+  let imgInputIsFocusing = null;
+  function openChooseImgModal() {
+    chooseImgModal.classList.remove("hidden");
+    chooseImgModal.classList.add("flex");
+  }
+  function closeChooseImgModal() {
+    chooseImgModal.classList.remove("flex");
+    chooseImgModal.classList.add("hidden");
+  }
+  //tuy chinh
+  addStepWrapper.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  });
+  document.querySelector('#choose_img_banner').addEventListener('click', (ev)=>{
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  })
+  function selectImage(src) {
+    imgInputIsFocusing.querySelector(".img_input").value = src;
+    imgInputIsFocusing.querySelector(".img_preview img").src = "/" + src;
+    closeChooseImgModal();
+  }
+  //
+  function loadImage() {
+    imgList.innerHTML = "Loading...";
+    $.ajax({
+      url: "/admin/gallery/image-getall",
+      method: "GET",
+      success: (res) => {
+        if (res.success) {
+          imgList.innerHTML = "";
+          res.data.forEach((item) => {
+            const img = document.createElement("img");
+            img.src = "/" + item.path;
+            img.className = `
+            w-full h-32
+            object-cover
+            cursor-pointer rounded border
+            hover:ring-4 hover:ring-blue-500
+            transition
+          `;
+
+            img.onclick = () => selectImage(item.path);
+
+            imgList.appendChild(img);
+          });
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  // end combo
+  document
+    .querySelector("#btn_cta_save_config")
+    .addEventListener("click", (ev) => {
+      // 
+      let stepArr = [];
+      document.querySelectorAll('#step_wrapper .add_step_item').forEach(s=>{
+        let step = {
+          title: s.querySelector('input[name="step_title"]').value,
+          desc: s.querySelector('input[name="step_desc"]').value,
+          step_number:  Number(s.querySelector('input[name="step_number"]').value) || 0,
+          img: s.querySelector('input[name="step_img"]').value
+        };
+        stepArr.push(step);
+      })
+      const payload = {
+        banner: {
+          title: document.querySelector('input[name="service_title"]').value,
+          desc: document.querySelector('input[name="service_desc"]').value,
+          img: document.querySelector('input[name="service_img"]').value,
+        },
+        services: {
+          title: document.querySelector('input[name="service_s_title"]').value,
+          desc: document.querySelector('input[name="service_s_desc"]').value
+        },
+        booking_guide:{
+          title: document.querySelector('input[name="service_booking_title"]').value,
+          desc: document.querySelector('input[name="service_booking_desc"]').value,
+          steps: stepArr,
+        }
+      };
+      console.log(payload);
+      fetch("/admin/page-config/services-section", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          console.log(data);
+          myNotification("Success", "success");
+          document.location.reload();
+        })
+        .catch((err) => myNotification("danger", "danger"));
+    });
+  btnCtaAddStep.addEventListener("click", (ev) => {
+    // console.log(ev);
+    const clone = addStepTemplate.content.cloneNode(true);
+    addStepWrapper.appendChild(clone);
+  });
+  //event delegate
+  addStepWrapper.addEventListener("click", (ev) => {
+    if (ev.target.classList.contains("btn_cta_add_step_remove")) {
+      ev.target.closest(".add_step_item").remove();
+    }
+  });
+</script>

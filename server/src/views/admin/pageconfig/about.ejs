@@ -1,0 +1,387 @@
+<div class="flex justify-between items-center">
+  <h2 class="font-bold">About section/ Trang giới thiệu</h2>
+  <button
+    id="btn_cta_save_config"
+    class="font-bold px-4 py-3 rounded-lg border border-gray-300 bg-blue-500 text-white"
+  >
+    Save config
+  </button>
+</div>
+<div>
+  <section class="banner mt-5">
+    <div class="banner flex justify-between items-center">
+      <h3 class="font-bold">Banner</h3>
+      <button
+        id="btn_cta_add_card"
+        class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500"
+      >
+        Add banner component
+      </button>
+    </div>
+    <div id="banner_wrapper" class="grid grid-cols-2 gap-5 mt-4">
+      <% if(data.about.slider&& data.about.slider.length>0){%>
+        <%data.about.slider.forEach(b=>{%>
+          <div class="banner_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_banner_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input
+      type="text"
+      name="banner_title"
+      value="<%=b.title%>"
+      class=" px-3 py-2 rounded-lg border border-gray-300 w-full"
+    />
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="banner_img"
+          value="<%=b.img?b.img:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%=b.img?b.img: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+        <%})%>
+      <%}else{%>
+
+      <%}%>
+    </div>
+  </section>
+  <hr class="my-5">
+  <section class="vision mt-5">
+    <div class="flex justify-between items-center">
+        <h3 class="font-bold">Vision</h3>
+        <button id="btn_cta_add_vision_card" class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500">Add vision component</button>
+    </div>
+    <div id="vision_wrapper" class="mt-5 grid grid-cols-2 gap-5">
+      <%if(data.about.vision && data.about.vision.length>0){%>
+        <%data.about.vision.forEach(v=>{%>
+          <div class="vision_instance relative p-4 border border-gray-300 rounded shadow">
+            <span
+              class="btn_cta_vision_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+              >X</span
+            >
+            <input
+              type="text"
+              value="<%=v.title%>"
+              name="title"
+              class="px-3 py-2  border border-gray-300 w-full"
+            />
+            <textarea name="desc" id="" rows="3" class="px-3 py-2  border border-gray-300 w-full" placeholder="mỗi xuống dòng là một đoạn"><%=v.desc?.join("\n")%></textarea>
+            <!-- image handle action -->
+            <div class="image_action">
+              <!-- <label for="">Image banner</label> -->
+              <div class="flex justify-between items-center mt-3">
+                <button
+                  class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+                >
+                  Chọn ảnh
+                </button>
+                <input
+                  type="text"
+                  name="vision_img"
+                  value="<%=(v.img)?v.img:''%>"
+                  class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+                  placeholder="img"
+                />
+              </div>
+              <div class="img_preview border border-gray-300 w-full h-[200px]">
+                <img
+                  src="/<%=(v.img)?v.img: ''%>"
+                  alt=""
+                  class="w-full object-cover max-h-[200px]"
+                />
+              </div>
+            </div>
+          </div>
+        <%})%>
+      <%}else{%>
+
+      <%}%>
+    </div>
+  </section>
+  <hr class="my-5">
+  <section class="stats">
+    <h3 class="font-bold">Stats</h3>
+    <div class="grid md:grid-cols-4 gap-5 mt-4">
+        <div class="stats_instance p-4 border border-gray-300 rounded">
+            <input type="text" name="title" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[0]?.title%>">
+            <input type="text" name="number" id="" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[0]?.number%>">
+        </div>
+        <div class="stats_instance p-4 border border-gray-300 rounded">
+            <input type="text" name="title" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[1]?.title%>">
+            <input type="text" name="number" id="" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[1]?.number%>">
+        </div>
+        <div class="stats_instance p-4 border border-gray-300 rounded">
+            <input type="text" name="title" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[2]?.title%>">
+            <input type="text" name="number" id="" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[2]?.number%>">
+        </div>
+        <div class="stats_instance p-4 border border-gray-300 rounded">
+            <input type="text" name="title" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[3]?.title%>">
+            <input type="text" name="number" id="" class="px-3 py-2 border border-gray-300 w-full" value="<%=data.about.stats[3]?.number%>">
+        </div>
+    </div>
+    
+  </section>
+</div>
+<!-- =============TEMPLATE ============== -->
+<template id="banner_template">
+  <div class="banner_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_banner_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input
+      type="text"
+      name="banner_title"
+      class=" px-3 py-2 rounded-lg border border-gray-300 w-full"
+    />
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="banner_img"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+<!--  -->
+<template id="vision_template">
+  <div class="vision_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_vision_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input
+      type="text"
+      name="title"
+      class="px-3 py-2  border border-gray-300 w-full"
+    />
+    <textarea name="desc" id="" rows="3" class="px-3 py-2  border border-gray-300 w-full" placeholder="mỗi xuống dòng là một đoạn"></textarea>
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="vision_img"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+<!-- =================MODAL===================== -->
+<div
+  id="gallery_modal"
+  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+>
+  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
+    <div class="header flex justify-between mb-4">
+      <h2>Chon anh</h2>
+      <button onclick="closeChooseImgModal()">X</button>
+    </div>
+    <!--  -->
+    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+  </div>
+</div>
+<!-- ============= SCRIPT =============== -->
+<script>
+  //global scope
+  const btnBannerAddCard = document.querySelector("#btn_cta_add_card");
+  const bannerWrapper = document.querySelector("#banner_wrapper");
+  const bannerTemplate = document.querySelector("#banner_template");
+  //
+  const btnVisionAddCard = document.querySelector('#btn_cta_add_vision_card');
+  const visionWrapper = document.querySelector('#vision_wrapper');
+  const visionTemplate = document.querySelector('#vision_template');
+
+  //
+  // combo choose image
+  const chooseImgModal = document.querySelector("#gallery_modal");
+  //   var ctaChooseImg = document.querySelectorAll("#banner_wrapper");
+  let imgInputIsFocusing = null;
+  function openChooseImgModal() {
+    chooseImgModal.classList.remove("hidden");
+    chooseImgModal.classList.add("flex");
+  }
+  function closeChooseImgModal() {
+    chooseImgModal.classList.remove("flex");
+    chooseImgModal.classList.add("hidden");
+  }
+  //
+  function selectImage(src) {
+    imgInputIsFocusing.querySelector(".img_input").value = src;
+    imgInputIsFocusing.querySelector(".img_preview img").src = "/" + src;
+    closeChooseImgModal();
+  }
+  //
+  function loadImage() {
+    imgList.innerHTML = "Loading...";
+    $.ajax({
+      url: "/admin/gallery/image-getall",
+      method: "GET",
+      success: (res) => {
+        if (res.success) {
+          imgList.innerHTML = "";
+          res.data.forEach((item) => {
+            const img = document.createElement("img");
+            img.src = "/" + item.path;
+            img.className = `
+            w-full h-32
+            object-cover
+            cursor-pointer rounded border
+            hover:ring-4 hover:ring-blue-500
+            transition
+          `;
+
+            img.onclick = () => selectImage(item.path);
+
+            imgList.appendChild(img);
+          });
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  //
+  //Tuy bien
+  bannerWrapper.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  });
+  visionWrapper.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  });
+  // end combo
+  //
+  btnBannerAddCard.addEventListener("click", (ev) => {
+    const clone = bannerTemplate.content.cloneNode(true);
+    bannerWrapper.appendChild(clone);
+  });
+  bannerWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_banner_delete_card')){
+        ev.target.closest('.banner_instance').remove();
+    }
+  })
+//   
+  btnVisionAddCard.addEventListener('click', (ev)=>{
+    const clone = visionTemplate.content.cloneNode(true);
+    visionWrapper.appendChild(clone);
+  })
+  visionWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_vision_delete_card')){
+        ev.target.closest('.vision_instance').remove();
+    }
+  })
+  //
+  document.querySelector('#btn_cta_save_config').addEventListener('click', (ev)=>{
+    let bannerArr = [];
+    let visionArr =[];
+    let statsArr = [];
+    document.querySelectorAll('#banner_wrapper .banner_instance').forEach(b=>{
+      let banner={
+        title: b.querySelector('input[name="banner_title"]').value,
+        img: b.querySelector('input[name="banner_img"]').value
+      }
+      bannerArr.push(banner);
+    })
+    //
+    document.querySelectorAll('#vision_wrapper .vision_instance').forEach(v=>{
+      let vision={
+        title: v.querySelector('input[name="title"]').value,
+        desc: (v.querySelector('textarea[name="desc"]').value).split('\n').filter(i=>i.trim()),
+        img: v.querySelector('input[name="vision_img"]').value
+      }
+      visionArr.push(vision);
+    })
+    //
+    document.querySelectorAll('section .stats_instance').forEach(s=>{
+      let stats={
+        title: s.querySelector('input[name="title"]').value,
+        number: s.querySelector('input[name="number"]').value
+      }
+      statsArr.push(stats);
+    })
+
+    const payload = {
+      slider: bannerArr,
+      vision: visionArr,
+      stats: statsArr
+    }
+
+    console.log(payload)
+    submitData(payload);
+  }) 
+  function submitData(payload){
+    fetch(`/admin/page-config/about-section`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'Application/json'},
+      body: JSON.stringify(payload)
+    })
+    .then(res=>res.json())
+    .then(res=>{if(res.success){alert('Lưu thành công'); window.location.reload()}})
+    .catch(err=>{
+      alert('Xảy ra lỗi')
+    })
+  }
+</script>

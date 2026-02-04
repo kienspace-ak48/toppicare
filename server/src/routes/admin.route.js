@@ -9,10 +9,22 @@ const uploadImage = require("../config/uploadImage.config");
 const ServicePackageController = require("../controller/servicePackage.controller")();
 const ServiceController = require('../controller/service.controller')();
 //page config
-//new
-router.get('/page-config/news-section', PageConfigController.NewSection);
-router.put('/page-config/news-section', PageConfigController.SaveNewSection);
-
+//-contact
+router.get('/page-config/contact-section', PageConfigController.ContactSection);
+router.put('/page-config/contact-section', PageConfigController.SaveContactSection);
+//-traning
+router.get('/page-config/training-section', PageConfigController.TraningSection);
+router.put('/page-config/training-section', PageConfigController.SaveTraningSection);
+//-about
+router.get('/page-config/about-section', PageConfigController.AboutSection);
+router.put('/page-config/about-section', PageConfigController.SaveAboutSetion);
+//-news
+router.get('/page-config/news-section', PageConfigController.NewsSection);
+router.put('/page-config/news-section', PageConfigController.SaveNewsSection);
+//-services
+router.get('/page-config/services-section', PageConfigController.ServiceSection);
+router.put('/page-config/services-section', PageConfigController.SaveServiceSetion);
+//-home
 router.post("/page-config", homeController.CreatePageConfig);
 router.get("/page-config", homeController.PageConfig);
 // gallery
