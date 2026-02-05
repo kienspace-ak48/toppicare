@@ -132,8 +132,8 @@
       },
       { data: "category_id", render: (v) => `<p class="text-center  px-4 py-6">${v.category_root}</p>` },
       { data: "category_id", render: (v) => `<p class="text-center px-4 py-6">${v.name}</p>` },
-      { data: "isFeatured", render: (v) => `<p class="text-center px-4 py-6">${v}</p>` },
-      { data: "status", render: (v) => `<p class="text-center px-4 py-6">${v}</p>` },
+      { data: "isFeatured", render: (data, tyep, row) => `${row.featured?`<p class="text-center px-4 py-6"><i class="fa-solid fa-fire text-orange-500"></i></p>`:``}` },
+      { data: "status", render: (v, type, row) => `${row.status?`<p class="text-center px-4 py-6"><i class="fa-regular fa-eye hover:text-blue-500"></i></p>`:`<p class="text-center px-4 py-6"><i class="fa-regular fa-eye-slash text-red-500"></i></p>`}` },
       {
         data: null,
         render: (data, type, row) =>

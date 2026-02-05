@@ -12,15 +12,15 @@
     <div class="mt-5">
       <input
         type="text"
-        name="news_title"
-        value="<%#=(data.news)?data.news?.title:''%>"
+        name="con_title"
+        value="<%=(data.contact.banner.title)?data.contact.banner?.title:''%>"
         class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
         placeholder="Title..."
       />
       <input
         type="text"
-        name="news_desc"
-        value="<%#=(data.news)?data.news?.desc:''%>"
+        name="con_desc"
+        value="<%=(data.contact.banner.desc)?data.contact.banner.desc:''%>"
         class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
         placeholder="Description..."
       />
@@ -36,15 +36,15 @@
           </button>
           <input
             type="text"
-            name="news_img_url"
-            value="<%#=(data.news)?data.news?.img_url:''%>"
+            name="con_img"
+            value="<%=(data.contact.banner.img)?data.contact.banner.img:''%>"
             class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
             placeholder="img"
           />
         </div>
         <div class="img_preview border border-gray-300 w-full h-[200px]">
           <img
-            src="/<%#=(data.news)?data.news?.img_url: ''%>"
+            src="/<%=(data.contact.banner.img)?data.contact.banner?.img: ''%>"
             alt=""
             class="w-full object-cover max-h-[200px]"
           />
@@ -52,8 +52,8 @@
       </div>
     </div>
   </div>
-       <hr class="my-4">
-  <section class="contact mt-4">
+  <hr class="my-4" />
+  <section class="contact mt-4 hidden">
     <div class="flex justify-between items-center">
       <h3 class="font-bold">Contact</h3>
       <button
@@ -213,23 +213,25 @@
     const clone = contactTemplate.content.cloneNode(true);
     contactWrapper.appendChild(clone);
   });
-  contactWrapper.addEventListener('click', (ev)=>{
-    if(ev.target.classList.contains('btn_cta_contact_delete_card')){
-        ev.target.closest('.contact_instance').remove();
+  contactWrapper.addEventListener("click", (ev) => {
+    if (ev.target.classList.contains("btn_cta_contact_delete_card")) {
+      ev.target.closest(".contact_instance").remove();
     }
-  })
+  });
 
   //
   document
     .querySelector("#btn_cta_save_config")
     .addEventListener("click", (ev) => {
       const payload = {
-        title: document.querySelector('input[name="news_title"]').value,
-        desc: document.querySelector('input[name="news_desc"]').value,
-        img_url: document.querySelector('input[name="news_img_url"]').value,
+        banner: {
+          title: document.querySelector('input[name="con_title"]').value,
+          desc: document.querySelector('input[name="con_desc"]').value,
+          img: document.querySelector('input[name="con_img"]').value,
+        },
       };
       console.log(payload);
-      fetch("#/admin/page-config/news-section", {
+      fetch("/admin/page-config/contact-section", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -238,9 +240,13 @@
       })
         .then((res) => res.json())
         .then((data) => {
-          console.log(data);
-          myNotification("Success", "success");
+          if(data.success){
+            document.location.reload();
+            myNotification("Success", "success");
+          }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {console.log(err);
+          myNotification('processing failed', 'danger')
+        });
     });
 </script>

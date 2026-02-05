@@ -1,8 +1,13 @@
-import { ImageWithFallBack } from '../fallback/ImageWithFallBack';
+import { ImageWithFallBack } from '../fallback/ImageWithFallback';
 import { BookOpen, Video, FileText, Award, X, Calendar, Eye } from 'lucide-react'; // Đã thêm icon X để đóng popup
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
-
+import usePageConfig from "../../hooks/usePageConfig";
+import { useGetAllTrainingBlog } from '../../hooks/useNews';
+import { formatDate } from '../utils/formatDate';
+// import { useGetAllServices } from "../../hooks/use";
+// const ASSET_URL = import.meta.env.VITE_API_URL;
+const ASSET_URL = window.__ENV__.API_URL;
 const trainingArticles = [
   {
     id: 1,
@@ -68,8 +73,11 @@ const categories = [
   { name: 'An toàn', icon: '🛡️', count: 6 },
   { name: 'Chăm sóc khách hàng', icon: '🤝', count: 7 },
 ];
+
 function Traning() {
     // 1. State quản lý popup
+    const {data : dataT, loading: loadingT, error: errorT} = useGetAllTrainingBlog();;
+    const trainingBlogs = dataT?.data;
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -79,7 +87,11 @@ function Traning() {
     gender: 'female',
     course: ''
   });
-
+  //edit
+  const {data, loading, status } = usePageConfig();
+  const trainingSection = data?.data?.training;
+  const benefits = trainingSection?.benefit.cards;
+  // console.log(benefits)
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log('Form Submitted:', formData);
@@ -91,7 +103,7 @@ function Traning() {
       {/* Banner */}
       <section className="relative h-[400px] md:h-[500px] overflow-hidden">
         <ImageWithFallBack
-          src="https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=1200"
+          src={ASSET_URL+trainingSection?.banner?.img}
           alt="Training Academy"
           className="w-full h-full object-cover"
         />
@@ -99,18 +111,19 @@ function Traning() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-              Học viện đào tạo ToppiCare
+              {trainingSection?.banner?.title?trainingSection?.banner?.title:'Học viện đào tạo ToppiCare'}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl mb-8">
-              Nâng cao kỹ năng chuyên môn với các khóa học và tài liệu đào tạo chất lượng cao
+              {trainingSection?.banner?.desc?trainingSection?.banner?.desc:'Nâng cao kỹ năng chuyên môn với các khóa học và tài liệu đào tạo chất lượng cao'}
+              
             </p>
             {/* SỬA: Button mở popup */}
-            <button
+            {/* <button
               onClick={() => setIsModalOpen(true)}
               className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all inline-block text-center cursor-pointer font-bold"
             >
               Tham gia ngay
-            </button>
+            </button> */}
           </div>
         </div>
       </section>
@@ -152,55 +165,56 @@ function Traning() {
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {trainingArticles.map((article) => (
-              <div
-                key={article.id}
-                className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer group"
-              >
-                <div className="relative aspect-video overflow-hidden">
-                  <ImageWithFallBack
-                    src={article.image}
-                    alt={article.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                  />
-                  
-                  {/* Category Badge */}
-                  <div className="absolute top-4 left-4 px-3 py-1 bg-[rgb(45,189,182)] text-white rounded-full text-sm font-medium shadow-sm">
-                    {article.category}
+            {trainingBlogs?.map((article) => (
+              <Link to={`/blog-detail/${article.slug}`} key={article._id}>
+                <div
+                  className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer group"
+                >
+                  <div className="relative aspect-video overflow-hidden">
+                    <ImageWithFallBack
+                      src={ASSET_URL+article.img}
+                      alt={article.title}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    />
+                    
+                    {/* Category Badge */}
+                    <div className="absolute top-4 left-4 px-3 py-1 bg-[rgb(45,189,182)] text-white rounded-full text-sm font-medium shadow-sm">
+                      {article.category_id.name}
+                    </div>
+
+                    {/* Type Icon */}
+                    <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
+                      {article.type === 'video' ? (
+                        <Video className="w-5 h-5 text-[#2dbdb6]" />
+                      ) : (
+                        <FileText className="w-5 h-5 text-[#2dbdb6]" />
+                      )}
+                    </div>
+
+                    {/* Date & Views */}
+                    <div className="absolute bottom-4 right-4 flex items-center gap-3 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-white shadow-sm">
+                      <div className="flex items-center gap-1.5">
+                        <Calendar className="w-3.5 h-3.5 text-gray-300" />
+                        <span className="text-xs font-medium">{formatDate(article.updatedAt)}</span>
+                      </div>
+                      <div className="w-px h-3 bg-white/30"></div>
+                      <div className="flex items-center gap-1.5">
+                        <Eye className="w-3.5 h-3.5 text-gray-300" />
+                        <span className="text-xs font-medium">{article.views?article.views:'1.5k'}</span>
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Type Icon */}
-                  <div className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center shadow-sm">
-                    {article.type === 'video' ? (
-                      <Video className="w-5 h-5 text-[#2dbdb6]" />
-                    ) : (
-                      <FileText className="w-5 h-5 text-[#2dbdb6]" />
-                    )}
-                  </div>
-
-                  {/* Date & Views */}
-                  <div className="absolute bottom-4 right-4 flex items-center gap-3 bg-black/50 backdrop-blur-md px-3 py-1.5 rounded-full border border-white/10 text-white shadow-sm">
-                    <div className="flex items-center gap-1.5">
-                      <Calendar className="w-3.5 h-3.5 text-gray-300" />
-                      <span className="text-xs font-medium">20/12/2024</span>
-                    </div>
-                    <div className="w-px h-3 bg-white/30"></div>
-                    <div className="flex items-center gap-1.5">
-                      <Eye className="w-3.5 h-3.5 text-gray-300" />
-                      <span className="text-xs font-medium">1.5k</span>
-                    </div>
+                  <div className="p-6">
+                    <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">{article.title}</h3>
+                    <p className="text-gray-600 text-sm line-clamp-2 mb-4 text-[16px] line-clamp-2">{article.desc}</p>
+                    <button className="text-[rgb(45,189,182)] hover:text-green-600 transition-colors flex items-center gap-2">
+                      <span>Xem chi tiết</span>
+                      <BookOpen className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
-
-                <div className="p-6">
-                  <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold">{article.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 mb-4 text-[16px]">{article.excerpt}</p>
-                  <button className="text-[rgb(45,189,182)] hover:text-green-600 transition-colors flex items-center gap-2">
-                    <span>Xem chi tiết</span>
-                    <BookOpen className="w-4 h-4" />
-                  </button>
-                </div>
-              </div>
+              </Link>
             ))}
           </div>
         </div>
@@ -210,20 +224,23 @@ function Traning() {
       <section className="py-8 md:py-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            Lợi ích khi tham gia
+            {(trainingSection?.benefit?.title)?trainingSection?.benefit?.title:'Lợi ích khi tham gia'}
           </h2>
           <p className="text-center text-gray-600 mb-12">
-            Những giá trị mà ToppiCare Academy mang lại
+              {trainingSection?.benefit?.desc?trainingSection?.benefit?.desc:'Những giá trị mà ToppiCare Academy mang lại'}            
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {[
-              { icon: BookOpen, title: 'Học liệu phong phú', description: 'Hàng trăm bài học video và tài liệu chuyên sâu' },
-              { icon: Award, title: 'Chứng chỉ uy tín', description: 'Nhận chứng chỉ sau khi hoàn thành khóa học' },
-              { icon: Video, title: 'Học mọi lúc mọi nơi', description: 'Truy cập tài liệu 24/7 trên mọi thiết bị' },
-              { icon: FileText, title: 'Cập nhật liên tục', description: 'Nội dung được cập nhật theo xu hướng mới nhất' },
-            ].map((benefit, index) => {
-              const Icon = benefit.icon;
+            {
+            // [
+            //   { icon: BookOpen, title: 'Học liệu phong phú', description: 'Hàng trăm bài học video và tài liệu chuyên sâu' },
+            //   { icon: Award, title: 'Chứng chỉ uy tín', description: 'Nhận chứng chỉ sau khi hoàn thành khóa học' },
+            //   { icon: Video, title: 'Học mọi lúc mọi nơi', description: 'Truy cập tài liệu 24/7 trên mọi thiết bị' },
+            //   { icon: FileText, title: 'Cập nhật liên tục', description: 'Nội dung được cập nhật theo xu hướng mới nhất' },
+            // ]
+            benefits?.
+            map((benefit, index) => {
+              const Icon = Award //benefit.icon;
               return (
                 <div
                   key={index}
@@ -233,7 +250,7 @@ function Traning() {
                     <Icon className="w-8 h-8 text-white" />
                   </div>
                   <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">{benefit.title}</h3>
-                  <p className="text-gray-600 text-[16px] text-[15px]">{benefit.description}</p>
+                  <p className="text-gray-600 text-[16px] text-[15px]">{benefit.desc}</p>
                 </div>
               );
             })}

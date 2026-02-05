@@ -102,20 +102,20 @@ const pageConfig = new mongoose.Schema({
     },
     benefit: {
       title: String,
-      
-      benefit: [
+      desc: String,
+      cards: [
       {icon: String, title: String, desc: String, _id: false}
     ]}
   },
-  benefits: {
-    title: String,
-    desc: String,
-    cards: [{ icon: String, title: String, desc: String }],
-    cta: {
-      title: String,
-      desc: String,
-    },
-  },
+  // benefits: {
+  //   title: String,
+  //   desc: String,
+  //   cards: [{ icon: String, title: String, desc: String }],
+  //   cta: {
+  //     title: String,
+  //     desc: String,
+  //   },
+  // },
   news: {
     title: String,
     desc: String,
@@ -128,7 +128,8 @@ const pageConfig = new mongoose.Schema({
   contact: {
     banner:{
         title: String,
-        desc: String
+        desc: String,
+        img: String
     },
     info: {
         title: String,

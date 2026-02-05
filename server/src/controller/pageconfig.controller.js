@@ -4,10 +4,12 @@ const pageconfigService = require("../services/pageconfig.service");
 const CNAME = "pageconfig.controller.js ";
 const VNAME = "admin/pageconfig/";
 
-async function getPageConfigFx(){
+async function getPageConfigFx() {
   try {
     const task1 = await pageconfigService.getPageConfig();
-    if(!task1.success){throw new Error("Processing is failed");}
+    if (!task1.success) {
+      throw new Error("Processing is failed");
+    }
     return task1.data;
   } catch (error) {
     return {};
@@ -78,70 +80,100 @@ const PageConfigController = () => {
     ServiceSection: async (req, res) => {
       try {
         const pc = await getPageConfigFx();
-        res.render(VNAME + "services", {data: pc});
+        res.render(VNAME + "services", { data: pc });
       } catch (error) {
-        res.render(VNAME + "services", {data: {}});
+        res.render(VNAME + "services", { data: {} });
       }
     },
     SaveServiceSetion: async (req, res) => {
       try {
-        const {banner, services, booking_guide}= req.body;
-        const sDTO = {banner, services, booking_guide};
+        const { banner, services, booking_guide } = req.body;
+        const sDTO = { banner, services, booking_guide };
         console.log(sDTO);
         const task1 = await pageconfigService.updateServiceSection(sDTO);
-        if(!task1.success) {throw new Error("Processing is failed");
+        if (!task1.success) {
+          throw new Error("Processing is failed");
         }
-        res.json({success: true})
+        res.json({ success: true });
       } catch (error) {
-        res.json({success: false})
-
+        res.json({ success: false });
       }
     },
     AboutSection: async (req, res) => {
       try {
-        const pc =await getPageConfigFx();
+        const pc = await getPageConfigFx();
         console.log(pc);
-        res.render(VNAME + "about",{data: pc});
+        res.render(VNAME + "about", { data: pc });
       } catch (error) {
         console.log(CNAME, error.message);
-        res.render(VNAME + "about",{data: {}});
+        res.render(VNAME + "about", { data: {} });
       }
     },
     SaveAboutSetion: async (req, res) => {
       try {
-        const {slider, vision, stats} = req.body;
+        const { slider, vision, stats } = req.body;
         const aDTO = {
           slider,
           vision,
-          stats
-        }
+          stats,
+        };
         console.log(aDTO);
         const task1 = await pageconfigService.updateAboutSection(aDTO);
-        if(!task1.success) {throw new Error("update failed");
-        } 
-        res.json({success: true});
+        if (!task1.success) {
+          throw new Error("update failed");
+        }
+        res.json({ success: true });
       } catch (error) {
         console.log(CNAME, error.message);
-        res.status(500).json({success: false})
+        res.status(500).json({ success: false });
       }
     },
     TraningSection: async (req, res) => {
       try {
-        res.render(VNAME + "tranining");
-      } catch (error) {}
+        const pc = await getPageConfigFx();
+        res.render(VNAME + "tranining", { data: pc });
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.render(VNAME + "tranining", { data: {} });
+      }
     },
     SaveTraningSection: async (req, res) => {
       try {
-      } catch (error) {}
+        const { banner, benefit } = req.body;
+        const bDTO = { banner, benefit };
+        console.log(bDTO);
+        const task1 = await pageconfigService.updateTrainingSection(bDTO);
+        if (!task1.success) {
+          throw new Error("Processing faield");
+        }
+        res.json({ sucess: true });
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.status(500).json({ sucess: false });
+      }
     },
     ContactSection: async (req, res) => {
       try {
-        res.render(VNAME + "contact");
-      } catch (error) {}
+        const pc = await getPageConfigFx();
+        res.render(VNAME + "contact", {data: pc});
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.render(VNAME + "contact", {data: pc});
+      }
     },
     SaveContactSection: async (req, res) => {
       try {
-      } catch (error) {}
+        const { banner } = req.body;
+        const cDTO = { banner };
+        const task1 = await pageconfigService.updateContactSection(cDTO);
+        if (!task1.success) {
+          throw new Error("Processing failed");
+        }
+        res.json({ success: true });
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.status(500).json({ success: false });
+      }
     },
   };
 };

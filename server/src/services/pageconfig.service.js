@@ -112,7 +112,7 @@ class PageConfigService {
                 {},
                 {
                     $set: {
-                        news: traniningData
+                        training: traniningData
                     }
                 },
                 {
@@ -126,13 +126,13 @@ class PageConfigService {
             return {success: false, mess: error.message}
         }
     }
-    async updateContactSection(newsData){
+    async updateContactSection(contactData){
         try {
             const result = await PageConfigEntity.findOneAndUpdate(
                 {},
                 {
                     $set: {
-                        news: newsData
+                        contact: contactData
                     }
                 },
                 {

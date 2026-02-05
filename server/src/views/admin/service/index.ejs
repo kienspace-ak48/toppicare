@@ -36,7 +36,7 @@ fetch("/admin/service/list")
       tbody.innerHTML += `
         <tr class="border-t hover:bg-gray-50">
           <td class="px-4 py-3 font-medium">${s.name}</td>
-          <td class="px-4 py-3">${s.isFeatured ? '<i class="fa-solid fa-fire"></i>' : ""}</td>
+          <td class="px-4 py-3">${s.isFeatured ? '<i class="text-orange-500 fa-solid fa-fire"></i>' : ""}</td>
           <td class="text-center px-4 py-3">
             <span class=" px-2 py-1 rounded text-xs 
               ${s.status ? "text-green-700" : "text-gray-600"}">

@@ -57,7 +57,7 @@ function About() {
             }`}
           >
             <ImageWithFallBack
-              src={ASSET_URL+slide.image}
+              src={ASSET_URL+slide.img}
               alt={slide.title}
               className="w-full h-full object-cover"
             />
@@ -109,7 +109,7 @@ function About() {
             <div className="w-1/2">
               <div className="aspect-square rounded-3xl overflow-hidden shadow-2xl">
                 <ImageWithFallBack
-                  src={ASSET_URL+v.image}
+                  src={ASSET_URL+v.img}
                   alt="Vision"
                   className="w-full h-full object-cover"
                 />
@@ -122,7 +122,7 @@ function About() {
                 {v?.title}
               </h2>
               <div className="space-y-4 text-gray-700 leading-relaxed">
-                  {v?.desc.split('/br/').map((d, index)=>(
+                  {v?.desc?.map((d, index)=>(
                 <p key={index} className="text-[15px]" className="text-[16px]">
                   {d}
                 </p>

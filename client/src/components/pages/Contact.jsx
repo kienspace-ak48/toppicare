@@ -1,7 +1,8 @@
 import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 import { ImageWithFallBack } from '../fallback/ImageWithFallback';
 import { useState } from 'react';
-
+import usePageConfig from "../../hooks/usePageConfig";
+  // import { useGetAllServices } from "../../hooks/useServices";
 const contactInfo = [
   {
     icon: MapPin,
@@ -36,6 +37,11 @@ const branches = [
 
 
 function Contact() {
+  //edit
+  const {data, loading, error} = usePageConfig();
+  const contactSection = data?.data?.contact;
+  // const ASSET_URL = import.meta.env.VITE_API_URL;
+  const ASSET_URL = window.__ENV__.API_URL;
     const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -55,7 +61,7 @@ function Contact() {
       {/* Banner */}
       <section className="relative h-[400px] overflow-hidden">
         <ImageWithFallBack
-          src="https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=1200"
+          src={ASSET_URL+contactSection?.banner?.img}
           alt="Contact Us"
           className="w-full h-full object-cover"
         />
@@ -63,10 +69,10 @@ function Contact() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-              Liên hệ với chúng tôi
+              {contactSection?.banner?.title||'Liên hệ với chúng tôi'}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl">
-              Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn
+              {contactSection?.banner?.title||'Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn'}
             </p>
           </div>
         </div>

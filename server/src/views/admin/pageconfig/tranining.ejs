@@ -13,14 +13,14 @@
       <input
         type="text"
         name="tran_title"
-        value="<%#=(data.news)?data.news?.title:''%>"
+        value="<%=(data.training)?data.training?.banner.title:''%>"
         class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
         placeholder="Title..."
       />
       <input
         type="text"
         name="tran_desc"
-        value="<%#=(data.news)?data.news?.desc:''%>"
+        value="<%=(data.training)?data.training?.banner.desc:''%>"
         class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
         placeholder="Description..."
       />
@@ -37,14 +37,14 @@
           <input
             type="text"
             name="tran_img"
-            value="<%#=(data.news)?data.news?.img_url:''%>"
+                    value="<%=(data.training)?data.training?.banner.img:''%>"
             class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
             placeholder="img"
           />
         </div>
         <div class="img_preview border border-gray-300 w-full h-[200px]">
           <img
-            src="/<%#=(data.news)?data.news?.img_url: ''%>"
+            src="/<%=(data.training)?data.training?.banner.img:''%>"
             alt=""
             class="w-full object-cover max-h-[200px]"
           />
@@ -66,16 +66,62 @@
     <input
       type="text"
       name="tran_benefit_title"
+      value="<%=(data.training)?data.training?.benefit.title:''%>"
       class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
       placeholder="Nhập benefit title"
     />
     <input
       type="text"
       name="tran_benefit_desc"
+      value="<%=(data.training)?data.training?.benefit.desc:''%>"
       class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
       placeholder="Nhập benefit desc"
     />
-    <div id="benefit_wrapper" class="grid md:grid-cols-3 gap-5"></div>
+    <div id="benefit_wrapper" class="grid md:grid-cols-3 gap-5">
+      <%if(data.training.benefit.cards && data.training.benefit.cards.length>0){%>
+        <%data.training.benefit.cards.forEach(c=>{%>
+          <div class="benefit_instance p-4 rounded shadow relative">
+            <span
+              class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+              >X</span
+            >
+            <input type="text" value="<%=c.title%>" name="card_title" class="px-3 py-2 w-full border border-gray-300" />
+            <textarea
+              name="card_desc"
+              id=""
+              rows="2"
+              class="px-3 py-2 w-full border border-gray-300"
+            ><%=c.desc%></textarea>
+            <!-- image handle action -->
+            <div class="image_action">
+              <!-- <label for="">Image banner</label> -->
+              <div class="flex justify-between items-center mt-3">
+                <button
+                  class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+                >
+                  Chọn ảnh
+                </button>
+                <input
+                  type="text"
+                  name="card_icon"
+                  value="<%=c.icon?c.icon:''%>"
+                  class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+                  placeholder="img"
+                />
+              </div>
+              <div class="img_preview border border-gray-300 w-full h-[200px]">
+                <img
+                  src="/<%=c.icon?c.icon: ''%>"
+                  alt=""
+                  class="w-full object-cover max-h-[200px]"
+                />
+              </div>
+            </div>
+            <!--  -->
+          </div>
+        <%})%>
+      <%}%>
+    </div>
   </section>
 </div>
 <!-- =======TEMPLATE =========== -->
@@ -85,9 +131,9 @@
       class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
       >X</span
     >
-    <input type="text" class="px-3 py-2 w-full border border-gray-300" />
+    <input type="text" name="card_title" class="px-3 py-2 w-full border border-gray-300" />
     <textarea
-      name=""
+      name="card_desc"
       id=""
       rows="2"
       class="px-3 py-2 w-full border border-gray-300"
@@ -103,7 +149,7 @@
         </button>
         <input
           type="text"
-          name="news_img_url"
+          name="card_icon"
           value="<%#=(data.news)?data.news?.img_url:''%>"
           class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
           placeholder="img"
@@ -225,12 +271,30 @@
   document
     .querySelector("#btn_cta_save_config")
     .addEventListener("click", (ev) => {
-
+      //
+      let benefitArr = [];
+      benefitWrapper.querySelectorAll('.benefit_instance').forEach(b=>{
+        let benefit = {
+         icon: b.querySelector('input[name="card_icon"]').value,
+         title: b.querySelector('input[name="card_title"]').value,
+         desc: b.querySelector('textarea[name="card_desc"]').value
+        }
+        benefitArr.push(benefit);
+      })
       const payload = {
-        
+        banner: {
+          title: document.querySelector('input[name="tran_title"]').value,
+          desc: document.querySelector('input[name="tran_desc"]').value,
+          img: document.querySelector('input[name="tran_img"]').value,
+        },
+        benefit: {
+          title: document.querySelector('input[name="tran_benefit_title"]').value,
+          desc: document.querySelector('input[name="tran_benefit_desc"]').value,
+          cards: benefitArr
+        }
       };
       console.log(payload);
-      fetch("#/admin/page-config/news-section", {
+      fetch("/admin/page-config/training-section", {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -242,6 +306,6 @@
           console.log(data);
           myNotification("Success", "success");
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {console.log(err); alert('Processing failed')});
     });
 </script>

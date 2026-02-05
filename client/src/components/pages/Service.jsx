@@ -149,7 +149,7 @@ function Service() {
       {/* Banner */}
       <section className="relative h-[400px] md:h-[500px] overflow-hidden">
         <ImageWithFallBack
-          src="https://images.unsplash.com/photo-1757689314932-bec6e9c39e51?w=1200"
+          src={ASSET_URL+serviceSection?.banner?.img}
           alt="Services"
           className="w-full h-full object-cover"
         />
@@ -157,10 +157,11 @@ function Service() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-              Dịch vụ của chúng tôi
+              {(serviceSection?.banner?.title)?serviceSection?.banner?.title:`Dịch vụ của chúng tôi`}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl mb-8 text-[16px]">
-              Khám phá các dịch vụ chăm sóc sức khỏe chuyên nghiệp với đội ngũ kỹ thuật viên tay nghề cao
+              {(serviceSection?.banner?.desc)?serviceSection?.banner?.desc:`Khám phá các dịch vụ chăm sóc sức khỏe chuyên nghiệp với đội ngũ kỹ thuật viên tay nghề cao`}
+              
             </p>
             <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all">
               Đặt lịch ngay
@@ -172,10 +173,10 @@ function Service() {
       <section className="py-8 md:py-8">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            Các dịch vụ nổi bật
+            {serviceSection?.services?.title?serviceSection?.services?.title:`Các dịch vụ nổi bật`}
           </h2>
           <p className="text-center text-gray-600 mb-12 text-[16px]">
-            Lựa chọn dịch vụ phù hợp với nhu cầu của bạn
+            {serviceSection?.banner?.title?serviceSection?.services?.desc:`Lựa chọn dịch vụ phù hợp với nhu cầu của bạn`}
           </p>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -215,21 +216,21 @@ function Service() {
       <section className="py-8 md:py-8 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            Hướng dẫn đặt dịch vụ
+            {serviceSection?.booking_guide?.title?serviceSection?.booking_guide?.title:`Hướng dẫn đặt dịch vụ`}
           </h2>
           <p className="text-center text-gray-600 mb-12 text-[16px] text-[15px]">
-            5 bước đơn giản để đặt dịch vụ chăm sóc sức khỏe tại nhà
+            {serviceSection?.booking_guide?.title?serviceSection?.booking_guide?.desc:`5 bước đơn giản để đặt dịch vụ chăm sóc sức khỏe tại nhà`}
           </p>
 
           <div className="grid lg:grid-cols-2 gap-8">
             {/* Steps List - Left Side */}
             <div className="flex flex-col gap-4">
-              {serviceSection?.booking_guide?.steps.map((step) => (
+              {serviceSection?.booking_guide?.steps.sort((a,b)=>a.step_number -b.step_number).map((step, index) => (
                 <button
-                  key={step.step}
-                  onClick={() => setSelectedStep(step.step)}
+                  key={index}
+                  onClick={() => setSelectedStep(step.step_number)}
                   className={`w-full backdrop-blur-lg border rounded-3xl p-6 transition-all text-left ${
-                    selectedStep === step.step
+                    selectedStep === step.step_number
                       ? 'bg-[#2dbdb6] border-green-500 shadow-xl scale-105'
                       : 'bg-white/70 border-white/20 hover:shadow-lg hover:scale-102'
                   }`}
@@ -237,31 +238,31 @@ function Service() {
                   <div className="flex items-start gap-4">
                     <div
                       className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
-                        selectedStep === step.step
+                        selectedStep === step.step_number
                           ? 'bg-white text-[#2dbdb6]'
                           : 'bg-gradient-to-br from-[#2dbdb6] text-white'
                       }`}
                     >
-                      {selectedStep === step.step ? (
+                      {selectedStep == step.step_number ? (
                         <CheckCircle className="w-6 h-6" />
                       ) : (
-                        <span className="text-lg">{step.step}</span>
+                        <span className="text-lg">{step.step_number}</span>
                       )}
                     </div>
                     <div className="flex-1">
                       <h3
                         className={`text-lg mb-2 font-bold transition-colors ${
-                          selectedStep === step.step ? 'text-white' : 'text-gray-800'
+                          selectedStep == step.step_number ? 'text-white' : 'text-gray-800'
                         }`}
                       >
                         {step.title}
                       </h3>
                       <p
                         className={`text-sm transition-colors ${
-                          selectedStep === step.step ? 'text-white/90' : 'text-gray-600'
+                          selectedStep === step.step_number ? 'text-white/90' : 'text-gray-600'
                         }`}
                       >
-                        {step.description}
+                        {step.desc}
                       </p>
                     </div>
                   </div>
@@ -274,23 +275,23 @@ function Service() {
               <div className="relative aspect-[4/3] overflow-hidden">
                 {serviceSection?.booking_guide?.steps.map((step) => (
                   <div
-                    key={step.step}
+                    key={step.step_number}
                     className={`absolute inset-0 transition-opacity duration-500 ${
-                      selectedStep === step.step ? 'opacity-100' : 'opacity-0'
+                      selectedStep === step.step_number ? 'opacity-100' : 'opacity-0'
                     }`}
                   >
                     <ImageWithFallBack
-                      src={step.image}
+                      src={ASSET_URL+step.img}
                       alt={step.title}
                       className="w-full h-full object-cover"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
                     <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                       <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-3">
-                        <span className="text-sm">Bước {step.step}</span>
+                        <span className="text-sm">Bước {step.step_number}</span>
                       </div>
                       <h3 className="text-2xl mb-2 line-clamp-2">{step.title}</h3>
-                      <p className="text-white/90 line-clamp-2">{step.description}</p>
+                      <p className="text-white/90 line-clamp-2">{step.desc}</p>
                     </div>
                   </div>
                 ))}

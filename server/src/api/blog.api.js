@@ -59,6 +59,27 @@ const BlogApi = () => {
         res.status(500).json({ success: false, data: [] });
       }
     },
+    GetAllTrainingBlog: async(req, res)=>{
+      try {
+        const categories = await CategoryEntity.find(
+          {category_root: "training"},
+          "_id");
+        const categoryIds = categories.map(c=>c._id);
+        console.log('category: ',categoryIds)
+        const trainingBlogs = await BlogEntity.find({
+          category_id: { $in: categoryIds }
+        })
+        .populate({
+          path: 'category_id',
+          select: 'name slug category_root'
+        });
+        console.log(trainingBlogs);
+        return res.json({success: true, data: trainingBlogs});
+      } catch (error) {
+        console.log(CANME, error.message);
+        res.status(500).json({success: false, mess: error.message})
+      }
+    },
     GetAllNewsBlog: async(req, res)=>{
       try {
         const categories = await CategoryEntity.find(
@@ -91,7 +112,7 @@ const BlogApi = () => {
     },
     GetBlogBySlug: async(req, res)=>{
         try {
-            const cateogries =await getAllCategoryByRoot('news');
+            // const cateogries =await getAllCategoryByRoot('news');
             const _slug = req.params.slug;
             const blog =await BlogEntity.findOne({slug: _slug})
             .populate('category_id');

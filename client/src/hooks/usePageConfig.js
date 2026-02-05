@@ -8,10 +8,10 @@ export default function usePageConfig() {
 
   useEffect(() => {
     getPageConfig()
-      .then((res) =>{console.log(res); console.log(''), setData(res.data)})
+      .then((res) =>{ setData(res.data)})
       .catch(setError)
       .finally(() => setLoading(false));
-  }, {});
+  }, []);
 
   return { data, loading, error };
 }

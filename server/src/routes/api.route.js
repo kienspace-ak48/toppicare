@@ -12,6 +12,7 @@ router.get('/blog/services/get-one/:id', NewsApi.GetBlogById);
 router.get('/blog/get-one-slug/:slug', NewsApi.GetBlogBySlug);
 router.get('/blog/services/get-all', NewsApi.GelAllServiceBlog);
 router.get('/blog/news/get-all', NewsApi.GetAllNewsBlog);
+router.get('/blog/training/get-all', NewsApi.GetAllTrainingBlog);
 router.get('/blog/homepage/get-three-blog', NewsApi.HomePageGetThreeBlog);
 router.get("/pageconfigs", PageConfigApi.Index);
 router.get('/news', NewsApi.Index);
