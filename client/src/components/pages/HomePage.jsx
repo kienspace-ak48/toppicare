@@ -18,36 +18,35 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 // const ASSET_URL = import.meta.env.VITE_API_URL;
 const ASSET_URL = window.__ENV__.API_URL;
 
 import usePageConfig from "../../hooks/usePageConfig";
 import { useNews, useThreeBlogHomePage } from "../../hooks/useNews";
 import { formatDate } from "../utils/formatDate";
+import YoutubeEmbed from "../fallback/YoutubeEmbed";
+import DynamicFA from "../fallback/FontAwesomeIcon";
 
 function HomePage() {
-  // console.log(useThreeBlogHomePage())
   const {
-  data: dataNews,
-  loading: loadingNews,
-  error: errNews
-} = useThreeBlogHomePage();
+    data: dataNews,
+    loading: loadingNews,
+    error: errNews,
+  } = useThreeBlogHomePage();
   const newsArticles_2 = dataNews?.data;
-  console.log(dataNews?.data)
-  const{data, loading, error} = usePageConfig();
-  console.log(data)
+  // console.log(dataNews?.data)
+  const { data, loading, error } = usePageConfig();
+
   const [pageConfig, setPageConfig] = useState(null);
-  let heroSlides =data.data?.homepage?.banner??[];
-  let intro_app_benefits = data.data?.homepage?.intro_app?.benefits ??[];
+  let heroSlides = data.data?.homepage?.banner ?? [];
+  let intro_app_benefits = data.data?.homepage?.intro_app?.benefits ?? [];
   useEffect(() => {
     if (data) {
       setPageConfig(data.data);
     }
   }, [data]);
-  
-  
-  // console.log(data)
+
   // const heroSlides = [
   //   {
   //     id: 1,
@@ -65,7 +64,7 @@ function HomePage() {
   //     title: "Thư giãn và chăm sóc toàn diện",
   //   },
   // ];
-  
+
   //   const services = [
   //     {
   //       id: "liet-trinh-ket-hop",
@@ -212,7 +211,7 @@ function HomePage() {
   //       "Bạn có thể hủy lịch trước 2 giờ so với giờ hẹn mà không mất phí. Hủy muộn hơn sẽ tính phí 30% giá trị dịch vụ.",
   //   },
   // ];
-  const faqs= data?.data?.homepage?.faq?.sentences;
+  const faqs = data?.data?.homepage?.faq?.sentences;
   const [currentSlide, setCurrentSlide] = useState(0);
   const [expandedFaq, setExpandedFaq] = useState(null);
   const nextSlide = () => {
@@ -220,74 +219,28 @@ function HomePage() {
   };
   const prevSlide = () =>
     setCurrentSlide(
-      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+      (prev) => (prev - 1 + heroSlides.length) % heroSlides.length,
     );
   return (
     <div className="">
       {/* Hero slider */}
-      {/* <section className="relative h-[500px] md:h-[600px] overflow-hidden ">
+      <section className="relative w-full aspect-3/1 overflow-hidden">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-700 ${
-              index === currentSlide ? "opcaity-100" : "opacity-0"
+              index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
             }`}
           >
             <ImageWithFallBack
-              src={ASSET_URL+slide.banner_img}
+              src={ASSET_URL + slide.banner_img}
               alt={slide.title}
-              className="w-full h-full object-cover md:object-contain"
+              className="w-full h-full object-contain object-center"
             />
-            <div className="absolute inset-0 "></div>
-            <div className="absolute inset-0 flex items-center">
-              <div className="max-w-7xl mx-auto px-4 w-full">
-              </div>
-            </div>
           </div>
         ))}
-        
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all"
-        >
-          <ChevronLeft className="w-6 h-6 text-white" />
-        </button>
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 -translate-y-1/2  w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all"
-        >
-          <ChevronRight className="w-6 h-6 text-white" />
-        </button>
-        
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {heroSlides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentSlide(index)}
-              className={`w-2 h-2 rounded-full transition-all ${
-                index === currentSlide ? "bg-white w-8" : "bg-white/50"
-              }`}
-            />
-          ))}
-        </div>
-      </section> */}
-      <section className="relative h-[32vh] min-h-[260px] md:h-[80vh] overflow-hidden">
-  {heroSlides.map((slide, index) => (
-    <div
-      key={index}
-      className={`absolute inset-0 transition-opacity duration-700 ${
-        index === currentSlide ? "opacity-100 z-10" : "opacity-0 z-0"
-      }`}
-    >
-      <ImageWithFallBack
-        src={ASSET_URL + slide.banner_img}
-        alt={slide.title}
-        className="w-full h-full object-contain bg-transparent md:object-cover object-center"
-      />
-    </div>
-  ))}
 
-  <button
+        <button
           onClick={prevSlide}
           className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all z-20"
         >
@@ -299,7 +252,7 @@ function HomePage() {
         >
           <ChevronRight className="w-6 h-6 text-white" />
         </button>
-        
+
         <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
           {heroSlides.map((_, index) => (
             <button
@@ -311,14 +264,13 @@ function HomePage() {
             />
           ))}
         </div>
-</section>
+      </section>
 
       {/* Slogan */}
       <section className="py-6 bg-[#2bdbd6]">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <h2 className="text-white text-2xl md:text-4xl font-bold">
-            {pageConfig?.homepage?.slogan??'Chạm là khỏe - Đặt là đến!'}
-            
+            {pageConfig?.homepage?.slogan ?? "Chạm là khỏe - Đặt là đến!"}
           </h2>
         </div>
       </section>
@@ -332,11 +284,16 @@ function HomePage() {
                 {pageConfig?.homepage?.about?.title}
               </h2>
               <div>
-                {pageConfig?.homepage?.about.desc.split("/br/").map((item, index)=>(
-                  <p key={index} className="text-gray-700 mb-6 leading-relaxed text-[15px]">
-                    {item}
-                  </p>
-                ))}
+                {pageConfig?.homepage?.about.desc
+                  .split("/br/")
+                  .map((item, index) => (
+                    <p
+                      key={index}
+                      className="text-gray-700 mb-6 leading-relaxed text-[15px]"
+                    >
+                      {item}
+                    </p>
+                  ))}
               </div>
               {/* <p className="text-gray-700 mb-6 leading-relaxed text-[16px] text-[15px]">
                 Với đội ngũ kỹ thuật viên được đào tạo bài bản, chúng tôi cam
@@ -350,23 +307,7 @@ function HomePage() {
                 Tìm hiểu thêm
               </Link>
             </div>
-            <div className="relative">
-              {/* Khối Video Thumbnail và Nút Play */}
-              <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl bg-gradient-to-br from-green-200 to-teal-200 z-10">
-                <div className="absolute inset-0 flex items-center justify-center z-20">
-                  <button className="w-20 h-20 rounded-full bg-white/90 backdrop-blur-sm flex items-center justify-center hover:scale-110 transition-transform shadow-lg group">
-                    {/* Thêm class group vào button để có thể style icon bên trong khi hover nút */}
-                    <Play className="w-10 h-10 text-[#2dbdb6] ml-1 group-hover:text-green-700 transition-colors" />
-                  </button>
-                </div>
-                <ImageWithFallBack
-                  src="https://images.unsplash.com/photo-1759216852567-5e1dd25f79f6?w=800"
-                  alt="Video Introduction"
-                  className="w-full h-full object-cover opacity-80 hover:opacity-100 transition-opacity duration-300"
-                />
-              </div>
-              <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-green-500 to-teal-500 rounded-3xl -z-10"></div>
-            </div>
+            <YoutubeEmbed videoId={pageConfig?.homepage?.about?.video} />
           </div>
         </div>
       </section>
@@ -375,19 +316,18 @@ function HomePage() {
       <section className="py-16 md:py-24 overflow-hidden bg-white">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-2 gap-12 lg:gap-20 items-center">
-            
             {/* CỘT TRÁI: HÌNH ẢNH ĐIỆN THOẠI */}
             <div className="relative order-2 md:order-1">
               {/* Hiệu ứng nền mờ trang trí phía sau điện thoại */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-gradient-to-tr from-[#2dbdb6]/20 to-green-100 rounded-full blur-3xl -z-10"></div>
-              
+
               {/* Hình ảnh điện thoại */}
               <div className="relative mx-auto w-full max-w-[350px] transform hover:scale-[1.02] transition-transform duration-500">
                 {/* Bạn thay biến 'phoneAppImage' bằng đường dẫn ảnh bạn vừa upload nhé */}
-                <img 
-                  src={ASSET_URL+pageConfig?.homepage?.intro_app.img}
-                  alt="Toppicare App Interface" 
-                  className="w-full h-auto drop-shadow-2xl" 
+                <img
+                  src={ASSET_URL + pageConfig?.homepage?.intro_app.img}
+                  alt="Toppicare App Interface"
+                  className="w-full h-auto drop-shadow-2xl"
                 />
               </div>
             </div>
@@ -402,22 +342,25 @@ function HomePage() {
               {/* Danh sách các tính năng (Checklist) */}
               <ul className="space-y-4 mb-8">
                 {
-                // mau= [
-                //   "Đa dạng gói dịch vụ, đáp ứng mọi nhu cầu chăm sóc",
-                //   "Đặt lịch nhanh chóng chỉ với vài thao tác",
-                //   "Nhiều ưu đãi hấp dẫn dành cho khách hàng",
-                //   "Gợi ý chăm sóc thông minh",
-                //   "Ghi lại lịch sử sức khỏe sau mỗi lần trải nghiệm"
-                // ];
-                
-                intro_app_benefits.map((item, index) => (
-                  <li key={index} className="flex items-start gap-3">
-                    <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#2dbdb6]/10 flex items-center justify-center">
-                      <Check className="w-4 h-4 text-[#2dbdb6] stroke-[3]" />
-                    </div>
-                    <span className="text-gray-700 text-[16px] md:text-lg">{item}</span>
-                  </li>
-                ))}
+                  // mau= [
+                  //   "Đa dạng gói dịch vụ, đáp ứng mọi nhu cầu chăm sóc",
+                  //   "Đặt lịch nhanh chóng chỉ với vài thao tác",
+                  //   "Nhiều ưu đãi hấp dẫn dành cho khách hàng",
+                  //   "Gợi ý chăm sóc thông minh",
+                  //   "Ghi lại lịch sử sức khỏe sau mỗi lần trải nghiệm"
+                  // ];
+
+                  intro_app_benefits.map((item, index) => (
+                    <li key={index} className="flex items-start gap-3">
+                      <div className="mt-1 flex-shrink-0 w-6 h-6 rounded-full bg-[#2dbdb6]/10 flex items-center justify-center">
+                        <Check className="w-4 h-4 text-[#2dbdb6] stroke-[3]" />
+                      </div>
+                      <span className="text-gray-700 text-[16px] md:text-lg">
+                        {item}
+                      </span>
+                    </li>
+                  ))
+                }
               </ul>
 
               {/* CTA Button */}
@@ -429,36 +372,43 @@ function HomePage() {
                 <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
-
           </div>
         </div>
       </section>
       {/* Commitments */}
       <section className="py-4 md:py-12 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4">
-            <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-                {pageConfig?.homepage?.commitment?.title??'Cam kết của chúng tôi _'} 
-            </h2>
-            <p className="text-center text-gray-600 mb-12 text-[16px]">
-                {pageConfig?.homepage?.commitment?.desc??'Những giá trị cốt lõi mà ToppiCare mang đến _'} 
-            </p>
-            {/*  */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {pageConfig?.homepage.commitment.cards.map((com, index)=>{
-                    const Icon = Award;
-                    return(
-                        <div
-                        key={index} 
-                        className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-8 hover:shadow-xl transition-all hover:scale-105">
-                            <div className="w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center mb-4" >
-                                <Icon className="w-8 h-8 text-white"/>
-                            </div>
-                            <h3 className="text-xl mb-3 bg-gradient-to-r from-[#ff6b6b] to-[#FF8C42] bg-clip-text text-transparent text-[16px] font-bold">{com.title}</h3>
-                            <p className="text-gray-600 leading-relaxed text-[16px]">{com.desc}</p>
-                        </div>
-                    )
-                })}
-            </div>
+          <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
+            {pageConfig?.homepage?.commitment?.title ??
+              "Cam kết của chúng tôi _"}
+          </h2>
+          <p className="text-center text-gray-600 mb-12 text-[16px]">
+            {pageConfig?.homepage?.commitment?.desc ??
+              "Những giá trị cốt lõi mà ToppiCare mang đến _"}
+          </p>
+          {/*  */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {pageConfig?.homepage.commitment.cards.map((com, index) => {
+              let Icon = com?.icon;
+              return (
+                <div
+                  key={index}
+                  className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-8 hover:shadow-xl transition-all hover:scale-105"
+                >
+                  <div className="w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center mb-4">
+                    {/* <Icon className="w-8 h-8 text-white"/> */}
+                    <DynamicFA className="w-8 h-8 text-white" name={Icon} />
+                  </div>
+                  <h3 className="text-xl mb-3 bg-gradient-to-r from-[#ff6b6b] to-[#FF8C42] bg-clip-text text-transparent text-[16px] font-bold">
+                    {com.title}
+                  </h3>
+                  <p className="text-gray-600 leading-relaxed text-[16px]">
+                    {com.desc}
+                  </p>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
 
@@ -480,44 +430,46 @@ function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {newsArticles_2?.map((article) => (
-              <Link to={`/blog-detail/${article.slug}`}
-                key={article._id}
-              >
-                <div
-                className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
-              >
-                <div className="aspect-video overflow-hidden">
-                  <ImageWithFallBack
-                    src={ASSET_URL+article.img}
-                    alt={article.title}
-                    className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
-                  />
-                  {/* --- MỚI: Mắt xem (Góc phải trên) --- */}
-        <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 text-white rounded-full text-sm flex items-center gap-2 shadow-sm">
-          <Eye className="w-4 h-4" />
-          {/* Bạn thay 'article.views' bằng biến chứa lượt xem thực tế */}
-          <span>{article.views || '120'}</span>
-        </div>
-        {/* ----------------------------------- */}
+              <Link to={`/blog-detail/${article.slug}`} key={article._id}>
+                <div className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
+                  <div className="aspect-video overflow-hidden">
+                    <ImageWithFallBack
+                      src={ASSET_URL + article.img}
+                      alt={article.title}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                    />
+                    {/* --- MỚI: Mắt xem (Góc phải trên) --- */}
+                    <div className="absolute top-4 right-4 px-3 py-1 bg-black/50 backdrop-blur-md border border-white/10 text-white rounded-full text-sm flex items-center gap-2 shadow-sm">
+                      <Eye className="w-4 h-4" />
+                      {/* Bạn thay 'article.views' bằng biến chứa lượt xem thực tế */}
+                      <span>{article.views || "120"}</span>
+                    </div>
+                    {/* ----------------------------------- */}
+                  </div>
+
+                  <div className="p-6">
+                    <p className="text-sm text-[rgb(45,189,182)] mb-2">
+                      {formatDate(article.createdAt)}
+                    </p>
+                    <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">
+                      {article.title}
+                    </h3>
+                    <p className="text-gray-600 text-sm line-clamp-2 text-[16px] line-clamp-2">
+                      {article.desc}
+                    </p>
+                  </div>
                 </div>
-                
-                <div className="p-6">
-                  <p className="text-sm text-[rgb(45,189,182)] mb-2">{formatDate(article.createdAt)}</p>
-                  <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">{article.title}</h3>
-                  <p className="text-gray-600 text-sm line-clamp-2 text-[16px] line-clamp-2">{article.desc}</p>
-                </div>
-              </div>
               </Link>
             ))}
           </div>
         </div>
       </section>
-      
+
       {/* FAQs */}
       <section className="py-2 md:py-8 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-4xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-12 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            {pageConfig?.homepage?.faq?.title??'Câu hỏi thường gặp _'}
+            {pageConfig?.homepage?.faq?.title ?? "Câu hỏi thường gặp _"}
           </h2>
 
           <div className="space-y-4">
@@ -527,13 +479,17 @@ function HomePage() {
                 className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-2xl overflow-hidden"
               >
                 <button
-                  onClick={() => setExpandedFaq(expandedFaq === index ? null : index)}
+                  onClick={() =>
+                    setExpandedFaq(expandedFaq === index ? null : index)
+                  }
                   className="w-full px-6 py-4 flex items-center justify-between hover:bg-white/50 transition-colors"
                 >
-                  <span className="text-gray-800 text-[16px]">{faq.question}</span>
+                  <span className="text-gray-800 text-[16px]">
+                    {faq.question}
+                  </span>
                   <ChevronDown
                     className={`w-5 h-5 text-green-600 transition-transform ${
-                      expandedFaq === index ? 'rotate-180' : ''
+                      expandedFaq === index ? "rotate-180" : ""
                     }`}
                   />
                 </button>
@@ -546,14 +502,14 @@ function HomePage() {
             ))}
           </div>
           <div className="mt-10 text-center">
-      <Link
-        to="/help" // Thay đường dẫn trang FAQ của bạn vào đây
-        className="inline-flex items-center gap-2 px-8 py-3 bg-[#2dbdb6] text-white rounded-full font-semibold hover:opacity-90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
-      >
-        Xem thêm
-        <ArrowRight className="w-5 h-5" />
-      </Link>
-    </div>
+            <Link
+              to="/help" // Thay đường dẫn trang FAQ của bạn vào đây
+              className="inline-flex items-center gap-2 px-8 py-3 bg-[#2dbdb6] text-white rounded-full font-semibold hover:opacity-90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
+            >
+              Xem thêm
+              <ArrowRight className="w-5 h-5" />
+            </Link>
+          </div>
         </div>
       </section>
       {/* end */}

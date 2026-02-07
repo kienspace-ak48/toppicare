@@ -13,7 +13,7 @@ export function ImageWithFallBack(props) {
   return didError?(
     <div className={`inline-block bg-gray-100 text-center align-middle ${className??''}`}
     style={style}>
-        <div className="flex items-center justify-center w-full h-full">
+        <div className="flex items-center justify-center w-full">
             <img src={ERROR_IMG_SRC} alt="Error loading image" {...rest} data-original-url={src} />
         </div>
     </div>

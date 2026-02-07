@@ -133,21 +133,18 @@ const bookingSteps = [
 function Service() {
   const {data : dataS, loading: loadingS, error: errorS} = useGetAllServiceBlog();
   const {data : dataSv, loading: loadingSv, error: errorSv} = useGetAllServices();
-  console.log('data o day')
-  console.log(dataSv)
-  // console.log('AAA')
-  console.log(dataS);
+
+  // console.log(dataS);
   const services = dataSv?.data;
   const [selectedStep, setSelectedStep] = useState(1);
   // 
   const {data, loading, status } = usePageConfig();
   const serviceSection = data?.data?.service;
-  // console.log('data o services ',serviceSection)
   // 
   return (
     <div className="">
       {/* Banner */}
-      <section className="relative h-[400px] md:h-[500px] overflow-hidden">
+      <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
           src={ASSET_URL+serviceSection?.banner?.img}
           alt="Services"
@@ -163,9 +160,9 @@ function Service() {
               {(serviceSection?.banner?.desc)?serviceSection?.banner?.desc:`Khám phá các dịch vụ chăm sóc sức khỏe chuyên nghiệp với đội ngũ kỹ thuật viên tay nghề cao`}
               
             </p>
-            <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all">
+            {/* <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all">
               Đặt lịch ngay
-            </button>
+            </button> */}
           </div>
         </div>
       </section>
@@ -222,7 +219,7 @@ function Service() {
             {serviceSection?.booking_guide?.title?serviceSection?.booking_guide?.desc:`5 bước đơn giản để đặt dịch vụ chăm sóc sức khỏe tại nhà`}
           </p>
 
-          <div className="grid lg:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-2 gap-8 items-start">
             {/* Steps List - Left Side */}
             <div className="flex flex-col gap-4">
               {serviceSection?.booking_guide?.steps.sort((a,b)=>a.step_number -b.step_number).map((step, index) => (
@@ -271,7 +268,7 @@ function Service() {
             </div>
 
             {/* Image Display - Right Side */}
-            <div className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl overflow-hidden shadow-2xl h-full flex flex-col">
+            <div className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
               <div className="relative aspect-[4/3] overflow-hidden">
                 {serviceSection?.booking_guide?.steps.map((step) => (
                   <div

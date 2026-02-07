@@ -3,16 +3,74 @@ import { useParams } from "react-router-dom";
 
 import { useGetOneBlogBySlug, useGetOneServiceBlog } from "../../hooks/useNews";
 function BlogDetail() {
-  const ASSET_URL =  window.__ENV__.API_URL;
+  const ASSET_URL = window.__ENV__.API_URL;
   const { slug } = useParams();
-  console.log('slug ',slug)
+  console.log("slug ", slug);
 
+  //fix
+  function cleanExpiredViews() {
+  const now = Date.now()
 
-  // const {data: dataB, loading: loadingB, error: errorB} = useGetOneServiceBlog(slug);
-  const {data: dataB, loading: loadingB, error: errorB} = useGetOneBlogBySlug(slug);
+  Object.keys(localStorage).forEach(key => {
+    if (!key.startsWith("viewed_blog_")) return
+
+    try {
+      const data = JSON.parse(localStorage.getItem(key))
+
+      if (!data?.expire || now > data.expire) {
+        localStorage.removeItem(key)
+      }
+    } catch {
+      localStorage.removeItem(key)
+    }
+  })
+}
+
+  const VIEW_EXPIRE_HOURS = 1; // đổi 24 nếu muốn 1 ngày
+
+  function setViewWithExpire(key) {
+    const expireTime = Date.now() + VIEW_EXPIRE_HOURS * 60 * 60 * 1000//* 60 * 60 * 1000;
+
+    const data = {
+      viewed: true,
+      expire: expireTime,
+    };
+
+    localStorage.setItem(key, JSON.stringify(data));
+    console.log("now:", Date.now())
+console.log("expire:", data.expire)
+console.log("valid:", Date.now() < data.expire)
+
+  }
+
+  function hasValidView(key) {
+    const raw = localStorage.getItem(key);
+    if (!raw) return false;
+
+    try {
+      const data = JSON.parse(raw);
+
+      if (!data.expire) return false;
+
+      // hết hạn
+      if (Date.now() > data.expire) {
+        localStorage.removeItem(key);
+        return false;
+      }
+
+      return true;
+    } catch {
+      return false;
+    }
+  }
+  //eendfix
+  const {
+    data: dataB,
+    loading: loadingB,
+    error: errorB,
+  } = useGetOneBlogBySlug(slug);
 
   const blogData = dataB?.data;
-  console.log(blogData)
   //
   const [blog, setBlog] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -48,36 +106,40 @@ function BlogDetail() {
   };
   //fx tang view
   const increaseView = async (slug) => {
-  try {
-    console.log('processing inscrease view ');
-    console.log(`${ASSET_URL}api/blog/${slug}/view`)
-    await fetch(`${ASSET_URL}api/blog/${slug}/view`, { //${'http://localhost:3500'}
-    method: "POST",
-  });
-  } catch (error) {
-    console.error('failed to increase view')
-  }
-};
+    try {
+      console.log("processing inscrease view ");
+      console.log(`${ASSET_URL}api/blog/${slug}/view`);
+      await fetch(`${ASSET_URL}api/blog/${slug}/view`, {
+        //${'http://localhost:3500'}
+        method: "POST",
+      });
+    } catch (error) {
+      console.error("failed to increase view");
+    }
+  };
   useEffect(() => {
     setTimeout(() => {
       setBlog(blogData);
       setLoading(false);
-    }, 300);
+    }, 200);
   }, [blogData]);
   //
+
+  //now
   useEffect(() => {
-  if (!blogData?.slug) return;
+  if (!blogData?.slug) return
 
-  const viewedKey = `viewed_blog_${blogData?.slug}`;
+  // 🔥 xoá key hết hạn trước
+  cleanExpiredViews()
+  const viewedKey = `viewed_blog_${blogData.slug}`
 
-  // nếu chưa từng xem bài này trên trình duyệt này
-  if (!localStorage.getItem(viewedKey)) {
-    increaseView(blogData.slug);
-    localStorage.setItem(viewedKey, "1");
+  if (!hasValidView(viewedKey)) {
+    increaseView(blogData.slug)
+    setViewWithExpire(viewedKey)
   }
-}, [blogData?.slug]);
+}, [blogData?.slug])
 
-
+  //end
 
   if (!blogData) {
     return <div className="text-center py-20">Bài viết không tồn tại</div>;
@@ -108,16 +170,16 @@ function BlogDetail() {
 
       {/* IMAGE */}
       {blogData?.img && (
-  <div className="mb-8">
-    <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
-      <img
-        src={`${ASSET_URL + blogData?.img}`}
-        alt={blogData?.title}
-        className="absolute inset-0 w-full h-full object-cover"
-      />
-    </div>
-  </div>
-)}
+        <div className="mb-8">
+          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
+            <img
+              src={`${ASSET_URL + blogData?.img}`}
+              alt={blogData?.title}
+              className="absolute inset-0 w-full h-full object-cover"
+            />
+          </div>
+        </div>
+      )}
 
       {/* CONTENT */}
       <article

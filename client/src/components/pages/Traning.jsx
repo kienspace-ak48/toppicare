@@ -101,7 +101,7 @@ function Traning() {
     return(
         <div className="">
       {/* Banner */}
-      <section className="relative h-[400px] md:h-[500px] overflow-hidden">
+      <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
           src={ASSET_URL+trainingSection?.banner?.img}
           alt="Training Academy"
@@ -170,11 +170,11 @@ function Traning() {
                 <div
                   className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer group"
                 >
-                  <div className="relative aspect-video overflow-hidden">
+                  <div className="relative w-full aspect-3/1 overflow-hidden">
                     <ImageWithFallBack
                       src={ASSET_URL+article.img}
                       alt={article.title}
-                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                      className="w-full h-full object-contain object-center hover:scale-110 transition-transform duration-500"
                     />
                     
                     {/* Category Badge */}
@@ -224,10 +224,10 @@ function Traning() {
       <section className="py-8 md:py-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            {(trainingSection?.benefit?.title)?trainingSection?.benefit?.title:'Lợi ích khi tham gia'}
+            {(trainingSection?.benefit?.title)?trainingSection?.benefit?.title:''}
           </h2>
           <p className="text-center text-gray-600 mb-12">
-              {trainingSection?.benefit?.desc?trainingSection?.benefit?.desc:'Những giá trị mà ToppiCare Academy mang lại'}            
+              {trainingSection?.benefit?.desc?trainingSection?.benefit?.desc:''}            
           </p>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -259,23 +259,7 @@ function Traning() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-[#2dbdb6]">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-white text-3xl md:text-4xl mb-4 font-bold">
-            Bắt đầu hành trình học tập của bạn
-          </h2>
-          <p className="text-white/90 text-lg mb-8 text-[16px]">
-            Đăng ký ngay để truy cập toàn bộ tài liệu đào tạo
-          </p>
-          {/* SỬA: Button mở popup */}
-          <button
-            onClick={() => setIsModalOpen(true)}
-            className="px-8 py-3 bg-white text-[#2dbdb6] rounded-full hover:shadow-lg hover:scale-105 transition-all inline-block text-center cursor-pointer font-bold"
-          >
-            Tham gia ngay
-          </button>
-        </div>
-      </section>
+      
 
       {/* POPUP FORM (MODAL) */}
       {isModalOpen && (

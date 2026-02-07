@@ -83,7 +83,7 @@ class CategoryService {
       const menu = {
         news: [],
         training: [],
-        service: [],
+        // service: [],
       };
       categories.forEach((c) => {
         if (menu[c.category_root]) {

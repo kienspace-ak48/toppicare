@@ -75,7 +75,7 @@ export function Header() {
                                 <Link
                                   key={item.name}
                                   to={item.path}
-                                  className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                                  className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
                                 >
                                   <item.icon className="w-4 h-4" />
                                   <span className="hidden sm:inline text-[16px]">{item.name}</span>
@@ -88,13 +88,13 @@ export function Header() {
                                       window.open(ASSET_URL+'api/action-link/download-app', '_blank');
                                     }
                                   }}
-                                  className="flex items-center gap-1 hover:opacity-80 transition-opacity"
+                                  className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
                                 >
                                   <item.icon className="w-4 h-4" />
                                   <span className="hidden sm:inline text-[16px]">{item.name}</span>
                                 </button>
                               )
-                            ))}
+              ))}
               <button className="flex items-center gap-1 hover:opacity-80 transition-opacity">
                 <Globe className="w-4 h-4" />
                 <span className="hidden sm:inline text-[16px] ">VI</span>
@@ -116,7 +116,7 @@ export function Header() {
           <div className="fixed top-13 left-0 right-0 z-35 backdrop-blur-xl bg-white/95 shadow-2xl border-b border-white/20 animate-slideDown">
             <div className="max-w-7xl mx-auto px-4 py-6">
               <nav>
-                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-3">
                   {mainMenuItems.map((item) => {
                     const Icon = item.icon;
                     const isActive = location.pathname === item.path;
@@ -125,7 +125,7 @@ export function Header() {
                         <Link
                           to={item.path}
                           onClick={closeDropdown}
-                          className={`flex items-center gap-3 px-4 py-3 rounded-2xl transition-all ${
+                          className={`flex items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
                             isActive
                               ? "bg-[#2bdbd6] text-white shadowlg"
                               : "text-gray-700 hover:bg-white/80 hover:shadow-md"
@@ -137,6 +137,54 @@ export function Header() {
                       </li>
                     );
                   })}
+                  {/* <div> */}
+                    {horizontalMenuItems.map((item) => 
+                    {
+                      const Icon = item.icon;
+                    const isActive = location.pathname === item.path;
+                      return (
+                              item.path ? (
+                                <li
+                                  key={item.name}
+                                >
+                                  <Link
+                                  to={item.path}
+                                  className={`flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
+                            isActive
+                              ? "bg-[#2bdbd6] text-white shadowlg"
+                              : "text-gray-700 hover:bg-white/80 hover:shadow-md"
+                          }`}
+                                >
+                                  <item.icon className="w-4 h-4" />
+                                  <span className="hidden sm:inline text-[16px]">{item.name}</span>
+                                </Link>
+                                </li>
+                                
+                              ) : (
+                                <button
+                                  key={item.name}
+                                  onClick={() => {
+                                    if (item.action === 'download') {
+                                      window.open(ASSET_URL+'api/action-link/download-app', '_blank');
+                                    }
+                                  }}
+                                  className={
+                                    ` flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
+                            isActive
+                              ? "bg-[#2bdbd6] text-white shadowlg"
+                              : "text-gray-700 hover:bg-white/80 hover:shadow-md"
+                          }`
+                                  }
+                                  // className=" hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
+                                >
+                                  <item.icon className="w-4 h-4" />
+                                  <span className="flex  text-[16px]">{item.name}</span>
+                                </button>
+                              )
+              )
+                    }
+              )}
+                  {/* </div> */}
                 </ul>
               </nav>
 

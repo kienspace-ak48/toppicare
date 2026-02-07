@@ -348,7 +348,7 @@
         <!-- HEADER -->
         <header class="flex flex-col md:flex-row justify-between gap-4 mb-8">
           <h2 class="text-2xl font-bold text-gray-800 dark:text-white">
-            Dashboard
+            <!-- Dashboard -->
           </h2>
 
           <div class="flex items-center gap-4">
@@ -457,6 +457,12 @@
           console.log("click");
           document.documentElement.classList.toggle("dark");
         });
+      //
+      function goToActionBlank(action){
+        window.open(window.location.origin+action, '_blank')
+        // window.location.href = 
+        // origin = https://toppicare.vn
+      }  
     </script>
   </body>
 </html>

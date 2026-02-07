@@ -173,12 +173,12 @@ function Footer() {
                 </div>
 
                 {/* Buttons */}
-                <div className="flex gap-2 w-full xl:w-auto">
+                <div className=" flex gap-2 w-full xl:w-auto">
                   <a
                     href="https://play.google.com/store/apps/details?id=com.viettrace.toppicare&pcampaignid=web_share"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 xl:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white rounded-xl px-3 py-2 hover:bg-gray-800 transition-colors shadow-lg"
+                    className="group relative flex-1 xl:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white rounded-xl px-3 py-2 hover:bg-gray-800 transition-colors shadow-lg"
                   >
                     <svg
                       className="w-5 h-5"
@@ -193,13 +193,25 @@ function Footer() {
                       </span>
                       <span className="text-xs font-bold">Google Play</span>
                     </div>
+                    {/* <!-- Hover QR --> */}
+                      <div
+                        className="absolute hidden top-full left-0 -mt-20  group-hover:block bg-white p-2 rounded-md shadow-lg z-40"
+                      >
+                        <img
+                          src="/toppi_ggplay.png"
+                          className="max-w-32 max-h-32 object-contain"
+                          alt="QR App Store"
+                        />
+                      </div>
+                    {/*  */}
                   </a>
+                  
 
                   <a
                     href="https://apps.apple.com/vn/app/toppicare/id6755223405?l=vi"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex-1 xl:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white rounded-xl px-3 py-2 hover:bg-gray-800 transition-colors shadow-lg"
+                    className="group relative flex-1 xl:flex-none flex items-center justify-center gap-2 bg-gray-900 text-white rounded-xl px-3 py-2 hover:bg-gray-800 transition-colors shadow-lg"
                   >
                     <svg
                       className="w-5 h-5"
@@ -214,6 +226,17 @@ function Footer() {
                       </span>
                       <span className="text-xs font-bold">App Store</span>
                     </div>
+                    {/* <!-- Hover QR --> */}
+                      <div
+                        className="absolute hidden top-full left-0 -mt-20  group-hover:block bg-white p-2 rounded-md shadow-lg z-40"
+                      >
+                        <img
+                          src="/toppi_appstore.png"
+                          className="max-w-32 max-h-32 object-contain"
+                          alt="QR App Store"
+                        />
+                      </div>
+                    {/*  */}
                   </a>
                 </div>
               </div>

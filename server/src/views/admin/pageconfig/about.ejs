@@ -1,5 +1,5 @@
 <div class="flex justify-between items-center">
-  <h2 class="font-bold">About section/ Trang giới thiệu</h2>
+  <h2 class="font-bold">About section/ Trang giới thiệu <i class="text-blue-500 hover:cursor-pointer fa-regular fa-circle-question hover:scale-150" onclick="goToActionBlank('/about')"></i></h2>
   <button
     id="btn_cta_save_config"
     class="font-bold px-4 py-3 rounded-lg border border-gray-300 bg-blue-500 text-white"
@@ -10,10 +10,10 @@
 <div>
   <section class="banner mt-5">
     <div class="banner flex justify-between items-center">
-      <h3 class="font-bold">Banner</h3>
+      <h3 class="font-bold">Banner <small>(1920x640)</small></h3>
       <button
         id="btn_cta_add_card"
-        class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500"
+        class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500 text-white"
       >
         Add banner component
       </button>
@@ -67,8 +67,8 @@
   <hr class="my-5">
   <section class="vision mt-5">
     <div class="flex justify-between items-center">
-        <h3 class="font-bold">Vision</h3>
-        <button id="btn_cta_add_vision_card" class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500">Add vision component</button>
+        <h3 class="font-bold">Vision <small>(1000x1000)</small></h3>
+        <button id="btn_cta_add_vision_card" class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500 text-white">Add vision component</button>
     </div>
     <div id="vision_wrapper" class="mt-5 grid grid-cols-2 gap-5">
       <%if(data.about.vision && data.about.vision.length>0){%>

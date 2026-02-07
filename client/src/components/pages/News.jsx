@@ -137,7 +137,7 @@ function News() {
   return (
     <div className="">
       {/* Banner */}
-      <section className="relative h-[400px] md:h-[500px] overflow-hidden">
+      <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
           src="https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=1200"
           alt="News & Activities"

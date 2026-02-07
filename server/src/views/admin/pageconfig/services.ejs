@@ -1,14 +1,15 @@
-<h1 class="text-lg font-bold">Services section/ Trang dịch vụ</h1>
 <div class="p-4">
-  <div class="my_header">
+  <div class="my_header flex justify-between items-center">
+    <h1 class="text-lg font-bold">Services section/ Trang dịch vụ <i class="text-blue-500 hover:cursor-pointer fa-regular fa-circle-question hover:scale-150" onclick="goToActionBlank('/services')"></i></h1>
     <button
       id="btn_cta_save_config"
-      class="px-3 py-2 bg-blue-600 rounded-lg border border-gray-300 text-white"
+      class="font-bold px-3 py-2 bg-blue-600 rounded-lg border border-gray-300 text-white"
     >
       Save Config
     </button>
   </div>
   <div class="my_content">
+    <h2 class="font-bold mt-4">Banner <small>(1920x640)</small></h2>
     <div class="mt-5">
       <label for="">Title</label>
       <input
@@ -72,7 +73,7 @@
       <!-- ====Booking==== -->
        <hr class="my-4">
       <div class="flex mt-5 justify-between">
-        <label for="" class="text-[18px] font-bold">Step to booking</label>
+        <label for="" class=" font-bold">Step to booking <small>(1200x900)</small></label>
         <button
           class="px-3 py-2 rounded-lg border border-gray-300 bg-blue-600 text-white"
           id="btn_cta_add_step"

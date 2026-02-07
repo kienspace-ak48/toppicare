@@ -5,33 +5,17 @@
   }
 </style>
 <div class="flex justify-between items-center">
-  <h1 class="text-lg font-bold">Home section/ Trang chủ</h1>
-  <button id="btn_cta_save" class="mb-4 px-4 py-2 bg-blue-600 text-white rounded-lg">
+  <h1 class="text-lg font-bold">Home section/ Trang chủ  <i class="text-blue-500 hover:cursor-pointer fa-regular fa-circle-question hover:scale-150" onclick="goToActionBlank('/')"></i></h1>
+  <button id="btn_cta_save" class="font-bold mb-4 px-4 py-3 bg-blue-600 text-white rounded-lg">
     Save Config
   </button>
 
 </div>
 
-<!-- <details class="accordion group border rounded-lg  my-4"> -->
-  <!-- <summary
-    class="flex cursor-pointer items-center justify-between px-4 py-3 list-none"
-  >
-    <div class="flex items-center gap-2">
-      <span class="text-purple-500">⚙️</span>
-      <span class="font-medium">Hero</span>
-    </div>
-    <span class="transition-transform group-open:rotate-180">▼</span>
-  </summary> -->
-
-  <!-- <div class="px-4 pb-4 pt-2 space-y-3">
-      <input class="w-full border rounded px-3 py-2" placeholder="Hero title" />
-      <textarea class="w-full border rounded px-3 py-2"></textarea>
-    </div> -->
-  <!-- <div class="homepage_container px-4 pb-4 pt-2 space-y-3"> -->
     <!-- banner slider -->
      <div class="flex justify-between items-center gap-x-5">
-       <label for="">Slider hero</label>
-       <button id="btnAdd" class="px-4 py-3 bg-green-600 text-white rounded-lg mb-4">Thêm +</button>
+       <label for="" class="font-bold">Slider hero <small>(1920x640)</small></label>
+       <button id="btnAdd" class="px-4 py-3 bg-green-500 text-white rounded-lg mb-4 font-bold">Add banner component</button>
      </div>
     <!--  -->
       <div id="imageActionWrapper" class="grid grid-cols-2 gap-5">
@@ -55,7 +39,7 @@
               <input
                 type="text"
                 value="<%=b.banner_img%>"
-                class="img_input flex-3 px-4 py-3 border rounded-lg"
+                class="hidden img_input flex-3 px-4 py-3 border rounded-lg"
                 placeholder="img"
               />
             </div>
@@ -89,21 +73,19 @@
           class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
           placeholder="title"
         />
+        <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3" name="home_about_desc" id=""><%=(pc && pc.homepage)?pc.homepage?.about?.desc:''%></textarea>
+        <label for=""><small class="">Paste link embed youtube</small></label>
         <!-- <input
           type="text"
-          name="home_about_desc"
-          value="<%#=(pc && pc.homepage)?pc.homepage?.about?.desc:''%>"
-          class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
-          placeholder="desc"
-        /> -->
-        <textarea class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3" name="home_about_desc" id=""><%=(pc && pc.homepage)?pc.homepage?.about?.desc:''%></textarea>
-        <input
-          type="text"
           name="home_about_video"
-          value="<%=(pc && pc.homepage)?pc.homepage?.about?.video:''%>"
+          value="<%#=(pc && pc.homepage)?pc.homepage?.about?.video:''%>"
           class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
           placeholder="video"
-        />
+        /> -->
+        <textarea 
+        class="w-full px-4 py-3 border border-gray-300 rounded-lg mt-3"
+        name="home_about_video" id=""><%=(pc && pc.homepage)?pc.homepage?.about?.video:''%></textarea>
+
       </div>
       <!-- intro app -->
       <div class="">
@@ -116,7 +98,7 @@
               type="text"
               name="home_intro_img"
               value="<%=(pc && pc.homepage)?pc.homepage?.intro_app?.img:''%>"
-              class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg "
+              class="hidden flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg "
               placeholder="img"
             />
           </div>
@@ -136,12 +118,12 @@
         <!--  -->
         <div class="flex justify-between items-center my-3">
           <label for="" class="pr-4 py-3">Benefits</label>
-          <button class="px-4 py-3 w-full border border-black rounded-lg " id="homepage_cta_benefit_add">Add</button>
+          <button class="text-white font-bold px-4 py-3  border border-gray-300 bg-green-500 rounded-lg " id="homepage_cta_benefit_add">Add benefit component</button>
         </div>
         <div id="homepage_intro_app_wrapper">
           <%if(pc && pc.homepage.intro_app.benefits.length >0){%>
             <%pc.homepage.intro_app.benefits.forEach(b=>{%>
-              <div class="relative benefit_input_template" >
+              <div class="relative benefit_input_template my-2" >
                 <input type="text" value="<%=b%>" class="homepage_introapp_benefit_input w-full px-4 py-3 rounded-lg bg-white border border-gray-300" placeholder="benefits">
                 <span class="btn_remove text-red-500 top-0 right-2 -translate-y-1/2 absolute hover:cursor-pointer">X</span>
               </div>
@@ -153,15 +135,15 @@
     </div>
     <!--  -->
     <!-- faq -->
-       <hr>
+       <hr class="my-5">
        <div class=" col-span-full">
-        <label for="" class="px-4 py-3 w-full my-3" >faq</label>
+       <div class="flex justify-between items-center my-4">
+          <label for="">FaQs</label>
+          <button id="btn_home_faq_add" class="font-bold px-4 py-3 border border-gray-300 rounded-lg text-white bg-green-500">Add component FaQ</button>
+        </div>
         <input type="text" value="<%=(pc && pc.homepage)?pc.homepage?.faq?.title:''%>" name="home_faq_title" class="px-4 py-3 w-full rounded-xl border border-gray-300 mt-3">
         
-        <div class="flex justify-between items-center">
-          <label for="">FaQs</label>
-          <button id="btn_home_faq_add" class="px-4 py-3 border border-gray-300 rounded-lg bg-green-500">Add +</button>
-        </div>
+        
         <!--  -->
         <div id="wrapper_home_faq" class="grid grid-cols-1 md:grid-cols-2 gap-5">
           <%if(pc.homepage.faq && pc.homepage.faq.sentences.length > 0){%>
@@ -175,7 +157,7 @@
           <%}%>
         </div>
        </div>
-    <hr>
+    <hr class="my-5">
     <!-- commitment -->
       <div class="">
         <label for="" class="w-full px-4 py-3">Commitments</label>
@@ -196,7 +178,7 @@
         <!-- Commitment card-->
        <div class="flex justify-between gap-5">
           <label for="" class="px-4 py-3">Commitment card</label>
-          <button id="home_com_cta_add_card" class="px-4 py-3 rounded-lg border">Add +</button>
+          <button id="home_com_cta_add_card" class="px-4 py-3 rounded-lg border font-bold text-white bg-green-500">Add commitment card</button>
        </div>
       <div id="home_com_wrapper" class="grid grid-cols-4 sm:grid-cols-3 gap-5">
         <%if(pc.homepage.commitment && pc.homepage.commitment.cards.length > 0){%>
@@ -454,10 +436,14 @@
       data: JSON.stringify(data),
       contentType: 'application/json',
       success: (res)=>{
-        console.log(res);
-        document.location.reload();
+        // console.log(res);
+        if(res.success){
+          alert('update success')
+          document.location.reload();
+        }
       },
       error: (xhr, status, err)=>{
+        alert('update failed!')
         console.log(xhr.responseJSON?.mess|| "Server error")
       }
     })
@@ -487,6 +473,7 @@
       }
       home_com_cards.push(objT);
     })
+    //
     document.querySelectorAll('#wrapper_home_faq .item_card').forEach(el=>{
       let objT ={
         question: el.querySelector('input[name="question"]').value,
@@ -494,7 +481,7 @@
       }
       home_faq_cards.push(objT);
     })
-    console.log(home_com_cards);
+    // console.log(home_com_cards);
     // alert(home_faq_cards.length)
     let payload = {
       homepage:{
@@ -502,7 +489,7 @@
         about:{
           title: document.querySelector('input[name="home_about_title"]').value,
           desc: document.querySelector('textarea[name="home_about_desc"]').value,
-          video: document.querySelector("input[name='home_about_video']").value
+          video: document.querySelector("textarea[name='home_about_video']").value.trim()
         },
         slogan: document.querySelector('input[name="home_slogan"]').value,
         intro_app: {

@@ -2,21 +2,25 @@ const express = require("express");
 const app = express();
 const cors = require("cors");
 const path = require("path");
-const expressLayouts = require("express-ejs-layouts");
 const fs = require("fs");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const expressLayouts = require("express-ejs-layouts");
 const dbConnection = require("./config/dbConnection");
 const UserEntity = require("./model/user.model");
 const myPath = require("./config/myPath.config");
 const routes = require("./routes/index");
 const deviceInfoMiddleware = require("./middlewares/clientInfo");
+const cookieParser = require("cookie-parser");
 
 // serve static frontend
 // app.use(express.static(path.join(__dirname, "../public")));
 //middleware to serve static files
-app.use(express.static(myPath.public, {
-  index: false, // 🔥 CỰC QUAN TRỌNG
-}
-));
+app.use(
+  express.static(myPath.public, {
+    index: false, // 🔥 CỰC QUAN TRỌNG
+  }),
+);
 app.use(deviceInfoMiddleware);
 app.set("view engine", "ejs");
 // app.set('views',  myPath.root+'views');
@@ -26,13 +30,28 @@ app.set("layout", "layouts/adminLayout");
 //connect DB
 dbConnection();
 //
-app.use(cors("*"));
+// app.use(cookieParser);
+
+app.use(cors(({origin: '*'})));
+// app.use(
+//   helmet({
+//     contentSecurityPolicy: {
+//       directives: {
+//         defaultSrc: ["'self'"],
+//         scriptSrc: ["'self'", "'unsafe-inline'"],
+//         styleSrc: ["'self'", "'unsafe-inline'", "https:"],
+//         imgSrc: ["'self'", "data:", "blob:", "https:"],
+//         connectSrc: ["'self'", "ws:", "wss:"],
+//       },
+//     },
+//   }),
+// );
 // api
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 routes(app);
 
-// test area 
+// test area
 app.get("/api/commitments", (req, res) => {
   const commitments = [
     {
@@ -93,20 +112,20 @@ app.get("/test", (req, res) => {
   });
 });
 
-//
+//end test area
 // SPA fallback (React Router)
+console.log(path.join(__dirname, "../public/index.html"))
+
 let html = fs.readFileSync(
   path.join(__dirname, "../public/index.html"),
   "utf-8",
 );
-html=html.replace(/__API_URL__/g, process.env.API_URL);
+html = html.replace(/__API_URL__/g, process.env.API_URL);
 app.use((req, res) => {
-  console.log('bien server ',process.env.API_URL)
-  res.send(html)
+  console.log("bien server ", process.env.API_URL);
+  res.send(html);
   // res.sendFile(path.join(__dirname, "../public/index.html"));
 });
-// app.get('/', (req,res)=>{
-//     res.json({success: true, data: 'hello'})
-// });
+
 
 module.exports = app;

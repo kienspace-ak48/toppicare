@@ -59,7 +59,7 @@ function Contact() {
     return(
         <div className="">
       {/* Banner */}
-      <section className="relative h-[400px] overflow-hidden">
+      <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
           src={ASSET_URL+contactSection?.banner?.img}
           alt="Contact Us"
@@ -115,7 +115,7 @@ function Contact() {
                 Gửi tin nhắn cho chúng tôi
               </h2>
               <p className="text-gray-600 mb-8 text-[16px] text-[15px]">
-                Điền form bên dưới và chúng tôi sẽ liên hệ lại trong 24 giờ
+                Điền thông tin bên dưới và chúng tôi sẽ liên hệ lại cho bạn
               </p>
 
               <form onSubmit={handleSubmit} className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-8">
@@ -222,23 +222,6 @@ function Contact() {
                 </div>
               </div>
 
-              <div className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-6">
-                <h3 className="text-xl mb-4 text-gray-800 text-[18px]">Hướng dẫn đến</h3>
-                <ul className="space-y-2 text-gray-600">
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
-                    <span className="text-[15px]" className="text-[16px]">Gần trung tâm thương mại ABC Plaza</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
-                    <span className="text-[15px]" className="text-[16px]">Cách ga Metro Bến Thành 500m</span>
-                  </li>
-                  <li className="flex items-start gap-2">
-                    <span className="text-purple-600">•</span>
-                    <span className="text-[15px]" className="text-[16px]">Có bãi đỗ xe miễn phí cho khách hàng</span>
-                  </li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>
