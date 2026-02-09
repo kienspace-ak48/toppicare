@@ -44,12 +44,22 @@ Nội dung bài viết....</textarea
         <!-- <h3 class="font-semibold mb-3">Author</h3>
         <p class="text-sm">KienVu</p> -->
         <!-- <hr class="my-3" /> -->
+        <h3 class="font-semibold mb-2">Featured</h3>
+        <select
+          name=""
+          id="is_featured"
+          class="w-full border rounded px-4 py-3 border-gray-300 text-sm"
+        >
+          <option value="0">No</option>
+          <option value="1">Yes</option>
+        </select>
+        <!--  -->
+        <!-- <hr class="my-3" /> -->
         <h3 class="font-semibold mb-2">Status</h3>
         <select
           name=""
           id="status"
           class="w-full border rounded px-4 py-3 border-gray-300 text-sm"
-          id=""
         >
           <option value="0">Draft</option>
           <option value="1">Publish</option>
@@ -184,6 +194,7 @@ Nội dung bài viết....</textarea
       title: document.querySelector('input[name="title"]').value,
       slug: document.querySelector('input[name="slug"]').value,
       desc: document.querySelector('textarea[name="desc"]').value,
+      featured: document.querySelector('#is_featured').value,
       content: tinymce.get("editor").getContent(),
       status: document.querySelector("#status").value,
       img: document.querySelector("#img_thumb").value,
@@ -206,6 +217,7 @@ Nội dung bài viết....</textarea
         if (res.success) {
           myNotification("Create success", "success");
           window.location.reload();
+          window.location.href='/admin/blog';
         }
       })
       .catch((err) => {

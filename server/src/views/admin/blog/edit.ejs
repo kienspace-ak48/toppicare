@@ -47,6 +47,13 @@
             <!-- <h3 class="font-semibold mb-3">Author</h3>
             <p class="text-sm">KienVu</p> -->
             <hr class="my-3">
+            <!--  -->
+            <h3 class="font-semibold mb-2">Featured</h3>
+            <select name="" id="is_featured" class="w-full border rounded px-4 py-3 border-gray-300 text-sm" id="">
+                <option value="0" <%= !blog.status ? 'selected' : '' %> >No</option>
+                <option value="1" <%= blog.status ? 'selected' : '' %> >Yes</option>
+            </select>
+            <!--  -->
             <h3 class="font-semibold mb-2">Status</h3>
             <select name="" id="status" class="w-full border rounded px-4 py-3 border-gray-300 text-sm" id="">
                 <option value="0" <%= !blog.status ? 'selected' : '' %> >Draft</option>
@@ -165,6 +172,7 @@ const root = document.querySelector('#category_root').value;
       slug: document.querySelector('input[name="slug"]').value,
       desc: document.querySelector('textarea[name="desc"]').value,
       content: tinymce.get('editor').getContent(),
+      featured: document.querySelector('#is_featured').value,
       status: document.querySelector('#status').value,
       img: document.querySelector('#img_thumb').value
     }

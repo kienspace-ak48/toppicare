@@ -1,67 +1,128 @@
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
-import { ImageWithFallBack } from '../fallback/ImageWithFallback';
-import { useState } from 'react';
+import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
+import { ImageWithFallBack } from "../fallback/ImageWithFallback";
+import { useState } from "react";
 import usePageConfig from "../../hooks/usePageConfig";
-  // import { useGetAllServices } from "../../hooks/useServices";
+// import { useGetAllServices } from "../../hooks/useServices";
 const contactInfo = [
   {
     icon: MapPin,
-    title: 'Địa chỉ trụ sở chính',
-    content: '16A Lê Hồng Phong, Phường Hòa Hưng, Ho Chi Minh City, Vietnam',
+    title: "Địa chỉ trụ sở chính",
+    content: "16A Lê Hồng Phong, Phường Hòa Hưng, Ho Chi Minh City, Vietnam",
   },
   {
     icon: Phone,
-    title: 'Số điện thoại',
-    content: 'Hotline: 0862.4848.98\nPhone: 0862.4848.98',
+    title: "Số điện thoại",
+    content: "Hotline: 0862.4848.98\nPhone: 0862.4848.98",
   },
   {
     icon: Mail,
-    title: 'Email',
-    content: 'info@toppicare.vn',
+    title: "Email",
+    content: "info@toppicare.vn",
   },
   {
     icon: Clock,
-    title: 'Giờ làm việc',
-    content: 'Thứ 2 - Chủ nhật: 8:00 - 22:00\nDịch vụ 24/7',
+    title: "Giờ làm việc",
+    content: "Thứ 2 - Chủ nhật: 8:00 - 22:00\nDịch vụ 24/7",
   },
 ];
 
 const branches = [
-  { name: 'Chi nhánh Quận 1', address: '123 Đường ABC, Quận 1, TP.HCM', phone: '(028) 3xxx 1111' },
-  { name: 'Chi nhánh Quận 3', address: '456 Đường DEF, Quận 3, TP.HCM', phone: '(028) 3xxx 2222' },
-  { name: 'Chi nhánh Quận 7', address: '789 Đường GHI, Quận 7, TP.HCM', phone: '(028) 3xxx 3333' },
-  { name: 'Chi nhánh Bình Thạnh', address: '321 Đường JKL, Bình Thạnh, TP.HCM', phone: '(028) 3xxx 4444' },
-  { name: 'Chi nhánh Hà Nội', address: '654 Đường MNO, Hoàn Kiếm, Hà Nội', phone: '(024) 3xxx 5555' },
-  { name: 'Chi nhánh Đà Nẵng', address: '987 Đường PQR, Hải Châu, Đà Nẵng', phone: '(0236) 3xxx 6666' },
+  {
+    name: "Chi nhánh Quận 1",
+    address: "123 Đường ABC, Quận 1, TP.HCM",
+    phone: "(028) 3xxx 1111",
+  },
+  {
+    name: "Chi nhánh Quận 3",
+    address: "456 Đường DEF, Quận 3, TP.HCM",
+    phone: "(028) 3xxx 2222",
+  },
+  {
+    name: "Chi nhánh Quận 7",
+    address: "789 Đường GHI, Quận 7, TP.HCM",
+    phone: "(028) 3xxx 3333",
+  },
+  {
+    name: "Chi nhánh Bình Thạnh",
+    address: "321 Đường JKL, Bình Thạnh, TP.HCM",
+    phone: "(028) 3xxx 4444",
+  },
+  {
+    name: "Chi nhánh Hà Nội",
+    address: "654 Đường MNO, Hoàn Kiếm, Hà Nội",
+    phone: "(024) 3xxx 5555",
+  },
+  {
+    name: "Chi nhánh Đà Nẵng",
+    address: "987 Đường PQR, Hải Châu, Đà Nẵng",
+    phone: "(0236) 3xxx 6666",
+  },
 ];
-
 
 function Contact() {
   //edit
-  const {data, loading, error} = usePageConfig();
+  const { data, loadingP: laoding, error } = usePageConfig();
   const contactSection = data?.data?.contact;
   // const ASSET_URL = import.meta.env.VITE_API_URL;
   const ASSET_URL = window.__ENV__.API_URL;
-    const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    subject: '',
-    message: '',
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    subject: "",
+    message: "",
   });
-
-  const handleSubmit = (e) => {
+  const [loading, setLoading] = useState(false);
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', formData);
-    alert('Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+
+    console.log("Form submitted:", formData);
+    try {
+      setLoading(true);
+      const res = await fetch(`${ASSET_URL}api/contact`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await res.json();
+
+      if (data.success) {
+        alert("Gửi thành công");
+        setFormData({
+          name: "",
+          email: "",
+          phone: "",
+          subject: "",
+          message: "",
+        });
+      } else {
+        alert("Gửi thất bại");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Lỗi server");
+    } finally {
+      setLoading(false);
+    }
   };
-    return(
-        <div className="">
+
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   console.log("Form submitted:", formData);
+  //   alert(
+  //     "Cảm ơn bạn đã liên hệ! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.",
+  //   );
+  //   setFormData({ name: "", email: "", phone: "", subject: "", message: "" });
+  // };
+  return (
+    <div className="">
       {/* Banner */}
       <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
-          src={ASSET_URL+contactSection?.banner?.img}
+          src={ASSET_URL + contactSection?.banner?.img}
           alt="Contact Us"
           className="w-full h-full object-cover"
         />
@@ -69,10 +130,11 @@ function Contact() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-              {contactSection?.banner?.title||'Liên hệ với chúng tôi'}
+              {contactSection?.banner?.title || "Liên hệ với chúng tôi"}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl">
-              {contactSection?.banner?.title||'Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn'}
+              {contactSection?.banner?.title ||
+                "Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn"}
             </p>
           </div>
         </div>
@@ -96,8 +158,12 @@ function Contact() {
                   <div className="w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center mb-4">
                     <Icon className="w-8 h-8 text-white" />
                   </div>
-                  <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">{info.title}</h3>
-                  <p className="text-gray-600 whitespace-pre-line leading-relaxed text-[16px] text-[15px]">{info.content}</p>
+                  <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
+                    {info.title}
+                  </h3>
+                  <p className="text-gray-600 whitespace-pre-line leading-relaxed text-[16px] text-[15px]">
+                    {info.content}
+                  </p>
                 </div>
               );
             })}
@@ -118,15 +184,22 @@ function Contact() {
                 Điền thông tin bên dưới và chúng tôi sẽ liên hệ lại cho bạn
               </p>
 
-              <form onSubmit={handleSubmit} className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-8">
+              <form
+                onSubmit={handleSubmit}
+                className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-8"
+              >
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">Họ và tên *</label>
+                    <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                      Họ và tên *
+                    </label>
                     <input
                       type="text"
                       required
                       value={formData.name}
-                      onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, name: e.target.value })
+                      }
                       className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
                       placeholder="Nhập họ và tên"
                     />
@@ -134,24 +207,32 @@ function Contact() {
 
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
-                      <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">Email *</label>
+                      <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                        Email *
+                      </label>
                       <input
                         type="email"
                         required
                         value={formData.email}
-                        onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
                         className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
                         placeholder="Nhập email"
                       />
                     </div>
 
                     <div>
-                      <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">Số điện thoại *</label>
+                      <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                        Số điện thoại *
+                      </label>
                       <input
                         type="tel"
                         required
                         value={formData.phone}
-                        onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
                         className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
                         placeholder="Nhập số điện thoại"
                       />
@@ -159,24 +240,32 @@ function Contact() {
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">Chủ đề *</label>
+                    <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                      Chủ đề *
+                    </label>
                     <input
                       type="text"
                       required
                       value={formData.subject}
-                      onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, subject: e.target.value })
+                      }
                       className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
                       placeholder="Nhập chủ đề"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">Nội dung *</label>
+                    <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                      Nội dung *
+                    </label>
                     <textarea
                       required
                       rows={6}
                       value={formData.message}
-                      onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                      onChange={(e) =>
+                        setFormData({ ...formData, message: e.target.value })
+                      }
                       className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors resize-none"
                       placeholder="Nhập nội dung tin nhắn"
                     />
@@ -184,10 +273,10 @@ function Contact() {
 
                   <button
                     type="submit"
-                    className="w-full py-3 bg-[#2dbdb6] text-white rounded-2xl hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2"
+                    disabled={loading}
+                    className="w-full py-3 bg-[#2dbdb6] text-white rounded-2xl"
                   >
-                    <Send className="w-5 h-5" />
-                    Gửi tin nhắn
+                    {loading ? "Đang gửi..." : "Gửi tin nhắn"}
                   </button>
                 </div>
               </form>
@@ -210,18 +299,17 @@ function Contact() {
                     <p className="text-gray-600 text-sm mt-2">123 Đường ABC, Quận 1, TP.HCM</p>
                   </div>
                    */}
-                   <iframe
-      src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4907322578797!2d106.66947347553914!3d10.77367665924344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752edec7cd6b63%3A0xda47505a46e0b024!2zMTZBIEzDqiBI4buTbmcgUGhvbmcsIFBoxrDhu51uZyAxMiwgUXXhuq1uIDEwLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmggNzAwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1769746197471!5m2!1svi!2s"
-      className="w-full h-full"
-      style={{ border: 0 }}
-      allowFullScreen
-      loading="lazy"
-      referrerPolicy="no-referrer-when-downgrade"
-      title="Google Map"
-    />
+                  <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.4907322578797!2d106.66947347553914!3d10.77367665924344!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752edec7cd6b63%3A0xda47505a46e0b024!2zMTZBIEzDqiBI4buTbmcgUGhvbmcsIFBoxrDhu51uZyAxMiwgUXXhuq1uIDEwLCBUaMOgbmggcGjhu5EgSOG7kyBDaMOtIE1pbmggNzAwMDAwLCBWaeG7h3QgTmFt!5e0!3m2!1svi!2s!4v1769746197471!5m2!1svi!2s"
+                    className="w-full h-full"
+                    style={{ border: 0 }}
+                    allowFullScreen
+                    loading="lazy"
+                    referrerPolicy="no-referrer-when-downgrade"
+                    title="Google Map"
+                  />
                 </div>
               </div>
-
             </div>
           </div>
         </div>
@@ -276,14 +364,21 @@ function Contact() {
               <Phone className="w-5 h-5" />
               Gọi ngay
             </button>
-            <button className="px-8 py-3 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-full hover:bg-white/30 hover:scale-105 transition-all">
+            <button 
+            onClick={() => {
+                  window.open(
+                    ASSET_URL + "api/action-link/download-app",
+                    "_blank",
+                  );
+              }}
+            className="px-8 py-3 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-full hover:bg-white/30 hover:scale-105 transition-all">
               Tải ứng dụng
             </button>
           </div>
         </div>
       </section>
     </div>
-    )
+  );
 }
 
 export default Contact;

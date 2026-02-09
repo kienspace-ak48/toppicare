@@ -5,9 +5,10 @@ const PageConfigApi = require('../api/pageconfig.api')();
 const NewsApi = require('../api/blog.api')();
 const ServicesApi = require('../api/services.api')();
 const LinkCTA = require('../api/linkCTA.api')();
+const ContactApi= require('../api/contact.api')();
 
 router.post('/blog/:slug/view', NewsApi.IncreaseBlogView);
-router.get('/menu/by-category-root/root', NewsApi.GetMenuByRoot);
+router.get('/menu/by-category-root/:root', NewsApi.GetMenuByRoot);
 router.get('/blog/services/get-one/:id', NewsApi.GetBlogById);
 router.get('/blog/get-one-slug/:slug', NewsApi.GetBlogBySlug);
 router.get('/blog/services/get-all', NewsApi.GelAllServiceBlog);
@@ -19,6 +20,7 @@ router.get('/news', NewsApi.Index);
 // Services api
 router.get('/services/get-all', ServicesApi.Index);
 router.get('/services/all-pkg/:slug', ServicesApi.ServicePackage);
+// router.get('/services/category/get-all', ServicesApi)
 // Link Action api
 router.get('/action-link/download-app', LinkCTA.DownloadApp);
 //
@@ -41,5 +43,8 @@ router.get("/video", async (req, res) => {
     videoId
   })
 })
+//==========contact
+router.post('/contact', ContactApi.UserSendEmail)
+
 
 module.exports = router;

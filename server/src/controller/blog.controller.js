@@ -78,6 +78,7 @@ const BlogController = () => {
           slug: data.slug,
           status: data.status == '0' ? false : true,
           category_id: data.category,
+          featured: data.featured=='0'?false: true,
           img: data.img
         }
         const result = await blogService.add(bDTO);
@@ -131,6 +132,7 @@ const BlogController = () => {
           content: data.content,
           status: data.status,
           img: data.img,
+          featured: data.featured=='0'?false: true,
           category_id: data.category
         }
         const beforeUpdate = await blogService.getById(_id);

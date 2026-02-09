@@ -13,7 +13,12 @@ import imgChanCopy21 from "slider_1";
 import imgBodyCopy21 from "slider_1";
 import imgPhuKhoaCopy1 from "slider_1";
 import imgThietBiChamSocCopy21 from "slider_1";
-import { useNews, useThreeBlogHomePage, useGetAllServiceBlog } from "../../hooks/useNews";
+import {
+  useNews,
+  useThreeBlogHomePage,
+  useGetAllServiceBlog,
+  useGetCategoryByRoot,
+} from "../../hooks/useNews";
 import { formatDate } from "../utils/formatDate";
 
 import usePageConfig from "../../hooks/usePageConfig";
@@ -129,24 +134,32 @@ const bookingSteps = [
   },
 ];
 
-
 function Service() {
-  const {data : dataS, loading: loadingS, error: errorS} = useGetAllServiceBlog();
-  const {data : dataSv, loading: loadingSv, error: errorSv} = useGetAllServices();
+  const {
+    data: dataS,
+    loading: loadingS,
+    error: errorS,
+  } = useGetAllServiceBlog();
+  const {
+    data: dataSv,
+    loading: loadingSv,
+    error: errorSv,
+  } = useGetAllServices();
+  // const {data: dataC, loading: loadingC, error: errorR} = useGetCategoryByRoot('service');
 
   // console.log(dataS);
   const services = dataSv?.data;
   const [selectedStep, setSelectedStep] = useState(1);
-  // 
-  const {data, loading, status } = usePageConfig();
+  //
+  const { data, loading, status } = usePageConfig();
   const serviceSection = data?.data?.service;
-  // 
+  //
   return (
     <div className="">
       {/* Banner */}
       <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
-          src={ASSET_URL+serviceSection?.banner?.img}
+          src={ASSET_URL + serviceSection?.banner?.img}
           alt="Services"
           className="w-full h-full object-cover"
         />
@@ -154,11 +167,14 @@ function Service() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-              {(serviceSection?.banner?.title)?serviceSection?.banner?.title:`Dịch vụ của chúng tôi`}
+              {serviceSection?.banner?.title
+                ? serviceSection?.banner?.title
+                : `Dịch vụ của chúng tôi`}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl mb-8 text-[16px]">
-              {(serviceSection?.banner?.desc)?serviceSection?.banner?.desc:`Khám phá các dịch vụ chăm sóc sức khỏe chuyên nghiệp với đội ngũ kỹ thuật viên tay nghề cao`}
-              
+              {serviceSection?.banner?.desc
+                ? serviceSection?.banner?.desc
+                : `Khám phá các dịch vụ chăm sóc sức khỏe chuyên nghiệp với đội ngũ kỹ thuật viên tay nghề cao`}
             </p>
             {/* <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all">
               Đặt lịch ngay
@@ -170,12 +186,16 @@ function Service() {
       <section className="py-8 md:py-8">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            {serviceSection?.services?.title?serviceSection?.services?.title:`Các dịch vụ nổi bật`}
+            {serviceSection?.services?.title
+              ? serviceSection?.services?.title
+              : `Các dịch vụ nổi bật`}
           </h2>
           <p className="text-center text-gray-600 mb-12 text-[16px]">
-            {serviceSection?.banner?.title?serviceSection?.services?.desc:`Lựa chọn dịch vụ phù hợp với nhu cầu của bạn`}
+            {serviceSection?.banner?.title
+              ? serviceSection?.services?.desc
+              : `Lựa chọn dịch vụ phù hợp với nhu cầu của bạn`}
           </p>
-          
+
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {services?.map((service) => (
               <Link
@@ -185,7 +205,7 @@ function Service() {
               >
                 <div className="relative aspect-video overflow-hidden">
                   <ImageWithFallBack
-                    src={ASSET_URL+service.thumbnail}
+                    src={ASSET_URL + service.thumbnail}
                     alt={service.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
@@ -197,7 +217,9 @@ function Service() {
                   <h3 className="line-clamp-2 text-xl mb-2 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
                     {service.name}
                   </h3>
-                  <p className="text-gray-600 mb-4 text-[16px] line-clamp-2">{service.shortDesc}</p>
+                  <p className="text-gray-600 mb-4 text-[16px] line-clamp-2">
+                    {service.shortDesc}
+                  </p>
                   <div className="flex items-center text-[#2dbdb6] group-hover:gap-2 transition-all">
                     <span>Xem chi tiết</span>
                     <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
@@ -213,58 +235,68 @@ function Service() {
       <section className="py-8 md:py-8 bg-gradient-to-br from-green-50 via-teal-50 to-cyan-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
-            {serviceSection?.booking_guide?.title?serviceSection?.booking_guide?.title:`Hướng dẫn đặt dịch vụ`}
+            {serviceSection?.booking_guide?.title
+              ? serviceSection?.booking_guide?.title
+              : `Hướng dẫn đặt dịch vụ`}
           </h2>
           <p className="text-center text-gray-600 mb-12 text-[16px] text-[15px]">
-            {serviceSection?.booking_guide?.title?serviceSection?.booking_guide?.desc:`5 bước đơn giản để đặt dịch vụ chăm sóc sức khỏe tại nhà`}
+            {serviceSection?.booking_guide?.title
+              ? serviceSection?.booking_guide?.desc
+              : `5 bước đơn giản để đặt dịch vụ chăm sóc sức khỏe tại nhà`}
           </p>
 
           <div className="grid lg:grid-cols-2 gap-8 items-start">
             {/* Steps List - Left Side */}
             <div className="flex flex-col gap-4">
-              {serviceSection?.booking_guide?.steps.sort((a,b)=>a.step_number -b.step_number).map((step, index) => (
-                <button
-                  key={index}
-                  onClick={() => setSelectedStep(step.step_number)}
-                  className={`w-full backdrop-blur-lg border rounded-3xl p-6 transition-all text-left ${
-                    selectedStep === step.step_number
-                      ? 'bg-[#2dbdb6] border-green-500 shadow-xl scale-105'
-                      : 'bg-white/70 border-white/20 hover:shadow-lg hover:scale-102'
-                  }`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
-                        selectedStep === step.step_number
-                          ? 'bg-white text-[#2dbdb6]'
-                          : 'bg-gradient-to-br from-[#2dbdb6] text-white'
-                      }`}
-                    >
-                      {selectedStep == step.step_number ? (
-                        <CheckCircle className="w-6 h-6" />
-                      ) : (
-                        <span className="text-lg">{step.step_number}</span>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <h3
-                        className={`text-lg mb-2 font-bold transition-colors ${
-                          selectedStep == step.step_number ? 'text-white' : 'text-gray-800'
+              {serviceSection?.booking_guide?.steps
+                .sort((a, b) => a.step_number - b.step_number)
+                .map((step, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setSelectedStep(step.step_number)}
+                    className={`w-full backdrop-blur-lg border rounded-3xl p-6 transition-all text-left ${
+                      selectedStep === step.step_number
+                        ? "bg-[#2dbdb6] border-green-500 shadow-xl scale-105"
+                        : "bg-white/70 border-white/20 hover:shadow-lg hover:scale-102"
+                    }`}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center shadow-lg transition-all ${
+                          selectedStep === step.step_number
+                            ? "bg-white text-[#2dbdb6]"
+                            : "bg-gradient-to-br from-[#2dbdb6] text-white"
                         }`}
                       >
-                        {step.title}
-                      </h3>
-                      <p
-                        className={`text-sm transition-colors ${
-                          selectedStep === step.step_number ? 'text-white/90' : 'text-gray-600'
-                        }`}
-                      >
-                        {step.desc}
-                      </p>
+                        {selectedStep == step.step_number ? (
+                          <CheckCircle className="w-6 h-6" />
+                        ) : (
+                          <span className="text-lg">{step.step_number}</span>
+                        )}
+                      </div>
+                      <div className="flex-1">
+                        <h3
+                          className={`text-lg mb-2 font-bold transition-colors ${
+                            selectedStep == step.step_number
+                              ? "text-white"
+                              : "text-gray-800"
+                          }`}
+                        >
+                          {step.title}
+                        </h3>
+                        <p
+                          className={`text-sm transition-colors ${
+                            selectedStep === step.step_number
+                              ? "text-white/90"
+                              : "text-gray-600"
+                          }`}
+                        >
+                          {step.desc}
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                </button>
-              ))}
+                  </button>
+                ))}
             </div>
 
             {/* Image Display - Right Side */}
@@ -274,11 +306,13 @@ function Service() {
                   <div
                     key={step.step_number}
                     className={`absolute inset-0 transition-opacity duration-500 ${
-                      selectedStep === step.step_number ? 'opacity-100' : 'opacity-0'
+                      selectedStep === step.step_number
+                        ? "opacity-100"
+                        : "opacity-0"
                     }`}
                   >
                     <ImageWithFallBack
-                      src={ASSET_URL+step.img}
+                      src={ASSET_URL + step.img}
                       alt={step.title}
                       className="w-full h-full object-cover"
                     />
@@ -287,7 +321,9 @@ function Service() {
                       <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/20 backdrop-blur-sm rounded-full mb-3">
                         <span className="text-sm">Bước {step.step_number}</span>
                       </div>
-                      <h3 className="text-2xl mb-2 line-clamp-2">{step.title}</h3>
+                      <h3 className="text-2xl mb-2 line-clamp-2">
+                        {step.title}
+                      </h3>
                       <p className="text-white/90 line-clamp-2">{step.desc}</p>
                     </div>
                   </div>
@@ -297,7 +333,15 @@ function Service() {
           </div>
 
           <div className="mt-12 text-center">
-            <button className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all">
+            <button
+              onClick={() => {
+                  window.open(
+                    ASSET_URL + "api/action-link/download-app",
+                    "_blank",
+                  );
+              }}
+              className="px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
+            >
               Tải ứng dụng ngay
             </button>
           </div>
@@ -313,7 +357,14 @@ function Service() {
           <p className="text-white/90 text-lg mb-8 text-[16px]">
             Đặt lịch ngay hôm nay để nhận ưu đãi đặc biệt
           </p>
-          <button className="px-8 py-3 bg-white text-[rgb(45,189,182)] rounded-full hover:shadow-lg hover:scale-105 transition-all">
+          <button 
+          onClick={() => {
+                  window.open(
+                    ASSET_URL + "api/action-link/download-app",
+                    "_blank",
+                  );
+              }}
+          className="px-8 py-3 bg-white text-[rgb(45,189,182)] rounded-full hover:shadow-lg hover:scale-105 transition-all">
             Đặt lịch ngay
           </button>
         </div>

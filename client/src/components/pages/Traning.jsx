@@ -3,8 +3,9 @@ import { BookOpen, Video, FileText, Award, X, Calendar, Eye } from 'lucide-react
 import { Link } from 'react-router-dom';
 import React, { useState } from 'react';
 import usePageConfig from "../../hooks/usePageConfig";
-import { useGetAllTrainingBlog } from '../../hooks/useNews';
+import { useGetAllTrainingBlog, useGetCategoryByRoot } from '../../hooks/useNews';
 import { formatDate } from '../utils/formatDate';
+import DynamicFA from '../fallback/FontAwesomeIcon';
 // import { useGetAllServices } from "../../hooks/use";
 // const ASSET_URL = import.meta.env.VITE_API_URL;
 const ASSET_URL = window.__ENV__.API_URL;
@@ -65,17 +66,32 @@ const trainingArticles = [
   },
 ];
 
-const categories = [
-  { name: 'Kỹ thuật massage', icon: '💆', count: 15 },
-  { name: 'Aromatherapy', icon: '🌸', count: 8 },
-  { name: 'Bấm huyệt', icon: '✋', count: 12 },
-  { name: 'Kỹ năng mềm', icon: '💬', count: 10 },
-  { name: 'An toàn', icon: '🛡️', count: 6 },
-  { name: 'Chăm sóc khách hàng', icon: '🤝', count: 7 },
-];
+// const categories = [
+//   { name: 'Kỹ thuật massage', icon: '💆', count: 15 },
+//   { name: 'Aromatherapy', icon: '🌸', count: 8 },
+//   { name: 'Bấm huyệt', icon: '✋', count: 12 },
+//   { name: 'Kỹ năng mềm', icon: '💬', count: 10 },
+//   { name: 'An toàn', icon: '🛡️', count: 6 },
+//   { name: 'Chăm sóc khách hàng', icon: '🤝', count: 7 },
+// ];
 
 function Traning() {
     // 1. State quản lý popup
+    const {
+        data: dataM,
+        loading: loadinM,
+        error: errorM,
+      } = useGetCategoryByRoot("training");
+      const trainingMenu = dataM?.data;
+      console.log(trainingMenu);
+      const categories = trainingMenu?.map(item=>({
+        category_root: item.category_root,
+        name: item.name,
+        count: item.quantity
+      }
+      ))
+      
+    //
     const {data : dataT, loading: loadingT, error: errorT} = useGetAllTrainingBlog();;
     const trainingBlogs = dataT?.data;
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -130,18 +146,18 @@ function Traning() {
 
       {/* Categories */}
       <section className="py-8 md:py-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
-        <div className="max-w-7xl mx-auto px-4">
+        <div className="max-w-7xl mx-auto px-4 ">
           <h2 className="text-3xl md:text-4xl text-center mb-4 bg-[#2dbdb6] bg-clip-text text-transparent font-bold pb-2">
             Danh mục kiến thức
           </h2>
 
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((category, index) => (
+            {categories?.map((category, index) => (
               <button
                 key={index}
                 className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl p-6 hover:shadow-xl transition-all hover:scale-105 text-center"
               >
-                <div className="text-4xl mb-3">{category.icon}</div>
+                <div className="text-4xl mb-3"><DynamicFA className="w-8 h-8 text-orange-500" name={`fa-solid fa-layer-group`} /></div>
                 <div className="text-gray-800 mb-1 text-[16px]">{category.name}</div>
                 <div className="text-sm text-[rgb(45,189,182)]">{category.count} bài học</div>
               </button>

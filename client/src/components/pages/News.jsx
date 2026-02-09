@@ -2,7 +2,7 @@ import { useState } from "react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
 import { Calendar, Tag, TrendingUp, Eye } from "lucide-react";
 
-const newsCategories = [
+const newsCategories0 = [
   "Tất cả",
   "Tin tức",
   "Hoạt động",
@@ -15,6 +15,7 @@ import {
   useThreeBlogHomePage,
   useGetAllNewsBlog,
   useGetOneBlogBySlug,
+  useGetCategoryByRoot,
   // useGetMenuByRoot,
 } from "../../hooks/useNews";
 import { formatDate, formatDateTime } from "../utils/formatDate";
@@ -117,17 +118,28 @@ function News() {
   const ASSET_URL = window.__ENV__.API_URL;
   const { data, loading, error } = useNews();
   const { data: dataN, loading: loadinN, error: errorN } = useGetAllNewsBlog();
-  // const { data: dataM, loading: loadinM, error: errorM } = useGetMenuByRoot('news');
+  console.log("dataN co gi", dataN?.data);
+  const {
+    data: dataM,
+    loading: loadinM,
+    error: errorM,
+  } = useGetCategoryByRoot("news");
+  const articleMenu = dataM?.data;
 
-  const [selectedCategory, setSelectedCategory] = useState("Tất cả");
+  console.log("dataM ", articleMenu);
+  var newsCategories = articleMenu;
+  // console.log('data type ', newsCategories)
+
+  const [selectedCategory, setSelectedCategory] = useState("all");
   var newsArticles = dataN?.data;
-  var newCategorySlug = dataN?.data?.category_id?.slug;
+  // var newCategorySlug = dataN?.data?.category_id?.slug;
+  console.log("choose current ", selectedCategory);
 
   const filteredArticles =
-    selectedCategory === "Tất cả"
+    selectedCategory === "all"
       ? newsArticles
       : newsArticles?.filter(
-          (article) => article.category === selectedCategory,
+          (article) => article.category_id?.slug === selectedCategory,
         );
 
   const featuredArticles = newsArticles?.filter((article) => article?.featured);
@@ -161,17 +173,27 @@ function News() {
       <section className="py-8 bg-white/50 backdrop-blur-sm sticky top-16 md:top-20 z-40 border-b border-white/20">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
-            {newsCategories.map((category) => (
+            <button
+              onClick={() => setSelectedCategory("all")}
+              className={`px-6 py-2 rounded-full ${
+                selectedCategory === "all"
+                  ? "bg-[#2dbdb6] text-white"
+                  : "bg-white/60 text-gray-700"
+              }`}
+            >
+              Tất cả
+            </button>
+            {newsCategories?.map((category) => (
               <button
-                key={category}
-                onClick={() => setSelectedCategory(category)}
+                key={category._id}
+                onClick={() => setSelectedCategory(category.slug)}
                 className={`px-6 py-2 rounded-full whitespace-nowrap transition-all ${
-                  selectedCategory === category
+                  selectedCategory === category.slug
                     ? "bg-[#2dbdb6] text-white shadow-lg"
                     : "bg-white/60 text-gray-700 hover:bg-white/80"
                 }`}
               >
-                {category}
+                {category?.name}
               </button>
             ))}
           </div>
@@ -179,7 +201,7 @@ function News() {
       </section>
 
       {/* Featured Articles */}
-      {selectedCategory === "Tất cả" && featuredArticles?.length > 0 && (
+      {selectedCategory === "all" && featuredArticles?.length > 0 && (
         <section className="py-8 md:py-8">
           <div className="max-w-7xl mx-auto px-4">
             <div className="flex items-center gap-3 mb-8">
@@ -223,7 +245,7 @@ function News() {
                       <h3 className="text-2xl mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">
                         {article.title}
                       </h3>
-                      <p className="text-gray-600 line-clamp-3 text-[16px] text-[15px] line-clamp-2">
+                      <p className="text-gray-600 line-clamp-3 text-[16px] ">
                         {article.desc}
                       </p>
                     </div>
@@ -239,14 +261,12 @@ function News() {
       <section className="py-8 md:py-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl mb-12 bg-[#2dbdb6] bg-clip-text text-transparent font-bold">
-            {selectedCategory === "Tất cả"
-              ? "Tất cả bài viết"
-              : selectedCategory}
+            {selectedCategory === "all" ? "Tất cả bài viết" : (articleMenu.find(c=>c.slug ===selectedCategory)?.name)}
           </h2>
           {/* edit here */}
           {regularArticles?.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {newsArticles?.map((article) => (
+              {regularArticles?.map((article) => (
                 <Link to={`/blog-detail/${article.slug}`} key={article._id}>
                   <div className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
                     <div className="relative aspect-video overflow-hidden">
@@ -272,7 +292,7 @@ function News() {
                     <div className="p-6">
                       <div className="flex items-center gap-2 text-gray-600 text-sm mb-3">
                         <Calendar className="w-4 h-4" />
-                        <span>{formatDate(article.createdAt)}</span>
+                        <span>{formatDate(article.updatedAt)}</span>
                       </div>
                       <h3 className="text-lg mb-3 text-gray-800 text-[18px] font-bold line-clamp-2">
                         {article.title}
@@ -296,7 +316,7 @@ function News() {
       </section>
 
       {/* Newsletter */}
-      <section className="py-16 bg-[#2dbdb6]">
+      {/* <section className="py-16 bg-[#2dbdb6]">
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-white text-3xl md:text-4xl mb-4 font-bold">
             Đăng ký nhận tin
@@ -316,7 +336,7 @@ function News() {
             </button>
           </div>
         </div>
-      </section>
+      </section> */}
     </div>
   );
 }

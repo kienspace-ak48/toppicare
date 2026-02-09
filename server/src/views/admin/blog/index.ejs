@@ -36,68 +36,6 @@
       </tr>
     </thead>
     <tbody class="divide-y divide-gray-100 text-left">
-      <tr class="hover:bg-gray-50 transition">
-        <td class="px-6 py-4">
-          ToppiCare khai trương chi nhánh thứ 15 tại Hà Nội
-        </td>
-        <td class="px-6 py-4">
-          toppicare-khai-truong-chi-nhanh-thu-15-tai-ha-noi
-        </td>
-        <td class="py-1">
-          <img
-            src="/uploads/imgs/img-slider_1-500564409.webp"
-            alt=""
-            style="width: 100px; height: 100px; object-fit: cover"
-          />
-        </td>
-        <td class="px-6 py-4">69784602bbf9329335142977</td>
-        <td class="px-6 py-4">False</td>
-        <td class="px-6 py-4">
-          <a href="/admin/blog/edit-blog/6979d128a3ff584903a5b1d6"
-            ><button
-              class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
-            >
-              Edit
-            </button></a
-          >
-          <button
-            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-      <tr class="hover:bg-gray-50 transition">
-        <td class="px-6 py-4">
-          ToppiCare đồng hành cùng chương trình "Sức khỏe cộng đồng"
-        </td>
-        <td class="px-6 py-4">
-          toppicare-dong-hanh-cung-chuong-trinh-suc-khoe-cong-dong
-        </td>
-        <td class="py-1">
-          <img
-            src="/uploads/imgs/img-slider_2-304254095.webp"
-            alt=""
-            style="width: 100px; height: 100px; object-fit: cover"
-          />
-        </td>
-        <td class="px-6 py-4">69784602bbf9329335142977</td>
-        <td class="px-6 py-4">True</td>
-        <td class="px-6 py-4">
-          <a href="/admin/blog/edit-blog/6979d128a3ff584903a5b1d6"
-            ><button
-              class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
-            >
-              Edit
-            </button></a
-          >
-          <button
-            class="border border-gray-300 px-4 py-3 rounded-lg shadow hover:bg-gray-500 hover:text-white"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
     </tbody>
   </table>
 </div>
@@ -110,6 +48,7 @@
       url: "/admin/blog/get-all",
       dataSrc: "data",
     },
+    ordering: false, // ⭐ QUAN TRỌNG
     layout: {
     topStart: 'pageLength',
     topEnd: 'search',
@@ -126,6 +65,7 @@
           <img
             src="/${v}"
             alt=""
+            loading="lazy"
             style="width: 80px; height: 80px; object-fit: cover"
           />
         </div>`,

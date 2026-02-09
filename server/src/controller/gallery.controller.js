@@ -5,28 +5,39 @@ const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
 const ImageEntity = require("../model/image.model");
-const FolderEntity = require('../model/folder.model');
+const FolderEntity = require("../model/folder.model");
 const galleryController = () => {
   //tao thu muc
   const pathPrefix = "uploads/imgs/";
+  const pathPrefix2 = "uploads/sys_folder/";
   const uploadDir = path.join(myPathConfig.public, pathPrefix);
-  
-function mySlugify(str){
-  return str
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9\s-]/g,"")
-    .replace(/\s+/g,"-");
-}
+  const uploadDir2 = path.join(myPathConfig.public, pathPrefix2);
+
+  function mySlugify(str) {
+    return str
+      .toLowerCase()
+      .normalize("NFD") // tách dấu
+      .replace(/[\u0300-\u036f]/g, "") // xoá dấu
+      .replace(/đ/g, "d")
+      .replace(/[^a-z0-9\s-]/g, "") // xoá ký tự lạ
+      .trim()
+      .replace(/\s+/g, "_") // space -> _
+      .replace(/_+/g, "_"); // tránh ___
+  }
+  async function GetAllFolder() {
+    try {
+      const folders = await FolderEntity.find({});
+      return folders;
+    } catch (error) {
+      console.log(CNAME, error.message);
+      return [];
+    }
+  }
   return {
     Index: async (req, res) => {
       try {
-        const images = await ImageEntity.find().lean();
-        let folders = [
-    { id: 1, name: 'Tài liệu' },
-    { id: 2, name: 'Công việc' },
-    { id: 3, name: 'Cá nhân' }
-];
+        const images = await ImageEntity.find().sort({ createdAt: -1 }).lean();
+        let folders = await GetAllFolder();
 
         res.render(VNAME + "gallery", { images, folders });
       } catch (error) {
@@ -89,47 +100,206 @@ function mySlugify(str){
         console.log(CNAME + error.message);
       }
     },
+    DeleteImageAjax: async (req, res) => {
+      try {
+        const { img_path, folder_id } = req.body;
+
+        if (!img_path) {
+          return res.json({ success: false });
+        }
+
+        // xoá file vật lý
+        const fullPath = path.join(process.cwd(), img_path);
+
+        if (fs.existsSync(fullPath)) {
+          fs.unlinkSync(fullPath);
+        }
+
+        // xoá DB
+        await ImageEntity.deleteOne({ path: img_path });
+
+        // load lại ảnh folder
+        let images;
+
+        if (folder_id === "all") {
+          images = await ImageEntity.find().sort({ _id: -1 });
+        } else {
+          images = await ImageEntity.find({ folder_id }).sort({ _id: -1 });
+        }
+
+        res.json({ success: true, images });
+      } catch (err) {
+        console.log(err);
+        res.json({ success: false });
+      }
+    },
     // ajax
     GetAll: async (req, res) => {
       try {
-        const imgs = await ImageEntity.find().sort({}).lean();
+        const imgs = await ImageEntity.find().sort({updatedAt: -1}).lean();
         return res.json({ success: true, data: imgs });
       } catch (error) {
         console.log(CNAME, error.message);
         return res.status(500).json({ success: false, data: [] });
       }
     },
-    //=========Folder 
-    CreateFolder: async(req, res)=>{
+    //=========Folder
+    CreateFolder: async (req, res) => {
       try {
-        const {name} = req.body.folderName;
-        if(!name) return res.redirect('back');
+        const name = req.body.folder_name;
+        console.log(name);
+        if (!name)
+          return res.status(400).json({ success: false, mess: "lose input" });
         const slug = mySlugify(name);
         //path vat ly
-        const folderPath = `sys_upload/${slug}`;
+        const folderPath = `${pathPrefix2}/${slug}`;
         //path tuyet doi
         const absolutePath = path.join(myPathConfig.public, folderPath);
-        console.log('path: ',absolutePath);
         //neu chua co thi tao
-        if(!fs.existsSync(absolutePath)){
-          fs.mkdirSync(absolutePath, {recursive: true});
+        if (!fs.existsSync(absolutePath)) {
+          fs.mkdirSync(absolutePath, { recursive: true });
         }
         //check DB trung
-        const exit = await FolderEntity.findOne({path: folderPath});
-        if(exit){
-          return res.json({success: false, mess: 'folder is exit'})
-        } 
+        const exit = await FolderEntity.findOne({ path: folderPath });
+        if (exit) {
+          return res
+            .status(400)
+            .json({ success: false, mess: "folder is exit" });
+        }
         await FolderEntity.create({
           name,
-          path: folderPath
+          path: folderPath,
         });
-        res.redirect('/')
-          
-        
-
+        res.json({ success: true, mess: "Tao folder success" });
       } catch (error) {
         console.log(CNAME, error.message);
+        res.status(500).json({ success: false, mess: "Server error" });
       }
+    },
+    //ajax
+    GetAllFolder: async (req, res) => {
+      try {
+        const folders = await FolderEntity.find({});
+        return res.json({ success: true, folders: folders });
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.status(500).json({ success: false, folders: [] });
+      }
+    },
+    //get images by folder
+    GetAllImageByFolder: async (req, res) => {
+      try {
+        const folderId = req.query.folder;
+
+        let images;
+
+        if (!folderId || folderId === "all") {
+          images = await ImageEntity.find().sort({ createdAt: -1 });
+        } else {
+          images = await ImageEntity.find({ folder_id: folderId }).sort({
+            createdAt: -1,
+          });
+        }
+
+        res.json({ success: true, images });
+      } catch (err) {
+        console.log(err);
+        res.status(500).json({ success: false });
+      }
+    },
+    UploadImage: async (req, res) => {
+      try {
+    const folderId = req.body.folder_id;
+    const file = req.file;
+
+    if (!file) {
+      return res.json({ success: false, mess: "No file" });
+    }
+
+    // tìm folder
+    let folder = null;
+    if (folderId && folderId !== "all") {
+      folder = await FolderEntity.findById(folderId);
+      if (!folder) return res.json({ success: false, mess: "Folder not found" });
+    }
+
+    const slug = folder ? folder.path : "default";
+
+    // ===== tạo path vật lý theo folder
+    // const uploadRoot = path.join(process.cwd(), "sys_upload");
+    const uploadRoot = path.join(myPathConfig.public, "uploads");
+
+    const folderPath = path.join(uploadRoot, slug);
+
+    if (!fs.existsSync(folderPath)) {
+      fs.mkdirSync(folderPath, { recursive: true });
+    }
+
+    // ===== file name
+    const original = file.originalname;
+    const name = path.parse(original).name;
+
+    const unique = `toppicare-${Date.now()}-${Math.round(Math.random()*1e6)}.webp`;
+
+    const physicalPath = path.join(folderPath, unique);
+
+    // ===== sharp convert
+    await sharp(file.buffer)
+      .webp({ quality: 85 })
+      .toFile(physicalPath);
+
+    // ===== save DB
+    const img = await ImageEntity.create({
+      name,
+      path: `uploads/${slug}/${unique}`,
+      folder_id: folder ? folder._id : null,
+    });
+
+    // ===== load lại ảnh
+    let images;
+    if (!folder) {
+      images = await ImageEntity.find().sort({ _id: -1 });
+    } else {
+      images = await ImageEntity.find({ folder_id: folder._id }).sort({ _id: -1 });
+    }
+
+    res.json({ success: true, images });
+
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
+    },
+    DeleteFolder: async(req, res)=>{
+      try {
+    const { folder_id } = req.body;
+
+    const folder = await FolderEntity.findById(folder_id);
+    if (!folder) return res.json({ success: false });
+    // 1. xoá file trong folder
+    // const folderPath0 = path.join(process.cwd(), "sys_upload", folder.slug);
+    const folderPath = path.join(myPathConfig.public, folder.path);
+
+
+    if (fs.existsSync(folderPath)) {
+      fs.rmSync(folderPath, { recursive: true, force: true });
+    }else{
+      console.log('ko ton tai folder')
+      return res.status(500).json({success: false, mess: 'xoa loi'})
+    }
+
+    // 2. xoá images DB
+    await ImageEntity.deleteMany({ folder_id });
+
+    // 3. xoá folder DB
+    await FolderEntity.deleteOne({ _id: folder_id });
+
+    res.json({ success: true });
+
+  } catch (err) {
+    console.log(err);
+    res.json({ success: false });
+  }
     }
   };
 };

@@ -1,10 +1,25 @@
-<div class="flex gap-5">
+<!-- <div class="flex gap-5">
     <button id="openModal" class="font-bold px-4 py-3 border border-gray-300 rounded-lg">Add folder</button>
     <form action="/admin/gallery/image-upload" method="post" enctype="multipart/form-data">
         <input type="file" name="image" class="px-4 py-3 border border-gray-300 rounded-lg" >
         <button type="submit" class="border border-indigo-500 px-4 py-3 rounded-lg">Submit</button>
     </form>
+</div> -->
+<div class="flex gap-5">
+  <button id="openModal"
+    class="font-bold px-4 py-3 border border-gray-300 rounded-lg">
+    Add folder
+  </button>
+
+  <input type="file" id="uploadInput"
+    class="px-4 py-3 border border-gray-300 rounded-lg">
+
+  <button id="btnUpload"
+    class="border border-indigo-500 px-4 py-3 rounded-lg">
+    Upload
+  </button>
 </div>
+
 <!-- <form action="/admin/gallery/image-upload" method="post" enctype="multipart/form-data">
     
     <select name="folder" class="px-4 py-3 border rounded-lg">
@@ -39,31 +54,30 @@
 
     <!-- CHILDREN -->
     <% folders.forEach(folder => { %>
-        <div data-folder="<%=folder._id%>"
-            class="folder-item child flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer 
-                   hover:bg-gray-100 text-gray-700 relative">
-            
-            <!-- indent line -->
-            <span class="absolute left-3 top-0 bottom-0 w-px bg-gray-200"></span>
+  <div data-folder="<%=folder._id%>"
+    class="folder-item child flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer 
+           hover:bg-gray-100 text-gray-700 relative group">
 
-            <!-- icon -->
-            <span class="ml-4"></span>
-                 <i class="fa-solid fa-folder-open text-amber-400"></i>
+    <span class="absolute left-3 top-0 bottom-0 w-px bg-gray-200"></span>
+    <span class="ml-4"></span>
+    <i class="fa-solid fa-folder-open text-amber-400"></i>
 
+    <span class="flex-1"><%=folder.name%></span>
 
+    <!-- delete icon -->
+    <i data-del="<%=folder._id%>"
+      class="fa-solid fa-trash text-red-400 opacity-0 group-hover:opacity-100 
+      hover:text-red-600 cursor-pointer"></i>
 
-            <!-- name -->
-            <span class="flex-1"><%=folder.name%></span>
-
-        </div>
-    <% }) %>
+  </div>
+<% }) %>
 
 </div>
 
     </div>
 
     <!-- gallery grid [RIGHT]-->
-<div class="col-span-9">
+<div class="col-span-10 h-dvh overflow-y-auto w-full ">
     <div id="image_container" class="grid gird-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6 mt-5">
     <%if(images.length ===0){%>
         <p class="col-span-full text-center text-gray-500">Chưa có ảnh nào</p>
@@ -72,6 +86,7 @@
             <div class="group relative rounded-xl overflow-hidden shadow bg-white dark:bg-gray-800">
                 <!-- IMAGE -->
                  <img src="/<%=img.path%>" alt="<%=img.name%>"
+                 loading="lazy"
                  class="w-full h-40 object-cover transition-transform duration-300 group-hover:scale-105"
                  >
                  <!-- OVERLAY -->
@@ -132,6 +147,7 @@
 <script>
     // global scope
     const imageContainerElement = document.querySelector('#image_container');
+    let activeFolderId = "all";
     // modal
     const modal = document.getElementById("modal")
 
@@ -153,35 +169,185 @@ modal.addEventListener("click",(e)=>{
   if(e.target === modal) closeModal()
 })
     // lang nghe su kien click btn xoa
-    imageContainerElement.addEventListener('click', (ev)=>{
-        const deleteBtn = ev.target.closest('button[data-id]');
-        if(!deleteBtn || !imageContainerElement.contains(deleteBtn)) {return};
-        const imagePath = deleteBtn.dataset.id;
-        console.log('data id '+imagePath);
-        $.ajax({
-            method: "delete",
-            url: `/admin/gallery/image-delete`,
-            contentType: 'application/json',
-            data: JSON.stringify({img_slug: imagePath}),
-            success: (res)=>{
-                if(res.success){
-                    document.location.reload();
-                } 
-                console.log('delete success')},
-            error: (xhr, status, err)=>console.log(xhr.responseJSON?.mess||"Server error")
-        })
-    })
+    imageContainerElement.addEventListener("click", async (ev) => {
+  const deleteBtn = ev.target.closest("button[data-id]");
+  if (!deleteBtn) return;
+
+  const imagePath = deleteBtn.dataset.id;
+
+  if (!confirm("Xoá ảnh này?")) return;
+
+  try {
+    const res = await fetch("/admin/gallery/image-delete-ajax", {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        img_path: imagePath,
+        folder_id: activeFolderId
+      })
+    });
+
+    const data = await res.json();
+    if (!data.success) return alert("Xoá lỗi");
+
+    renderImages(data.images);
+
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+    //
     document.querySelector('#btn_cta_create_folder').addEventListener('click', (ev)=>{
-        const payload = {name: document.querySelector('input[name="foler_name"]').value}
+        const payload = {folder_name: document.querySelector('input[name="foler_name"]').value}
         //
-        fetch(`/admin/`,
+        console.log(payload)
+        fetch(`/admin/gallery/category/create`,
             {
                 method: 'POST',
+                headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(payload),
-                headers: {'Content-Type': 'application/json'}
             }
         ).then(res=>res.json())
-        .then(res=>{console.log(res); if(res.success){alert('created success')}})
+        .then(res=>{console.log(res); if(res.success){alert('created success'); document.location.reload();}})
         .catch(err=>{console.log('loi tao thu muc'); alert('created folder failed')})
-    })
+    });
+    //folder ajax
+    const folderTree = document.querySelector("#folder_tree");
+
+folderTree.addEventListener("click", async (e) => {
+  const folderItem = e.target.closest(".folder-item");
+  if (!folderItem) return;
+
+  const folderId = folderItem.dataset.folder;
+  activeFolderId = folderId; // ⭐ lưu folder đang chọn
+
+  document.querySelectorAll(".folder-item").forEach(el =>
+    el.classList.remove("bg-indigo-50","text-indigo-700","font-semibold")
+  );
+  folderItem.classList.add("bg-indigo-50","text-indigo-700","font-semibold");
+
+  const res = await fetch(`/admin/gallery/images?folder=${folderId}`);
+  const data = await res.json();
+  renderImages(data.images);
+});
+
+//btn upload ảnh
+document.getElementById("btnUpload").addEventListener("click", async () => {
+  const fileInput = document.getElementById("uploadInput");
+  const file = fileInput.files[0];
+
+  if (!file) return alert("Chọn ảnh");
+
+  const formData = new FormData();
+  formData.append("image", file);
+  formData.append("folder_id", activeFolderId);
+
+  try {
+    const res = await fetch("/admin/gallery/image-upload-ajax", {
+      method: "POST",
+      body: formData
+    });
+
+    const data = await res.json();
+
+    if (!data.success) return alert("Upload lỗi");
+
+    renderImages(data.images); // render lại ảnh
+    fileInput.value = "";
+
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+//
+function renderImages(images) {
+  imageContainerElement.innerHTML = "";
+
+  if (!images.length) {
+    imageContainerElement.innerHTML = `
+      <p class="col-span-full text-center text-gray-500">
+        Chưa có ảnh nào
+      </p>
+    `;
+    return;
+  }
+
+  images.forEach(img => {
+    const html = `
+      <div class="group relative rounded-xl overflow-hidden shadow bg-white">
+        <img src="/${img.path}"
+        loading="lazy"
+          class="w-full h-40 object-cover transition group-hover:scale-105"/>
+
+        <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100
+          flex items-center justify-center gap-3 transition">
+
+          <a href="/${img.path}" target="_blank"
+            class="px-3 py-1.5 bg-white rounded-lg text-sm">View</a>
+
+          <button data-id="${img.path}"
+            class="px-3 py-1.5 bg-red-500 text-white rounded-lg text-sm">
+            Delete
+          </button>
+        </div>
+      </div>
+    `;
+
+    imageContainerElement.insertAdjacentHTML("beforeend", html);
+  });
+}
+//xoa folder
+folderTree.addEventListener("click", async (e) => {
+
+  // CLICK XOÁ FOLDER
+  const delBtn = e.target.closest("[data-del]");
+  if (delBtn) {
+    const folderId = delBtn.dataset.del;
+
+    if (!confirm("Xoá folder và toàn bộ ảnh bên trong?")) return;
+
+    try {
+      const res = await fetch("/admin/gallery/folder-delete", {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ folder_id: folderId })
+      });
+
+      const data = await res.json();
+      if (!data.success) return alert("Xoá lỗi");
+
+      // reset về all
+      activeFolderId = "all";
+
+      // reload folder tree
+      location.reload();
+
+    } catch (err) {
+      console.log(err);
+    }
+
+    return;
+  }
+
+  // CLICK SELECT FOLDER
+  const folderItem = e.target.closest(".folder-item");
+  if (!folderItem) return;
+
+  const folderId = folderItem.dataset.folder;
+  activeFolderId = folderId;
+
+  document.querySelectorAll(".folder-item").forEach(el =>
+    el.classList.remove("bg-indigo-50","text-indigo-700","font-semibold")
+  );
+  folderItem.classList.add("bg-indigo-50","text-indigo-700","font-semibold");
+
+  const res = await fetch(`/admin/gallery/images?folder=${folderId}`);
+  const data = await res.json();
+  renderImages(data.images);
+});
+
+
+
 </script>

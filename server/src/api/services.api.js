@@ -28,6 +28,14 @@ const ServicesApi = ()=>{
                 console.log(CNAME, error.message);
                 res.json({success: false, mess: error.message});
             }
+        },
+        GetAllCategory: async(req, res)=>{
+            try {
+                // const categories = await Ser
+            } catch (error) {
+                console.log(CNAME, error.message);
+                res.status(500).json({success: false, mess: 'Server error'})
+            }
         }
     }
 } 

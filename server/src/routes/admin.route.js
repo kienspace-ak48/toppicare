@@ -40,8 +40,19 @@ router.post(
 router.delete("/gallery/image-delete", galleryController.DeleteImage);
 router.get('/gallery/image-getall', galleryController.GetAll);
 router.get("/gallery", galleryController.Index);
+// ======== folder
+router.post('/gallery/folder/create', galleryController.CreateFolder);
+router.delete('/gallery/folder-delete', galleryController.DeleteFolder);
 //===========category
 router.post('/gallery/category/create', galleryController.CreateFolder);
+router.get('/gallery/category/get-all', galleryController.GetAllFolder);
+router.get('/gallery/images', galleryController.GetAllImageByFolder);
+router.post('/gallery/image-upload-ajax',uploadImage.single("image"),
+(req, res, next) => {
+  console.log("REQ.FILE =", req.file);
+  next();
+},galleryController.UploadImage);
+router.delete('/gallery/image-delete-ajax', galleryController.DeleteImageAjax);
 // blog
 // POSTS controller 
 router.get('/blog/get-all', blogController.BlogGetAll);

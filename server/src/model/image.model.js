@@ -1,8 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
-const imageSchema = new mongoose.Schema({
+const imageSchema = new mongoose.Schema(
+  {
     name: String,
     path: String,
-}, {timestamps: true});
+    folder_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Folder",
+      default: null,
+    },
+  },
+  { timestamps: true },
+);
 
 module.exports = mongoose.model("image", imageSchema);
