@@ -15,6 +15,9 @@ const cookieParser = require("cookie-parser");
 
 // serve static frontend
 // app.use(express.static(path.join(__dirname, "../public")));
+
+//connect DB
+dbConnection();
 //middleware to serve static files
 app.use(
   express.static(myPath.public, {
@@ -27,10 +30,9 @@ app.set("view engine", "ejs");
 app.set("views", path.join(myPath.root, "src/views"));
 app.use(expressLayouts);
 app.set("layout", "layouts/adminLayout");
-//connect DB
-dbConnection();
+
 //
-// app.use(cookieParser);
+app.use(cookieParser());
 
 app.use(cors(({origin: '*'})));
 // app.use(
@@ -122,7 +124,7 @@ let html = fs.readFileSync(
 );
 html = html.replace(/__API_URL__/g, process.env.API_URL);
 app.use((req, res) => {
-  console.log("bien server ", process.env.API_URL);
+  // console.log("bien server ", process.env.API_URL);
   res.send(html);
   // res.sendFile(path.join(__dirname, "../public/index.html"));
 });

@@ -38,8 +38,10 @@ router.post(
   galleryController.UploadFile,
 );
 router.delete("/gallery/image-delete", galleryController.DeleteImage);
-router.get("/gallery", galleryController.Index);
 router.get('/gallery/image-getall', galleryController.GetAll);
+router.get("/gallery", galleryController.Index);
+//===========category
+router.post('/gallery/category/create', galleryController.CreateFolder);
 // blog
 // POSTS controller 
 router.get('/blog/get-all', blogController.BlogGetAll);

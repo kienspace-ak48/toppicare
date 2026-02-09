@@ -21,6 +21,8 @@ import ServiceDetailPage from "./components/pages/ServiceDetailPage";
 // import Users from "./pages/admin/Users";
 import NotFound from "./components/pages/NotFound";
 import './index_original.css'
+import { HelpCenterPage } from "./components/pages/HelpCenterPage";
+import { BecomeTechnicianPage } from "./components/pages/BecomeTechnicianPage";
 export default function App() {
   return (
     <Router>
@@ -35,6 +37,9 @@ export default function App() {
           <Route path="/training" element={<Traning />} />
           <Route path="/news" element={<News />} />
           <Route path="/contact" element={<Contact />} />
+          <Route path="/help" element={<HelpCenterPage />} />
+          <Route path="/become-teachnician" element={<BecomeTechnicianPage />} />
+
           <Route path="/blog-detail/:slug" element={<BlogDetail/>}/>
           <Route path="/policy/customer" element={<PolicyPage/>}></Route>
           <Route path="/policy/partner" element={<PocicyPartner/>}></Route>

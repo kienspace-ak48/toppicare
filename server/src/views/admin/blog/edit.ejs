@@ -1,12 +1,26 @@
 <script src="/libs/tinymce/tinymce.min.js"></script>
 <div class="flex justify-between items-center">
   <h1 class="font-bold">Edit blog/ Chỉnh sửa bài viết</h1>
-    <button id="btn_edit_blog" class="font-bold px-4 py-3 border border-gray-300 bg-yellow-400 rounded-lg hover:cursor-pointer">Update blog</button>
+    <button id="btn_edit_blog" class="font-bold px-4 py-3 border border-gray-300 bg-yellow-400  rounded-lg hover:cursor-pointer">Update blog</button>
 </div>
 <div class="w-full mx-auto px-4 py-6">
     <div class="grid grid-cols-12 gap-4">
-        <!-- LEFT SIDEBAR -->
-         <aside class="col-span-3 rounded-lg p-4 shadow">
+        
+         <!-- MAIN CONTENT -->
+          <main class="col-span-9 rounded-lg p-4 shadow">
+            <h2 class="text-[16px] font-bold mb-3">Title</h2>
+            <input type="text" name="title" value="<%=blog.title%>" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
+            <h2 class="text-[16px] font-bold mb-3">Slug</h2>
+            <input type="text" value="<%=blog.slug%>" name="slug" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
+            <h2 class="text-[16px] font-bold mb-3">Description</h2>
+            <textarea name="desc" id="" class="px-4 py-3 w-full border border-gray-300 rounded-lg" placeholder="Enter Description..."><%=blog.desc%></textarea>
+            <h2 class="text-[16px] font-bold mb-4">Nội dung bài viết</h2>
+            <textarea name="content" id="editor" class="w-full"><%-blog.content%></textarea>
+          </main>
+          <!-- RIGHT SIDEBAR -->
+           <div class="col-span-3 rounded-lg p-4 shadow">
+            <!-- LEFT SIDEBAR -->
+         <aside >
             <h3 class="font-semibold mb-3">Category</h3>
             
             <!-- <ul class="space-y-2 text-sm">
@@ -28,19 +42,8 @@
            </ul>
 
          </aside>
-         <!-- MAIN CONTENT -->
-          <main class="col-span-6 rounded-lg p-4 shadow">
-            <h2 class="text-xl font-bold mb-3">Title</h2>
-            <input type="text" name="title" value="<%=blog.title%>" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
-            <h2 class="text-xl font-bold mb-3">Slug</h2>
-            <input type="text" value="<%=blog.slug%>" name="slug" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
-            <h2 class="text-xl font-bold mb-3">Description</h2>
-            <textarea name="desc" id="" class="px-4 py-3 w-full border border-gray-300 rounded-lg" placeholder="Enter Description..."><%=blog.desc%></textarea>
-            <h2 class="text-xl font-bold mb-4">Nội dung bài viết</h2>
-            <textarea name="content" id="editor" class="w-full"><%-blog.content%></textarea>
-          </main>
-          <!-- RIGHT SIDEBAR -->
-           <aside class="col-span-3 rounded-lg p-4 shadow">
+         <!--  -->
+         <aside class=" ">
             <!-- <h3 class="font-semibold mb-3">Author</h3>
             <p class="text-sm">KienVu</p> -->
             <hr class="my-3">
@@ -69,6 +72,8 @@
         </div>
         <!--  -->
            </aside>
+           </div>
+           
     </div>
     <input type="hidden" name="" id="id_blog_hidden" value="<%=blog._id%>">
 </div>

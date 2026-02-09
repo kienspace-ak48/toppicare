@@ -107,15 +107,6 @@ const pageConfig = new mongoose.Schema({
       {icon: String, title: String, desc: String, _id: false}
     ]}
   },
-  // benefits: {
-  //   title: String,
-  //   desc: String,
-  //   cards: [{ icon: String, title: String, desc: String }],
-  //   cta: {
-  //     title: String,
-  //     desc: String,
-  //   },
-  // },
   news: {
     title: String,
     desc: String,

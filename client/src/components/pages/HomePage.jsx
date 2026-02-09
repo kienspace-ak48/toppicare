@@ -267,9 +267,9 @@ function HomePage() {
       </section>
 
       {/* Slogan */}
-      <section className="py-6 bg-[#2bdbd6]">
+      <section className="py-2 bg-[#2bdbd6] md:py-6 ">
         <div className="max-w-7xl mx-auto px-4 text-center">
-          <h2 className="text-white text-2xl md:text-4xl font-bold">
+          <h2 className="text-white text-xl md:text-4xl font-bold">
             {pageConfig?.homepage?.slogan ?? "Chạm là khỏe - Đặt là đến!"}
           </h2>
         </div>

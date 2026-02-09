@@ -323,14 +323,22 @@
                 <p class="font-semibold text-sm dark:text-white">
                   Quản trị viên
                 </p>
-                <p class="text-xs text-gray-500 dark:text-gray-300">
-                  admin@example.com
+                <p class="text-xs font-bold text-gray-500 dark:text-gray-300">
+                  <!-- admin@example.com -->
+                   <%#=user.username%>
+                    <%= (typeof user !== "undefined" && user) ? user.email : "" %>
                 </p>
               </div>
             </div>
 
             <!-- THEME -->
-            <button
+             <form action="/auth/admin/logout" method="post">
+               <button id="btn_logout" type="submit" class="font-medium text-sm px-4 py-3 w-full  rounded-xl bg-gray-300 hover:bg-red-500 transition hover:cursor-pointer hover:text-white">
+                <i class="fa-solid fa-arrow-right-from-bracket  "></i>
+               </button>
+               <!-- <i class="fa-solid fa-arrow-right-from-bracket"></i> -->
+             </form>
+            <!-- <button
               id="toggleDarkMode"
               class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
             >
@@ -338,7 +346,7 @@
               <span class="label text-sm font-medium dark:text-white">
                 Dark / Light
               </span>
-            </button>
+            </button> -->
           </div>
         </div>
       </aside>
@@ -406,14 +414,18 @@
       function toggleSidebar() {
         const sidebar = document.getElementById("sidebar");
         collapsed = !collapsed;
-
+        //
+        // if(collapsed){
+        //   document.querySelector('#btn_logout').classList.toggle('hidden');
+        // }
+        //   document.querySelector('#btn_logout').classList.toggle('block');
+        //
         sidebar.classList.toggle("w-64");
         sidebar.classList.toggle("w-20");
 
         document
           .querySelectorAll(".label, #logoText, #userInfo")
           .forEach((el) => el.classList.toggle("hidden"));
-
         // 🔥 Đóng tất cả submenu khi collapse
         document.querySelectorAll('[id$="Sub"]').forEach((sub) => {
           sub.classList.add("hidden");

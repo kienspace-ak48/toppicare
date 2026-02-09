@@ -34,7 +34,6 @@ const PageConfigController = () => {
     },
     SaveHomeSection: async (req, res) => {
       try {
-        console.log("running");
         const data = req.body;
         const pcDTO = data;
         const result = await PageConfigEntity.findOneAndUpdate({}, pcDTO, {
@@ -65,7 +64,6 @@ const PageConfigController = () => {
           desc: data.desc,
           img_url: data.img_url,
         };
-        console.log(newsDTO);
         const service = await pageconfigService.updateNewsSection(newsDTO);
         // const service = false;
         if (!service) {
@@ -89,7 +87,6 @@ const PageConfigController = () => {
       try {
         const { banner, services, booking_guide } = req.body;
         const sDTO = { banner, services, booking_guide };
-        console.log(sDTO);
         const task1 = await pageconfigService.updateServiceSection(sDTO);
         if (!task1.success) {
           throw new Error("Processing is failed");
@@ -102,7 +99,6 @@ const PageConfigController = () => {
     AboutSection: async (req, res) => {
       try {
         const pc = await getPageConfigFx();
-        console.log(pc);
         res.render(VNAME + "about", { data: pc });
       } catch (error) {
         console.log(CNAME, error.message);
@@ -117,7 +113,6 @@ const PageConfigController = () => {
           vision,
           stats,
         };
-        console.log(aDTO);
         const task1 = await pageconfigService.updateAboutSection(aDTO);
         if (!task1.success) {
           throw new Error("update failed");
@@ -141,7 +136,6 @@ const PageConfigController = () => {
       try {
         const { banner, benefit } = req.body;
         const bDTO = { banner, benefit };
-        console.log(bDTO);
         const task1 = await pageconfigService.updateTrainingSection(bDTO);
         if (!task1.success) {
           throw new Error("Processing faield");

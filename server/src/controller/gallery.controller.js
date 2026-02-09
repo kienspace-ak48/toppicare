@@ -5,18 +5,33 @@ const path = require("path");
 const fs = require("fs");
 const sharp = require("sharp");
 const ImageEntity = require("../model/image.model");
+const FolderEntity = require('../model/folder.model');
 const galleryController = () => {
   //tao thu muc
   const pathPrefix = "uploads/imgs/";
   const uploadDir = path.join(myPathConfig.public, pathPrefix);
+  
+function mySlugify(str){
+  return str
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9\s-]/g,"")
+    .replace(/\s+/g,"-");
+}
   return {
     Index: async (req, res) => {
       try {
         const images = await ImageEntity.find().lean();
-        res.render(VNAME + "gallery", { images });
+        let folders = [
+    { id: 1, name: 'Tài liệu' },
+    { id: 2, name: 'Công việc' },
+    { id: 3, name: 'Cá nhân' }
+];
+
+        res.render(VNAME + "gallery", { images, folders });
       } catch (error) {
         console.log(CNAME, error.message);
-        res.render(VNAME, +"gallery", { images: [] });
+        res.render(VNAME, +"gallery", { images: [], folders: [] });
       }
     },
     UploadFile: async (req, res) => {
@@ -84,6 +99,38 @@ const galleryController = () => {
         return res.status(500).json({ success: false, data: [] });
       }
     },
+    //=========Folder 
+    CreateFolder: async(req, res)=>{
+      try {
+        const {name} = req.body.folderName;
+        if(!name) return res.redirect('back');
+        const slug = mySlugify(name);
+        //path vat ly
+        const folderPath = `sys_upload/${slug}`;
+        //path tuyet doi
+        const absolutePath = path.join(myPathConfig.public, folderPath);
+        console.log('path: ',absolutePath);
+        //neu chua co thi tao
+        if(!fs.existsSync(absolutePath)){
+          fs.mkdirSync(absolutePath, {recursive: true});
+        }
+        //check DB trung
+        const exit = await FolderEntity.findOne({path: folderPath});
+        if(exit){
+          return res.json({success: false, mess: 'folder is exit'})
+        } 
+        await FolderEntity.create({
+          name,
+          path: folderPath
+        });
+        res.redirect('/')
+          
+        
+
+      } catch (error) {
+        console.log(CNAME, error.message);
+      }
+    }
   };
 };
 
