@@ -1,3 +1,4 @@
+const mongoose = require('mongoose');
 const ContactSchema = new mongoose.Schema({
   name: String,
   email: String,
@@ -9,3 +10,6 @@ const ContactSchema = new mongoose.Schema({
     default: "new"
   }
 }, { timestamps: true });
+
+module.exports = mongoose.model('contact', ContactSchema);
+

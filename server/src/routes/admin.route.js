@@ -6,9 +6,13 @@ const blogController = require('../controller/blog.controller')();
 const categoryController = require('../controller/category.controller')();
 const PageConfigController = require('../controller/pageconfig.controller')();
 const uploadImage = require("../config/uploadImage.config");
+const contactController = require("../controller/contact.controller")();
 const ServicePackageController = require("../controller/servicePackage.controller")();
 const ServiceController = require('../controller/service.controller')();
 //page config
+//-teachnician
+router.get('/page-config/teachnician-section', PageConfigController.TeachnicianSection);
+router.put('/page-config/teachnician-section',PageConfigController.SaveTeachnicianSection);
 //-contact
 router.get('/page-config/contact-section', PageConfigController.ContactSection);
 router.put('/page-config/contact-section', PageConfigController.SaveContactSection);
@@ -65,6 +69,10 @@ router.get('/blog/category', blogController.Category);
 router.get('/blog/category/add', blogController.CategoryAdd);
 router.get('/blog/form-add', blogController.FormAdd);
 router.get('/blog', blogController.Index);
+// Contact Message ROUTE
+router.get('/contact/get-all-ajax', contactController.GetAllAjax);
+router.get('/contact/export-csv', contactController.ExportCSV);
+router.get('/contact/',contactController.GetAll);
 // Service ROUTE
 router.get("/service/", ServiceController.Index);
 router.get("/service/list", ServiceController.GetAll);

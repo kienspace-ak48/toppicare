@@ -1,7 +1,8 @@
 import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import usePageConfig from "../../hooks/usePageConfig";
+
 // import { useGetAllServices } from "../../hooks/useServices";
 const contactInfo = [
   {
@@ -58,9 +59,33 @@ const branches = [
     phone: "(0236) 3xxx 6666",
   },
 ];
-
+const SITE_KEY = "0x4AAAAAACZ49bnQxOXBIeHL";
+const SITE_KEY_DOMAIN = "0x4AAAAAACZ4I-nJdAG-KT38";
 function Contact() {
-  //edit
+  const [token, setToken] = useState("");
+  //capcha
+  //   useEffect(() => {
+  //   window.onTurnstileSuccess = function (t) {
+  //     console.log("TOKEN:", t);
+  //     setToken(t);
+  //   };
+  // }, []);
+  //
+  useEffect(() => {
+    window.onTurnstileSuccess = function (t) {
+      // console.log("TOKEN:", t);
+      setToken(t);
+    };
+
+    if (!window.turnstile) {
+      const script = document.createElement("script");
+      script.src = "https://challenges.cloudflare.com/turnstile/v0/api.js";
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  //
   const { data, loadingP: laoding, error } = usePageConfig();
   const contactSection = data?.data?.contact;
   // const ASSET_URL = import.meta.env.VITE_API_URL;
@@ -76,6 +101,10 @@ function Contact() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!token) {
+      alert("Vui lòng xác minh captcha");
+      return;
+    }
     console.log("Form submitted:", formData);
     try {
       setLoading(true);
@@ -84,12 +113,16 @@ function Contact() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          token: token, // ✅ gửi token ở đây
+        }),
       });
 
       const data = await res.json();
 
       if (data.success) {
+        console.log(data);
         alert("Gửi thành công");
         setFormData({
           name: "",
@@ -279,6 +312,12 @@ function Contact() {
                     {loading ? "Đang gửi..." : "Gửi tin nhắn"}
                   </button>
                 </div>
+                {/*  */}
+                <div
+                  className="cf-turnstile text-end my-4"
+                  data-sitekey={SITE_KEY_DOMAIN}
+                  data-callback="onTurnstileSuccess"
+                ></div>
               </form>
             </div>
 
@@ -364,14 +403,15 @@ function Contact() {
               <Phone className="w-5 h-5" />
               Gọi ngay
             </button>
-            <button 
-            onClick={() => {
-                  window.open(
-                    ASSET_URL + "api/action-link/download-app",
-                    "_blank",
-                  );
+            <button
+              onClick={() => {
+                window.open(
+                  ASSET_URL + "api/action-link/download-app",
+                  "_blank",
+                );
               }}
-            className="px-8 py-3 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-full hover:bg-white/30 hover:scale-105 transition-all">
+              className="px-8 py-3 bg-white/20 backdrop-blur-sm text-white border border-white/30 rounded-full hover:bg-white/30 hover:scale-105 transition-all"
+            >
               Tải ứng dụng
             </button>
           </div>

@@ -199,6 +199,12 @@
                 >
                   Contact
                 </a>
+                <a
+                  href="/admin/page-config/teachnician-section"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Teachnician
+                </a>
               </div>
 
               <!-- END =============== -->
@@ -294,11 +300,11 @@
                 <span class="label ml-2">Gallery</span>
               </a>
               <a
-                href="#"
+                href="/admin/contact/"
                 class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
               >
-                <i class="fa-solid fa-clapperboard text-blue-600 text-2xl"></i>
-                <span class="label ml-2">Videos</span>
+              <i class="fa-regular fa-paper-plane text-blue-600 text-2xl"></i>
+                <span class="label ml-2">Messages</span>
               </a>
               <!-- Videos -->
               <!-- <button class="menu-item">
@@ -463,12 +469,12 @@
         const chevron = btn.querySelector(".chevron");
         chevron.classList.toggle("rotate-180");
       }
-      document
-        .querySelector("#toggleDarkMode")
-        .addEventListener("click", () => {
-          console.log("click");
-          document.documentElement.classList.toggle("dark");
-        });
+      // document
+      //   .querySelector("#toggleDarkMode")
+      //   .addEventListener("click", () => {
+      //     console.log("click");
+      //     document.documentElement.classList.toggle("dark");
+      //   });
       //
       function goToActionBlank(action){
         window.open(window.location.origin+action, '_blank')

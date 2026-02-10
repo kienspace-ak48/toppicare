@@ -169,6 +169,33 @@ const PageConfigController = () => {
         res.status(500).json({ success: false });
       }
     },
+    //
+    TeachnicianSection: async (req, res) => {
+      try {
+        const pc = await getPageConfigFx();
+        res.render(VNAME + "teachnician", {data: pc});
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.render(VNAME + "contact", {data: pc});
+      }
+    },
+    SaveTeachnicianSection: async (req, res) => {
+      try {
+        const { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits } = req.body;
+
+        const cDTO = { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits };
+        console.log(cDTO)
+        const task1 = await pageconfigService.updateContactSection(cDTO);
+        // const task1 = {success: true}
+        if (!task1.success) {
+          throw new Error("Processing failed");
+        }
+        res.json({ success: true });
+      } catch (error) {
+        console.log(CNAME, error.message);
+        res.status(500).json({ success: false });
+      }
+    },
   };
 };
 

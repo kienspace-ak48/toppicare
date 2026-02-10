@@ -1,0 +1,547 @@
+<div class="flex justify-between items-center">
+  <h2 class="font-bold">Teachnician section/ Trang KTV<i class="text-blue-500 hover:cursor-pointer fa-regular fa-circle-question hover:scale-150" onclick="goToActionBlank('/about')"></i></h2>
+  <button
+    id="btn_cta_save_config"
+    class="font-bold px-4 py-3 rounded-lg border border-gray-300 bg-blue-500 text-white"
+  >
+    Save config
+  </button>
+</div>
+<div>
+  
+  <section class="banner mt-5">
+    <div class="banner flex justify-between items-center">
+      <h3 class="font-bold">Banner <small>(1920x640)</small></h3>
+      <button
+        id="btn_cta_add_card"
+        class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500 text-white"
+      >
+        Add banner component
+      </button>
+    </div>
+    <div id="banner_wrapper" class="grid grid-cols-2 gap-5 mt-4">
+      <% if(data.teachnician.slider && data.teachnician.slider.length>0){%>
+        <%data.teachnician.slider.forEach(b=>{%>
+          <div class="banner_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_banner_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input
+      type="text"
+      name="banner_title"
+      value="<%=b.title?b.title:''%>"
+      class=" px-3 py-2 rounded-lg border border-gray-300 w-full"
+    />
+    <input type="text"
+    name="banner_desc"
+    value="<%=b.desc?b.desc:''%>"
+    class="px-3 py-2 rounded-lg border border-gray-300 w-full"
+    >
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="banner_img"
+          value="<%=b.img?b.img:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%=(b.img)?b.img: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+        <%})%>
+      <%}else{%>
+
+      <%}%>
+    </div>
+  </section>
+  <hr class="my-5">
+  <section class="opportunity mt-5">
+    <div class="flex justify-between items-center">
+        <h3 class="font-bold">Opportunity <small>(1000x1000)</small></h3>
+        <button id="btn_cta_add_opportunity_card" class="font-medium px-3 py-2 rounded-lg border border-gray-300 bg-green-500 text-white">Add vision component</button>
+    </div>
+    <input type="text" 
+    id="opportunity_title"
+    value="<%=data.teachnician?.opportunity_title%>"
+    class="px-3 py-2 rounded-lg w-full border border-gray-300 mt-4" placeholder="Enter title..."
+    >
+    <input type="text"
+    id="opportunity_desc"
+    value="<%=data.teachnician?.opportunity_desc%>"
+    class="px-3 py-2 rounded-lg w-full border border-gray-300 my-4" placeholder="Enter desc..."
+    >
+    <div id="opportunity_wrapper" class="mt-5 grid grid-cols-2 gap-5">
+      <%if(data.teachnician.opportunity&&data.teachnician.opportunity.length>0){%>
+        <%data.teachnician.opportunity.forEach(o=>{%>
+          <div class="opportunity_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_opportunity_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input type="text" value="<%=o.icon%>" name="icon" class="px-3 py-2 border border-gray-300 w-full " placeholder="Enter icon....">
+    <input
+      type="text"
+      name="title"
+      value="<%=o.title%>"
+      placeholder="Enter title..."
+      class="px-3 py-2  border border-gray-300 w-full"
+    />
+    <textarea name="desc" id="" rows="3" class="px-3 py-2  border border-gray-300 w-full" placeholder="mỗi xuống dòng là một đoạn"><%=o.desc%></textarea>
+    <!-- icon -->
+  </div>
+        <%})%>
+      <%}else{%>
+
+      <%}%>
+    </div>
+  </section>
+  <hr class="my-5">
+  <section class="step">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold">Steps to become KTV</h3>
+      <button id="btn_cta_add_step_card" class="px-3 py-2 border border-gray-300 bg-green-500 font-bold rounded-lg text-white">Add step component</button>
+    </div>
+    <div id="step_wrapper" class="grid grid-cols-2 gap-5">
+      <%if(data.teachnician.steps && data.teachnician.steps.length>0){%>
+        <%data.teachnician.steps.forEach(s=>{%>
+          <div class="step_instance relative p-4 border border-gray-300 rounded-lg shadow">
+    <span class="btn_cta_step_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
+    <div class="flex">
+      <input
+      type="text"
+      name="step_title"
+      value="<%=s.title%>"
+      class=" px-3 py-2  border border-gray-300 w-full flex-3"
+    />
+    <input type="number" name="step_number" class=" border border-gray-300 w-full flex-1">
+    </div>
+    <input type="text"
+    value="<%=s.desc%>"
+    name="step_desc"
+    class="px-3 py-2 border border-gray-300 w-full flex-"
+    >
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="step_img"
+          value="<%=s.img%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%=s.img%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+        <%})%>
+      <%}%>
+    </div>
+  </section>
+  <hr class="my-5">
+  <section class="benefit">
+    <div class="flex justify-between items-center">
+      <h3 class="font-bold">Benefits & Enviroment</h3>
+      <button id="btn_cta_add_benefit_card" class="px-3 py-2 border border-gray-300 bg-green-500 font-bold rounded-lg text-white">Add benefit component</button>
+    </div>
+    <input type="text" id="benefit_title" value="<%=data.teachnician.benefit_title?data.teachnician.benefit_title:''%>" class="px-3 py-2 border border-gray-300 rounded-lg w-full my-4" placeholder="Enter title...">
+    <input type="text" id="benefit_desc" value="<%=data.teachnician.benefit_desc?data.teachnician.benefit_desc:''%>" class="px-3 py-2 border border-gray-300 rounded-lg w-full mb-4" placeholder="Enter desc...">
+    <div id="benefit_wrapper" class="grid grid-cols-2 gap-5 my-4">
+      <%if(data.teachnician.benefits && data.teachnician.benefits.length>0){%>
+        <%data.teachnician.benefits.forEach(b=>{%>
+          <div class="benefit_instance relative p-4 border border-gray-300 rounded-lg shadow">
+    <span class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
+    <input type="text" value="<%=b.icon%>" name="benefit_icon" class="px-3 py-2 border border-gray-300 w-full " placeholder="icon">
+    <input
+      type="text"
+      name="benefit_title"
+      value="<%=b.title%>"
+      class=" px-3 py-2  border border-gray-300 w-full"
+    />
+    <input type="text"
+    name="benefit_desc"
+    value="<%=b.desc%>"
+    class="px-3 py-2 border border-gray-300 w-full "
+    >
+    <!--  -->
+  </div>
+        <%})%>
+      <%}%>
+    </div>
+    
+  </section>
+</div>
+<!-- =============TEMPLATE ============== -->
+ <template id="benefit_template">
+  <div class="benefit_instance relative p-4 border border-gray-300 rounded-lg shadow">
+    <span class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
+    <input type="text" name="benefit_icon" class="px-3 py-2 border border-gray-300 w-full " placeholder="icon">
+    <input
+      type="text"
+      name="benefit_title"
+      class=" px-3 py-2  border border-gray-300 w-full"
+    />
+    <input type="text"
+    name="benefit_desc"
+    class="px-3 py-2 border border-gray-300 w-full "
+    >
+    <!--  -->
+  </div>
+ </template>
+ <template id="step_template">
+  <div class="step_instance relative p-4 border border-gray-300 rounded-lg shadow">
+    <span class="btn_cta_step_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
+    <div class="flex">
+      <input
+      type="text"
+      name="step_title"
+      class=" px-3 py-2  border border-gray-300 w-full flex-3"
+    />
+    <input type="number" name="step_number" class=" border border-gray-300 w-full flex-1">
+    </div>
+    <input type="text"
+    name="step_desc"
+    class="px-3 py-2 border border-gray-300 w-full flex-"
+    >
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="step_img"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+ </template>
+<template id="banner_template">
+  <div class="banner_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_banner_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input
+      type="text"
+      name="banner_title"
+      class=" px-3 py-2 rounded-lg border border-gray-300 w-full"
+    />
+    <input type="text"
+    name="banner_desc"
+    class="px-3 py-2 rounded-lg border border-gray-300 w-full"
+    >
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="banner_img"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+</template>
+<!--  -->
+<template id="opportunity_template">
+  <div class="opportunity_instance relative p-4 border border-gray-300 rounded shadow">
+    <span
+      class="btn_cta_opportunity_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
+      >X</span
+    >
+    <input type="text" name="icon" class="px-3 py-2 border border-gray-300 w-full " placeholder="Enter icon....">
+    <input
+      type="text"
+      name="title"
+      placeholder="Enter title..."
+      class="px-3 py-2  border border-gray-300 w-full"
+    />
+    <textarea name="desc" id="" rows="3" class="px-3 py-2  border border-gray-300 w-full" placeholder="mỗi xuống dòng là một đoạn"></textarea>
+    <!-- icon -->
+  </div>
+</template>
+<!-- =================MODAL===================== -->
+<div
+  id="gallery_modal"
+  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+>
+  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
+    <div class="header flex justify-between mb-4">
+      <h2>Chon anh</h2>
+      <button onclick="closeChooseImgModal()">X</button>
+    </div>
+    <!--  -->
+    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+  </div>
+</div>
+<!-- ============= SCRIPT =============== -->
+<script>
+  //global scope
+  const btnBannerAddCard = document.querySelector("#btn_cta_add_card");
+  const bannerWrapper = document.querySelector("#banner_wrapper");
+  const bannerTemplate = document.querySelector("#banner_template");
+  //
+  const btnOpportunityAddCard = document.querySelector('#btn_cta_add_opportunity_card');
+  const opportunityWrapper = document.querySelector('#opportunity_wrapper');
+  const opportunityTemplate = document.querySelector('#opportunity_template');
+  //
+  const btnBenefitAddCard = document.querySelector('#btn_cta_add_benefit_card');
+  const benefitWrapper = document.querySelector('#benefit_wrapper'); 
+  const benefitTemplate = document.querySelector('#benefit_template');
+  //
+  const btnStepAddCard = document.querySelector('#btn_cta_add_step_card');
+  const stepWrapper = document.querySelector('#step_wrapper');
+  const stepTemplate = document.querySelector('#step_template');
+  //
+  // combo choose image
+  const chooseImgModal = document.querySelector("#gallery_modal");
+  //   var ctaChooseImg = document.querySelectorAll("#banner_wrapper");
+  let imgInputIsFocusing = null;
+  function openChooseImgModal() {
+    chooseImgModal.classList.remove("hidden");
+    chooseImgModal.classList.add("flex");
+  }
+  function closeChooseImgModal() {
+    chooseImgModal.classList.remove("flex");
+    chooseImgModal.classList.add("hidden");
+  }
+  //
+  function selectImage(src) {
+    imgInputIsFocusing.querySelector(".img_input").value = src;
+    imgInputIsFocusing.querySelector(".img_preview img").src = "/" + src;
+    closeChooseImgModal();
+  }
+  //
+  function loadImage() {
+    imgList.innerHTML = "Loading...";
+    $.ajax({
+      url: "/admin/gallery/image-getall",
+      method: "GET",
+      success: (res) => {
+        if (res.success) {
+          imgList.innerHTML = "";
+          res.data.forEach((item) => {
+            const img = document.createElement("img");
+            img.src = "/" + item.path;
+            img.className = `
+            w-full h-32
+            object-cover
+            cursor-pointer rounded border
+            hover:ring-4 hover:ring-blue-500
+            transition
+          `;
+
+            img.onclick = () => selectImage(item.path);
+
+            imgList.appendChild(img);
+          });
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  //
+  //Tuy bien
+  bannerWrapper.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  });
+  //
+  benefitWrapper.addEventListener('click', (ev)=>{
+    const btn = ev.target.closest('.chooseImg');
+    if(!btn) return;
+    loadImage();
+    imgInputIsFocusing = btn.closest('.image_action');
+    openChooseImgModal();
+  })
+  //
+  stepWrapper.addEventListener('click', (ev)=>{
+    const btn = ev.target.closest('.chooseImg');
+    if(!btn) return;
+    loadImage();
+    imgInputIsFocusing = btn.closest('.image_action');
+    openChooseImgModal();
+  })
+  opportunityWrapper.addEventListener("click", (ev) => {
+    const btn = ev.target.closest(".chooseImg");
+    if (!btn) return;
+
+    loadImage();
+    imgInputIsFocusing = btn.closest(".image_action");
+    openChooseImgModal();
+  });
+  // end combo
+  //
+  btnBannerAddCard.addEventListener("click", (ev) => {
+    const clone = bannerTemplate.content.cloneNode(true);
+    bannerWrapper.appendChild(clone);
+  });
+  bannerWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_banner_delete_card')){
+        ev.target.closest('.banner_instance').remove();
+    }
+  })
+  //
+  btnBenefitAddCard.addEventListener('click', (ev)=>{
+    const clone = benefitTemplate.content.cloneNode(true);
+    benefitWrapper.appendChild(clone);
+  })
+  benefitWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_benefit_delete_card')){
+      ev.target.closest('.benefit_instance').remove();
+    }
+  })
+  //
+  btnStepAddCard.addEventListener('click', (ev)=>{
+    const clone = stepTemplate.content.cloneNode(true);
+    stepWrapper.appendChild(clone);
+  })
+  stepWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_step_delete_card')){
+      ev.target.closest('.step_instance').remove();
+    }
+  })
+//   
+  btnOpportunityAddCard.addEventListener('click', (ev)=>{
+    const clone = opportunityTemplate.content.cloneNode(true);
+    opportunityWrapper.appendChild(clone);
+  })
+  opportunityWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_opportunity_delete_card')){
+        ev.target.closest('.opportunity_instance').remove();
+    }
+  })
+  //
+  document.querySelector('#btn_cta_save_config').addEventListener('click', (ev)=>{
+    let bannerArr = [];
+    let opportunityArr =[];
+    let stepArr = [];
+    let benefitArr = [];
+    document.querySelectorAll('#banner_wrapper .banner_instance').forEach(b=>{
+      let banner={
+        title: b.querySelector('input[name="banner_title"]').value,
+        desc: b.querySelector('input[name="banner_desc"]').value,
+        img: b.querySelector('input[name="banner_img"]').value
+      }
+      bannerArr.push(banner);
+    })
+    //
+    document.querySelectorAll('#opportunity_wrapper .opportunity_instance').forEach(v=>{
+      let opportunity={
+        title: v.querySelector('input[name="title"]').value,
+        desc: v.querySelector('textarea[name="desc"]').value,
+        icon: v.querySelector('input[name="icon"]').value
+      }
+      opportunityArr.push(opportunity);
+    })
+    //
+    document.querySelectorAll('#step_wrapper .step_instance').forEach(s=>{
+      let step={
+        title: s.querySelector('input[name="step_title"]').value,
+        number: s.querySelector('input[name="step_number"]').value,
+        desc: s.querySelector('input[name="step_desc"]').value,
+        img: s.querySelector('input[name="step_img"]').value
+      }
+      stepArr.push(step);
+    });
+    // 
+    document.querySelectorAll('#benefit_wrapper .benefit_instance').forEach(b=>{
+      let benefit ={
+        title: b.querySelector('input[name="benefit_title"]').value,
+        desc: b.querySelector('input[name="benefit_desc"]').value,
+        icon: b.querySelector('input[name="benefit_icon"]').value
+      }
+      benefitArr.push(benefit);
+    })
+
+    const payload = {
+      slider: bannerArr,
+      opportunity_title: document.querySelector('#opportunity_title').value.trim(),
+      opportunity_desc: document.querySelector('#opportunity_desc').value.trim(),
+      opportunity: opportunityArr,
+      steps: stepArr,
+      benefit_title: document.querySelector('#benefit_title').value.trim(),
+      benefit_desc: document.querySelector('#benefit_desc').value.trim(),
+      benefits: benefitArr,
+
+    }
+
+    console.log(payload)
+    submitData(payload);
+  }) 
+  function submitData(payload){
+    fetch(`/admin/page-config/teachnician-section`, {
+      method: 'PUT',
+      headers: {'Content-Type': 'Application/json'},
+      body: JSON.stringify(payload)
+    })
+    .then(res=>res.json())
+    .then(res=>{if(res.success){alert('Lưu thành công'); window.location.reload()}})
+    .catch(err=>{
+      alert('Xảy ra lỗi')
+    })
+  }
+</script>

@@ -137,7 +137,6 @@ function About() {
                     <p
                       key={index}
                       className="text-[15px]"
-                      className="text-[16px]"
                     >
                       {d}
                     </p>

@@ -130,6 +130,44 @@ const pageConfig = new mongoose.Schema({
         title: String, 
         desc: String
     }
+  },
+  teachnician: {
+    slider: [
+      {
+        title: String,
+        desc: String,
+        img: String,
+        _id: false
+     }
+    ],
+    opportunity_title: String,
+    opportunity_desc: String,
+    opportunity: [
+      {
+        icon: String,
+        title: String,
+        desc: String,
+        _id: false
+      }
+    ],
+    steps: [
+      {
+        title: String,
+        desc: String,
+        number: Number,
+        img: String,
+        _id: false
+      }
+    ],
+    benefit_title: String,
+    benefit_desc: String,
+    benefits: [
+      {
+        icon: String,
+        title: String,
+        desc: String
+      }
+    ]
   }
 });
 

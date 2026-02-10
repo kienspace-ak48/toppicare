@@ -1,0 +1,51 @@
+<div class="flex justify-between items-center my-2">
+    <h1 class="font-bold">Contact view</h1>
+    <a href="/admin/contact/export-csv" class="px-4 py-2 border border-gray-300 rounded-lg bg-green-500 text-white font-bold hover:scale-110">Export CSV</a>
+</div>
+<div class="table_wrapper overflow-x-auto">
+  <table id="mess_tbl" class="min-w-full text-sm text-center text-garay-600">
+    <thead class="text-xs bg-gray-100 font-semibold text-gray-700 uppercase">
+      <tr>
+        <!-- <th class="px-6 py-4">#</th> -->
+        <th class="px-6 py-4">From</th>
+        <th class="px-6 py-4">name</th>
+        <th class="px-6 py-4">subject</th>
+        <th class="px-6 py-4">content</th>
+        <th class="px-6 py-4">status</th>
+        <th class="px-6 py-4">Actions</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-gray-100">
+    </tbody>
+  </table>
+</div>
+
+<!-- ==========SCRIPT========= -->
+<script>
+    var messTable = null;
+    $('#mess_tbl').DataTable().destroy();
+    blogTable =new DataTable('#mess_tbl',{
+        ajax: {
+            url: '/admin/contact/get-all-ajax',
+            dataSrc: 'data'
+        },
+        ordering: false,
+        info: false,
+        columns: [
+            // {data: null, render:(v,t,r)=>`<p>${r.index}</p>`},
+            {data: 'email', render:(v,t,r)=>`<p class="px-4 py-5">${r.email}</p>`},
+            {data: 'name', render:(v,t,r)=>`<p class="px-4 py-5">${r.name}</p>`},
+            {data: 'subject', render:(v,t,r)=>`<p class="px-4 py-5">${r.subject}</p>`},
+            {data: 'message', render:(v,t,r)=>`<p class="px-4 py-5">${r.message}</p>`},
+            {data: 'status', render:(v,t,r)=>`<p class="px-4 py-5">${r.status}</p>`},
+            {data: null, render:(v,t,r)=>`<p class="px-4 py-5">
+                <a href="#" class="underline underline-offset-4">edit</a>
+                <a href="#" class="underline underline-offset-4">delete</a>
+                </p>`},
+        ]
+    });
+    const messTbodyTable = document.querySelector('#mess_tbl tbody');
+    messTbodyTable.addEventListener('click', function(ev){
+        
+    })
+</script>

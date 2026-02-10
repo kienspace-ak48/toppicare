@@ -126,13 +126,13 @@ class PageConfigService {
             return {success: false, mess: error.message}
         }
     }
-    async updateContactSection(contactData){
+    async updateContactSection(teachnicianData){
         try {
             const result = await PageConfigEntity.findOneAndUpdate(
                 {},
                 {
                     $set: {
-                        contact: contactData
+                        teachnician: teachnicianData
                     }
                 },
                 {
