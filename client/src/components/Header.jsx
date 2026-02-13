@@ -148,22 +148,24 @@ export function Header() {
                                   key={item.name}
                                 >
                                   <Link
-                                  to={item.path}
-                                  className={`flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
-                            isActive
-                              ? "bg-[#2bdbd6] text-white shadowlg"
-                              : "text-gray-700 hover:bg-white/80 hover:shadow-md"
-                          }`}
-                                >
-                                  <item.icon className="w-4 h-4" />
-                                  <span className="hidden sm:inline text-[16px]">{item.name}</span>
-                                </Link>
+                                      to={item.path}
+                                      onClick={closeDropdown}   // 🔥 thêm dòng này
+                                      className={`flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
+                                        isActive
+                                          ? "bg-[#2bdbd6] text-white shadowlg"
+                                          : "text-gray-700 hover:bg-white/80 hover:shadow-md"
+                                      }`}
+                                    >
+                                      <item.icon className="w-4 h-4" />
+                                      <span className="sm:inline text-[16px]">{item.name}</span>
+                                    </Link>
                                 </li>
                                 
                               ) : (
                                 <button
                                   key={item.name}
                                   onClick={() => {
+                                    closeDropdown()   // 🔥 thêm dòng này
                                     if (item.action === 'download') {
                                       window.open(ASSET_URL+'api/action-link/download-app', '_blank');
                                     }

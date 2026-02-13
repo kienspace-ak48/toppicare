@@ -12,6 +12,7 @@ import {
   Shield,
 } from "lucide-react";
 import usePageConfig from "../../hooks/usePageConfig";
+import DynamicFA from "../fallback/FontAwesomeIcon";
 const ASSET_URL = window.__ENV__.API_URL;
 
 const opportunities = [
@@ -223,14 +224,15 @@ export function BecomeTechnicianPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {teachnicianSection?.opportunity.map((opportunity, index) => {
-              const Icon = Heart;
+              let Icon = opportunity.icon;
               return (
                 <div
                   key={index}
                   className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-8 hover:shadow-xl transition-all hover:scale-105"
                 >
                   <div className="w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center mb-4">
-                    <Icon className="w-8 h-8 text-white" />
+                    {/* <Icon className="w-8 h-8 text-white" /> */}
+                    <DynamicFA className="w-10 h-10 text-white" name={Icon} />
                   </div>
                   <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
                     {opportunity.title}
@@ -297,14 +299,14 @@ export function BecomeTechnicianPage() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
             {teachnicianSection?.benefits?.map((benefit, index) => {
-              const Icon = Heart;
+              const Icon = benefit.icon;
               return (
                 <div
                   key={index}
                   className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-8 text-center hover:shadow-xl transition-all hover:scale-105"
                 >
                   <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#2dbdb6] flex items-center justify-center">
-                    <Icon className="w-8 h-8 text-white" />
+                    <DynamicFA className="w-10 h-10 text-white" name={Icon} />
                   </div>
                   <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
                     {benefit.title}

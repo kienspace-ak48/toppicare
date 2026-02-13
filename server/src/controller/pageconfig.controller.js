@@ -181,9 +181,9 @@ const PageConfigController = () => {
     },
     SaveTeachnicianSection: async (req, res) => {
       try {
-        const { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits } = req.body;
+        const { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits, images } = req.body;
 
-        const cDTO = { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits };
+        const cDTO = { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits, images };
         console.log(cDTO)
         const task1 = await pageconfigService.updateContactSection(cDTO);
         // const task1 = {success: true}

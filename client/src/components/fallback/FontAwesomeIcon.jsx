@@ -1,6 +1,6 @@
 import * as SolidIcons from "@fortawesome/free-solid-svg-icons"
-// import * as RegularIcons from "@fortawesome/free-regular-svg-icons"
-// import * as BrandIcons from "@fortawesome/free-brands-svg-icons"
+import * as RegularIcons from "@fortawesome/free-regular-svg-icons"
+import * as BrandIcons from "@fortawesome/free-brands-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 
 function toPascal(str) {

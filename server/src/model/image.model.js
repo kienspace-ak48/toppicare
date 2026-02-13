@@ -6,7 +6,7 @@ const imageSchema = new mongoose.Schema(
     path: String,
     folder_id: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Folder",
+      ref: "folder",
       default: null,
     },
   },

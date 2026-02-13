@@ -125,7 +125,7 @@ export function HelpCenterPage() {
   );
 
   return (
-    <div className="pt-20 md:pt-24">
+    <div className="">
       {/* Banner with Search */}
       <section className="relative h-[400px] overflow-hidden">
         <ImageWithFallBack

@@ -397,7 +397,7 @@ function HomePage() {
                 >
                   <div className="w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center mb-4">
                     {/* <Icon className="w-8 h-8 text-white"/> */}
-                    <DynamicFA className="w-8 h-8 text-white" name={Icon} />
+                    <DynamicFA className="w-10 h-10 text-white" name={Icon} />
                   </div>
                   <h3 className="text-xl mb-3 bg-gradient-to-r from-[#ff6b6b] to-[#FF8C42] bg-clip-text text-transparent text-[16px] font-bold">
                     {com.title}

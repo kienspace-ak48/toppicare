@@ -129,7 +129,7 @@
       value="<%=s.title%>"
       class=" px-3 py-2  border border-gray-300 w-full flex-3"
     />
-    <input type="number" name="step_number" class=" border border-gray-300 w-full flex-1">
+    <input type="number" value="<%=s.step_number%>" name="step_number" class=" border border-gray-300 w-full flex-1">
     </div>
     <input type="text"
     value="<%=s.desc%>"
@@ -198,8 +198,80 @@
     </div>
     
   </section>
+  <!-- image -->
+   <div class="flex justify-between items-center">
+    <h3>Image</h3>
+    <button  id="btn_cta_add_image_card" class="px-3 py-2 rounded-lg border border-gray-300 bg-green-500 text-white font-bold">Add image component</button>
+   </div>
+   <div id="image_wrapper" class="grid grid-cols-2 gap-4">
+    <%if(data.teachnician.images && data.teachnician.images.length>0){%>
+      <%data.teachnician.images.forEach(i=>{%>
+        <div class="image_instance relative p-4 border border-gray-300 rounded-lg shadow">
+    <span class="btn_cta_image_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
+    
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="image_img"
+          value="<%=i?i:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%=i?i: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+      <%})%>
+    <%}%>
+   </div>
 </div>
 <!-- =============TEMPLATE ============== -->
+ <template id="image_template">
+  <div class="image_instance relative p-4 border border-gray-300 rounded-lg shadow">
+    <span class="btn_cta_image_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
+    
+    <!-- image handle action -->
+    <div class="image_action">
+      <!-- <label for="">Image banner</label> -->
+      <div class="flex justify-between items-center mt-3">
+        <button
+          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
+        >
+          Chọn ảnh
+        </button>
+        <input
+          type="text"
+          name="image_img"
+          value="<%#=(data.news)?data.news?.img_url:''%>"
+          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          placeholder="img"
+        />
+      </div>
+      <div class="img_preview border border-gray-300 w-full h-[200px]">
+        <img
+          src="/<%#=(data.news)?data.news?.img_url: ''%>"
+          alt=""
+          class="w-full object-cover max-h-[200px]"
+        />
+      </div>
+    </div>
+  </div>
+ </template>
+ <!--  -->
  <template id="benefit_template">
   <div class="benefit_instance relative p-4 border border-gray-300 rounded-lg shadow">
     <span class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2">X</span>
@@ -335,6 +407,10 @@
 <!-- ============= SCRIPT =============== -->
 <script>
   //global scope
+  const btnImageAddCard = document.querySelector("#btn_cta_add_image_card");
+  const imageWrapper = document.querySelector("#image_wrapper");
+  const imageTemplate = document.querySelector("#image_template");
+  //
   const btnBannerAddCard = document.querySelector("#btn_cta_add_card");
   const bannerWrapper = document.querySelector("#banner_wrapper");
   const bannerTemplate = document.querySelector("#banner_template");
@@ -410,6 +486,14 @@
     openChooseImgModal();
   });
   //
+  imageWrapper.addEventListener('click', (ev)=>{
+    const btn = ev.target.closest('.chooseImg');
+    if(!btn) return;
+    loadImage();
+    imgInputIsFocusing = btn.closest('.image_action');
+    openChooseImgModal();
+  })
+  //
   benefitWrapper.addEventListener('click', (ev)=>{
     const btn = ev.target.closest('.chooseImg');
     if(!btn) return;
@@ -455,6 +539,16 @@
     }
   })
   //
+  btnImageAddCard.addEventListener('click', (ev)=>{
+    const clone = imageTemplate.content.cloneNode(true);
+    imageWrapper.appendChild(clone);
+  })
+  imageWrapper.addEventListener('click', (ev)=>{
+    if(ev.target.classList.contains('btn_cta_image_delete_card')){
+      ev.target.closest('.image_instance').remove();
+    }
+  })
+  //
   btnStepAddCard.addEventListener('click', (ev)=>{
     const clone = stepTemplate.content.cloneNode(true);
     stepWrapper.appendChild(clone);
@@ -480,6 +574,7 @@
     let opportunityArr =[];
     let stepArr = [];
     let benefitArr = [];
+    let imagesArr =[]
     document.querySelectorAll('#banner_wrapper .banner_instance').forEach(b=>{
       let banner={
         title: b.querySelector('input[name="banner_title"]').value,
@@ -493,7 +588,7 @@
       let opportunity={
         title: v.querySelector('input[name="title"]').value,
         desc: v.querySelector('textarea[name="desc"]').value,
-        icon: v.querySelector('input[name="icon"]').value
+        icon: v.querySelector('input[name="icon"]').value,
       }
       opportunityArr.push(opportunity);
     })
@@ -501,7 +596,7 @@
     document.querySelectorAll('#step_wrapper .step_instance').forEach(s=>{
       let step={
         title: s.querySelector('input[name="step_title"]').value,
-        number: s.querySelector('input[name="step_number"]').value,
+        step_number : parseInt(s.querySelector('input[name="step_number"]').value),
         desc: s.querySelector('input[name="step_desc"]').value,
         img: s.querySelector('input[name="step_img"]').value
       }
@@ -515,6 +610,11 @@
         icon: b.querySelector('input[name="benefit_icon"]').value
       }
       benefitArr.push(benefit);
+    });
+    // 
+    document.querySelectorAll('#image_wrapper .image_instance').forEach(i=>{
+      let iv = i.querySelector('input[name="image_img"]').value.trim()
+      imagesArr.push(iv);
     })
 
     const payload = {
@@ -526,6 +626,7 @@
       benefit_title: document.querySelector('#benefit_title').value.trim(),
       benefit_desc: document.querySelector('#benefit_desc').value.trim(),
       benefits: benefitArr,
+      images:imagesArr
 
     }
 

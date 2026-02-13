@@ -154,7 +154,7 @@ const pageConfig = new mongoose.Schema({
       {
         title: String,
         desc: String,
-        number: Number,
+        step_number: Number,
         img: String,
         _id: false
       }
@@ -167,7 +167,8 @@ const pageConfig = new mongoose.Schema({
         title: String,
         desc: String
       }
-    ]
+    ],
+    images: []
   }
 });
 
