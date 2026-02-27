@@ -24,24 +24,51 @@ const contactApi = () => {
   return {
     UserSendEmail: async (req, res) => {
       try {
-        const { email, message, name, phone, subject, token } = req.body;
+        const {
+          email,
+          message,
+          name,
+          phone,
+          subject,
+          token,
+          type,
+          age,
+          gender,
+        } = req.body;
+
         if (!token)
           return res.status(400).json({ success: false, mess: "no captcha" });
         const flagCheck = await verifyCaptcha(token);
         if (!flagCheck) {
           return res.status(400).json({ success: false, mess: "bot detected" });
         }
-        if (!email || !message)
+        if (!email)
           return res.status(400).json({ success: false, mess: "thieu input" });
-        if (message.length > 50)
+        // them
+        if (type === "partner") {
+          const type = "partner";
+          const pDTO = {
+            name,
+            email,
+            phone,
+            age,
+            gender,
+            type,
+          };
+          console.log("partner: ", name, email, phone, gender);
+          console.log("partner gui");
+          const task1 = await ContactEntity.create(pDTO);
+          return res.json({ success: true, data: "ok" });
+        }
+        //
+        if (message.length > 40)
           return res
             .status(400)
             .json({ success: false, mess: "noi dung qua ngan" });
         console.log(email, message, name, phone, subject, token);
-        const cDTO = { email, message, name, phone, subject };
+        const cDTO = { email, message, name, phone, subject, type: "customer" };
+
         const task1 = await ContactEntity.create(cDTO);
-        console.log(typeof task1);
-        console.log(task1);
         return res.json({ success: true, data: "ok" });
       } catch (error) {
         console.log(CNAME, error.message);

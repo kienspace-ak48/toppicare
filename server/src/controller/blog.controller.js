@@ -64,7 +64,7 @@ const BlogController = () => {
         const categories = await categoryService.getAll();
         res.json({success: true, data: categories})
       } catch (error) {
-        console.log(CANME, error.message);
+        console.log(CNAME, error.message);
       }
     },
     // 

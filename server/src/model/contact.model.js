@@ -5,6 +5,10 @@ const ContactSchema = new mongoose.Schema({
   phone: String,
   subject: String,
   message: String,
+  age: Number,
+  gender: String,
+  type: {type: String, default: "customer", enum: ["customer", "partner"]},
+  
   status: {
     type: String,
     default: "new"

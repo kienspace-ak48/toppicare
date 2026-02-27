@@ -8,18 +8,23 @@
   .dt-search label{
     display: none !important;
   }
+  .dt-layout-cell{
+    width: 100% !important;
+  }
   .dt-search input{
     
   }
 </style>
 <div class="flex justify-between items-center mb-5">
   <h3 class="text-xl font-bold">Posts/ Danh sách bài viết</h3>
+  <a href="/admin/help-center/article/form-add" class="hover:cursor-pointer">
   <button
     id="btn_cta_add_blog"
     class="font-bold text-white px-4 py-3 border border-gray-300 shadow bg-blue-500 rounded-lg"
   >
-    <a href="/admin/blog/form-add">Add</a> +
+    Add +
   </button>
+  </a>
 </div>
 <div class="wrapper_table overflow-x-auto">
   <table id="blog_tbl" class="min-w-full text-sm text-center text-gray-600">
@@ -28,9 +33,9 @@
         <th class="px-6 py-4">Name</th>
         <th class="px-6 py-4">Slug</th>
         <th class="px-6 py-4">Image</th>
-        <th class="px-6 py-4">Root</th>
-        <th class="px-6 py-4">Category</th>
-        <th class="px-6 py-4">Feature</th>
+        <!-- <th class="px-6 py-4">Root</th> -->
+        <!-- <th class="px-6 py-4">Category</th> -->
+        <!-- <th class="px-6 py-4">Feature</th> -->
         <th class="px-6 py-4">Show</th>
         <th class="px-6 py-4 text-center">Action</th>
       </tr>
@@ -47,9 +52,10 @@
 
   blogTable = new DataTable("#blog_tbl", {
     ajax: {
-      url: "/admin/blog/get-all",
+      url: "/admin/help-center/article/get-all",
       dataSrc: "data",
     },
+    autoWidth: false,
     ordering: false, // ⭐ QUAN TRỌNG
     layout: {
     topStart: 'pageLength',
@@ -62,7 +68,7 @@
       { data: "title", render: (v) => `<p class="line-clamp-2 px-4 py-6 ">${v}</p>` },
       { data: "slug", render: (v) => `<p class="line-clamp-2 px-4 py-6">${v}</p>` },
       {
-        data: "img",
+        data: "image",
         render: (v) => `<div class="py-1">
           <img
             src="/${v}"
@@ -72,15 +78,15 @@
           />
         </div>`,
       },
-      { data: "category_id", render: (v) => `<p class="text-center  px-4 py-6">${v?.category_root||'no root'}</p>` },
-      { data: "category_id", render: (v) => `<p class="text-center px-4 py-6">${v?.name}</p>` },
-      { data: "isFeatured", render: (data, type, row) => `${row.featured?`<p class="text-center px-4 py-6"><i class="fa-solid fa-fire text-orange-500"></i></p>`:``}` },
+    //   { data: "category_id", render: (v) => `<p class="text-center  px-4 py-6">${v?.category_root||'no root'}</p>` },
+    //   { data: "category_id", render: (v) => `<p class="text-center px-4 py-6">${v?.name}</p>` },
+    //   { data: "isFeatured", render: (data, type, row) => `${row.featured?`<p class="text-center px-4 py-6"><i class="fa-solid fa-fire text-orange-500"></i></p>`:``}` },
       { data: "status", render: (v, type, row) => `${row.status?`<p class="text-center px-4 py-6"><i class="fa-regular fa-eye hover:text-blue-500"></i></p>`:`<p class="text-center px-4 py-6"><i class="fa-regular fa-eye-slash text-red-500"></i></p>`}` },
       {
         data: null,
         render: (data, type, row) =>
           `<p class="text-center">
-            <a href="/admin/blog/edit-blog/${row._id}"
+            <a href="/admin/help-center/article/edit/${row._id}"
             ><i class="fa-solid fa-pen-to-square hover:text-blue-600"></i></a
           >
           <i class="fa-solid fa-trash-can btn_delete_blog hover:text-blue-600"></i>

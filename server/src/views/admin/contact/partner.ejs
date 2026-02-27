@@ -25,8 +25,8 @@
         </th>
         <th class="px-6 py-4">From</th>
         <th class="px-6 py-4">name</th>
-        <!-- <th class="px-6 py-4">subject</th> -->
-        <th class="px-6 py-4">content</th>
+        <th class="px-6 py-4">gender</th>
+        <th class="px-6 py-4">age</th>
         <th class="px-6 py-4">status</th>
         <!-- <th class="px-6 py-4">Actions</th> -->
       </tr>
@@ -39,10 +39,10 @@
 <!-- ==========SCRIPT========= -->
 <script>
     var blogTable = null;
-    // $('#mess_tbl').DataTable().destroy();
+    $('#mess_tbl').DataTable().destroy();
     blogTable =new DataTable('#mess_tbl',{
         ajax: {
-            url: '/admin/contact/get-all-ajax?type=customer',
+            url: `/admin/contact/get-all-ajax?type=partner`,
             dataSrc: 'data'
         },
         ordering: false,
@@ -56,8 +56,8 @@
             // {data: null, render:(v,t,r)=>`<p>${r.index}</p>`},
             {data: 'email', render:(v,t,r)=>`<span class="px-4 py-5"> <p>${r.email}</p><p>${r.phone}</p>  </span>`},
             {data: 'name', render:(v,t,r)=>`<p class="px-4 py-5">${r.name}</p>`},
-            // {data: 'subject', render:(v,t,r)=>`<p class="px-4 py-5">${r.subject}</p>`},
-            {data: 'message', render:(v,t,r)=>`<p class="px-4 py-5">${r.message}</p>`},
+            {data: 'gender', render:(v,t,r)=>` ${r.gender=='female'?'<p class="px-4 py-5"><i class="text-pink-500 fa-solid fa-venus"></i></p>':'<p class="text-blue-500 px-4 py-5"><i class="fa-solid fa-mars"></i></p>'}`},
+            {data: 'age', render:(v,t,r)=>`<p class="px-4 py-5">${r.age}</p>`},
             {data: 'status', render:(v,t,r)=>`
             ${r.status =='new'? '<i class="text-blue-500 px-4 py-5 fa-solid fa-envelope"></i>':'<i class="px-4 py-5 fa-solid fa-envelope-open"></i>'}
           `},

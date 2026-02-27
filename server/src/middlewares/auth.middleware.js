@@ -1,9 +1,12 @@
 const jwt= require("jsonwebtoken");
+const contactService = require("../services/contact.service");
 
 const CNAME = 'auth.middleware.js ';
 
 
-function auth(req, res, next){
+async function auth(req, res, next){
+    // const count = await contactService.countNewNotPartner();
+    // res.locals.count = count;
     return next();
     const token = req.cookies.token ||(req.headers.authorization && req.headers.authorization.split(' ')[1]);
     // console.log('nho comment doan nay di khi deploy');

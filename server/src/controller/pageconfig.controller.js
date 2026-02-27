@@ -20,7 +20,7 @@ const PageConfigController = () => {
     Index: (req, res) => {
       try {
       } catch (error) {
-        console.log(CANME, error.message);
+        console.log(CNAME, error.message);
       }
     },
     HomeSection: async (req, res) => {
@@ -51,7 +51,7 @@ const PageConfigController = () => {
         const pc = await pageconfigService.getNewsSection();
         res.render(VNAME + "news", { data: pc.data });
       } catch (error) {
-        console.log(CANME, error.message);
+        console.log(CNAME, error.message);
         res.render(VNAME + "news", { data: [] });
       }
     },
@@ -159,6 +159,7 @@ const PageConfigController = () => {
       try {
         const { banner } = req.body;
         const cDTO = { banner };
+        console.log(cDTO);
         const task1 = await pageconfigService.updateContactSection(cDTO);
         if (!task1.success) {
           throw new Error("Processing failed");
@@ -185,7 +186,7 @@ const PageConfigController = () => {
 
         const cDTO = { slider, opportunity_title, opportunity_desc, opportunity, steps, benefit_title, benefit_desc, benefits, images };
         console.log(cDTO)
-        const task1 = await pageconfigService.updateContactSection(cDTO);
+        const task1 = await pageconfigService.updateTechnicianSection(cDTO);
         // const task1 = {success: true}
         if (!task1.success) {
           throw new Error("Processing failed");

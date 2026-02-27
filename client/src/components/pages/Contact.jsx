@@ -115,6 +115,8 @@ function Contact() {
         },
         body: JSON.stringify({
           ...formData,
+          type: 'customer',
+          subject: 'none',
           token: token, // ✅ gửi token ở đây
         }),
       });
@@ -166,7 +168,7 @@ function Contact() {
               {contactSection?.banner?.title || "Liên hệ với chúng tôi"}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl">
-              {contactSection?.banner?.title ||
+              {contactSection?.banner?.desc ||
                 "Chúng tôi luôn sẵn sàng lắng nghe và hỗ trợ bạn"}
             </p>
           </div>
@@ -272,7 +274,7 @@ function Contact() {
                     </div>
                   </div>
 
-                  <div>
+                  {/* <div>
                     <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
                       Chủ đề *
                     </label>
@@ -286,7 +288,7 @@ function Contact() {
                       className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
                       placeholder="Nhập chủ đề"
                     />
-                  </div>
+                  </div> */}
 
                   <div>
                     <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">

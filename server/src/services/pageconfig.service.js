@@ -126,13 +126,35 @@ class PageConfigService {
             return {success: false, mess: error.message}
         }
     }
-    async updateContactSection(teachnicianData){
+    async updateContactSection(contactData){
+        // console.log(contactData)
         try {
             const result = await PageConfigEntity.findOneAndUpdate(
                 {},
                 {
                     $set: {
-                        teachnician: teachnicianData
+                        contact: contactData
+                    }
+                },
+                {
+                    new: true, // tra ve document moi tao
+                    upsert: true// chua co thi tao moi
+                }
+            )
+            return {success: true, data: result};
+        } catch (error) {
+            console.log(CNAME, error);
+            return {success: false, mess: error.message}
+        }
+    }
+    async updateTechnicianSection(teachnician){
+        // console.log(teachnician)
+        try {
+            const result = await PageConfigEntity.findOneAndUpdate(
+                {},
+                {
+                    $set: {
+                        teachnician: teachnician
                     }
                 },
                 {

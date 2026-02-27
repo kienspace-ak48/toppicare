@@ -18,6 +18,7 @@ class BlogService {
     async getAllMergeCaregory(){
         try {
             const blogs = await BlogEntity.find().populate('category_id', 'name slug category_root' ).sort({updatedAt: -1});
+            console.log(blogs)
             return blogs;
         } catch (error) {
             console.log(CNAME, error.message);
@@ -28,7 +29,7 @@ class BlogService {
         try {
             const result = await BlogEntity.find().sort({updatedAt: -1});
             result.forEach(b=>{
-                console.log(b.title +' '+b.updatedAt);
+                // console.log(b.title +' '+b.updatedAt);
             })
             return result;
         } catch (error) {

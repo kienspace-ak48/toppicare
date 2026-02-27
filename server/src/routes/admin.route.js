@@ -6,6 +6,7 @@ const blogController = require('../controller/blog.controller')();
 const categoryController = require('../controller/category.controller')();
 const PageConfigController = require('../controller/pageconfig.controller')();
 const uploadImage = require("../config/uploadImage.config");
+const helpCenterController = require("../controller/helpCenter.controller")();
 const contactController = require("../controller/contact.controller")();
 const ServicePackageController = require("../controller/servicePackage.controller")();
 const ServiceController = require('../controller/service.controller')();
@@ -72,6 +73,10 @@ router.get('/blog', blogController.Index);
 // Contact Message ROUTE
 router.get('/contact/get-all-ajax', contactController.GetAllAjax);
 router.get('/contact/export-csv', contactController.ExportCSV);
+router.post('/contact/change-status', contactController.ChangeStatus);
+router.delete("/contact/delete-many-mess", contactController.DeleteByIds);
+router.get('/contact/count-mess', contactController.CountMess);
+router.get('/contact/partner', contactController.PartnerIndex);
 router.get('/contact/',contactController.GetAll);
 // Service ROUTE
 router.get("/service/", ServiceController.Index);
@@ -92,6 +97,19 @@ router.delete("/service-package/delete/:id", ServicePackageController.Delete);
 // frontend
 router.get("/featured", ServiceController.GetFeatured);
 
+// HELPCENTER ROUTE
+router.get('/help-center/article/edit/:id', helpCenterController.ArticleEdit)
+router.post('/help-center/article/create', helpCenterController.ArticleAdd);
+router.get('/help-center/article/form-add', helpCenterController.ArticleFormAdd);
+router.get('/help-center/article/get-all', helpCenterController.ArticleGetAll);
+router.get('/help-center/article', helpCenterController.ArticleIndex);
+// ===
+router.get('/help-center/category/get-all', helpCenterController.CategoryGetAll);
+router.get('/help-center/category/edit/:id', helpCenterController.CategoryEdit);
+router.put('/help-center/category/update/:id', helpCenterController.CategoryUpdate);
+router.delete('/help-center/category/delete/:id', helpCenterController.CategoryDelete);
+router.post('/help-center/category/add', helpCenterController.CategoryAdd);
+router.get('/help-center/category', helpCenterController.CategoryIndex);
 
 // CATEGORY ROUTE 
 // category/get-menu?root=${name}

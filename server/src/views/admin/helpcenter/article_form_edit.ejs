@@ -1,0 +1,281 @@
+<script src="/libs/tinymce/tinymce.min.js"></script>
+<div class="flex justify-between items-center">
+  <h1 class="font-bold">Edit blog/ Chỉnh sửa bài viết</h1>
+    <button id="btn_edit_blog" class="font-bold px-4 py-3 border border-gray-300 bg-yellow-400  rounded-lg hover:cursor-pointer">Update blog</button>
+</div>
+<div class="w-full mx-auto px-4 py-6">
+    <div class="grid grid-cols-12 gap-4">
+        
+         <!-- MAIN CONTENT -->
+          <main class="col-span-9 rounded-lg p-4 shadow">
+            <h2 class="text-[16px] font-bold mb-3">Title</h2>
+            <input type="text" name="title" value="<%=article.title%>" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Title...">
+            <h2 class="text-[16px] font-bold mb-3">Slug</h2>
+            <input type="text" value="<%=article.slug%>" name="slug" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
+            <h2 class="text-[16px] font-bold mb-3">Tags</h2>
+            <input type="text" value="<%=article.tags%>" name="slug" class="px-4 py-3 border border-gray-300 w-full rounded-lg" placeholder="Slug...">
+            <h2 class="text-[16px] font-bold mb-3">Description</h2>
+            <textarea name="desc" id="" class="px-4 py-3 w-full border border-gray-300 rounded-lg" placeholder="Enter Description..."><%=article.desc%></textarea>
+            <h2 class="text-[16px] font-bold mb-4">Nội dung bài viết</h2>
+            <textarea name="content" id="editor" class="w-full"><%-article.content%></textarea>
+          </main>
+          <!-- RIGHT SIDEBAR -->
+           <div class="col-span-3 rounded-lg p-4 shadow">
+            <!-- LEFT SIDEBAR -->
+         <aside >
+            <h3 class="font-semibold mb-3">Category</h3>
+            
+            <!-- <ul class="space-y-2 text-sm">
+                <li><input type="checkbox" name="" id="">Tech</li>
+                <li><input type="checkbox" name="" id="">Design</li>
+                <li><input type="checkbox" name="" id="">Life</li>
+            </ul> -->
+           <select name="" id="category_root" class="px-4 py-3 w-full border border-gray-300 rounded-lg">
+            <option value="#">--choose category--</option>
+            <%if(menu){%>
+              <%menu.forEach((menu)=>{%>
+                <option value="<%=menu._id%>" <%= article.categoryId === menu._id ? 'selected' :'' %> ><%=menu.name%></option>
+              <%})%>
+            <%}%>
+           </select>
+           <!-- <hr class="my-3">
+           <ul id="sub_category_list" class="overflow-y-auto h-60 border border-gray-300 bg-transparent rounded-lg shadow-lg">
+
+           </ul> -->
+
+         </aside>
+         <!--  -->
+         <aside class=" ">
+            <!-- <h3 class="font-semibold mb-3">Author</h3>
+            <p class="text-sm">KienVu</p> -->
+            <hr class="my-3">
+            <!--  -->
+            <!-- <h3 class="font-semibold mb-2">Featured</h3>
+            <select name="" id="is_featured" class="w-full border rounded px-4 py-3 border-gray-300 text-sm" id="">
+                <option value="0" <%#= !article.status ? 'selected' : '' %> >No</option>
+                <option value="1" <%#= article.status ? 'selected' : '' %> >Yes</option>
+            </select> -->
+            <!--  -->
+            <h3 class="font-semibold mb-2">Status</h3>
+            <select name="" id="status" class="w-full border rounded px-4 py-3 border-gray-300 text-sm" id="">
+                <option value="0" <%= !article.status ? 'selected' : '' %> >Draft</option>
+                <option value="1" <%= article.status ? 'selected' : '' %> >Publish</option>
+            </select>
+            <!--  -->
+            <!-- image handle action -->
+        <div class="image_action">
+          <div class="flex justify-between items-center  mt-3">
+            <button class="w-full px-4 py-3  chooseImg rounded-lg border border-green-500">Choose image</button>
+            <input
+              type="text"
+              id="img_thumb"
+              name="home_intro_img"
+              value="<%=(article.image_url)?article.image_url:''%>"
+              class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+              placeholder="img"
+            />
+          </div>
+          <div class="img_preview border border-gray-300 w-full h-[200px]">
+            <img src="/<%=(article.image_url)?article.image_url:''%>" alt="" class="w-full object-cover max-h-[200px]">
+          </div>
+        </div>
+        <!--  -->
+           </aside>
+           </div>
+           
+    </div>
+    <input type="hidden" name="" id="id_blog_hidden" value="<%=article._id%>">
+</div>
+<!-- =================MODAL===================== -->
+<div
+  id="gallery_modal"
+  class="fixed inset-0 bg-black/50 items-center hidden justify-center z-40"
+>
+  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
+    <div class="header flex justify-between mb-4">
+      <h2>Chon anh</h2>
+      <button onclick="closeChooseImgModal()">X</button>
+    </div>
+    <!--  -->
+    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+  </div>
+</div>
+<!-- SCRIPT HERE -->
+<script>
+  // tinyMCE
+  tinymce.init({
+    selector: '#editor',
+    height: 500,
+    license_key: 'gpl', //important
+    // menubar: false,
+    plugins: 'lists link image code',
+    toolbar:
+      'undo redo | bold italic | alignleft aligncenter alignright alignjustify  | bullist numlist | code'
+  });
+  // 
+  const selectRoot = document.querySelector('#category_root');
+  selectRoot.addEventListener('change', function(){
+    const root = this.value;
+    if(!root){
+      console.log('chua chon option')
+      return
+    }
+    getSubCategory(root);
+  })
+  // edit
+  //
+  const currentRoot = "<%#= blog.category_id.category_root %>";
+const currentSub  = "<%#= blog.category_id._id %>";
+
+// if (currentRoot) {
+//   selectRoot.value = currentRoot;
+//   getSubCategory(currentRoot, currentSub);
+// }
+  // 
+  function getSubCategory(name, selectedId){
+    fetch(
+      `/admin/category/get-menu/filter?root=${name}`,
+      {
+        method: 'GET'
+      }
+    ).then((res)=>res.json())
+    .then((res)=>{console.log(res);
+      let htmlString = '';
+      htmlString+='<div class="p-4">'
+      res.forEach(c => {
+        htmlString+=`<li class="flex items-center gap-2">
+        <input type="radio"
+               name="sub_category"
+               value="${c._id}"
+               ${selectedId === c._id ? 'checked' : ''}
+               >
+        <span>${c.name}</span>
+      </li>`
+      });
+      htmlString+='</div>'
+      document.querySelector('#sub_category_list').innerHTML=htmlString;
+    })
+    .catch((err)=>console.log(err))
+  }
+  // 
+  document.querySelector('#btn_edit_blog').addEventListener('click', ()=>{
+const root = document.querySelector('#category_root').value;
+
+    // alert('submit bai viet')
+    if (!root || root === '#') {
+  alert('Vui lòng chọn category cha');
+  return;
+}
+    let choose_category = document.querySelector('#sub_category_list input[name="sub_category"]:checked')
+    if(!choose_category) return
+    const payload = {
+      category: choose_category.value,
+      title: document.querySelector('input[name="title"]').value,
+      slug: document.querySelector('input[name="slug"]').value,
+      desc: document.querySelector('textarea[name="desc"]').value,
+      content: tinymce.get('editor').getContent(),
+      featured: document.querySelector('#is_featured').value,
+      status: document.querySelector('#status').value,
+      img: document.querySelector('#img_thumb').value
+    }
+    console.log(payload)
+    submitData(payload);
+  });
+  function submitData(payload){
+    const id = document.querySelector('#id_blog_hidden').value;
+    fetch(`/admin/blog/update-blog/${id}`, {
+      method: "PUT",
+      headers: {
+        'Content-Type': 'application/json'
+      },
+        
+      body: JSON.stringify(payload)
+    }).then(res=>res.json())
+    .then(res=>{console.log(res); myNotification('Edit success', 'success'); document.location.reload();})
+    .catch(err=>{
+      console.log(err);
+      myNotification('Edit failed', 'danger')
+    })
+  }
+  // slug
+  function slugify(text) {
+  return text
+    .toLowerCase()
+    .normalize('NFD')                 // tách dấu tiếng Việt
+    .replace(/[\u0300-\u036f]/g, '')  // xoá dấu
+    .replace(/đ/g, 'd')
+    .replace(/[^a-z0-9\s-]/g, '')     // xoá ký tự đặc biệt
+    .trim()
+    .replace(/\s+/g, '-')             // space → -
+    .replace(/-+/g, '-');             // -- → -
+}
+
+const titleInput = document.querySelector('input[name="title"]');
+const slugInput  = document.querySelector('input[name="slug"]');
+
+titleInput.addEventListener('input', () => {
+  slugInput.value = slugify(titleInput.value);
+});
+//
+  const chooseImgModal = document.querySelector("#gallery_modal");
+  var ctaChooseImg = document.querySelectorAll(".chooseImg");
+  let imgInputIsFocusing = null;
+
+    function openChooseImgModal() {
+    chooseImgModal.classList.remove("hidden");
+    chooseImgModal.classList.add("flex");
+  }
+  function closeChooseImgModal() {
+    chooseImgModal.classList.remove("flex");
+    chooseImgModal.classList.add("hidden");
+  }
+  ctaChooseImg.forEach((el) => {
+    el.addEventListener("click", (ev) => {
+      console.log(el);
+      loadImage();
+      let input = el.closest('.image_action');
+      imgInputIsFocusing = input;
+      console.log("input ", input);
+      openChooseImgModal();
+    });
+  });
+  //
+  function loadImage() {
+    imgList.innerHTML = "Loading...";
+    $.ajax({
+      url: "/admin/gallery/image-getall",
+      method: "GET",
+      success: (res) => {
+        if (res.success) {
+          imgList.innerHTML = "";
+          res.data.forEach((item) => {
+            const img = document.createElement("img");
+            img.src = "/" + item.path;
+            img.className = `
+            w-full h-32
+            object-cover
+            cursor-pointer rounded border
+            hover:ring-4 hover:ring-blue-500
+            transition
+          `;
+
+            img.onclick = () => selectImage(item.path);
+
+            imgList.appendChild(img);
+          });
+        }
+      },
+      error: (xhr, status, err) =>
+        console.log(xhr.responseJSON?.mess || "Server error"),
+    });
+  }
+  //
+  function selectImage(src) {
+    imgInputIsFocusing.querySelector('.img_input').value = src;
+     imgInputIsFocusing.querySelector('.img_preview img').src ="/"+src;
+    closeChooseImgModal();
+  }
+  
+
+  // 
+</script>

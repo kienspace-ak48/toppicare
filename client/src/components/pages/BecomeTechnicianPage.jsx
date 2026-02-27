@@ -98,12 +98,14 @@ const SITE_KEY = "0x4AAAAAACZ49bnQxOXBIeHL";
 const SITE_KEY_DOMAIN = "0x4AAAAAACZ4I-nJdAG-KT38";
 export function BecomeTechnicianPage() {
   const [formData, setFormData] = useState({
-    fullName: "",
+    name: "",
     phone: "",
     age: "",
+    email: "",
     gender: "female",
   });
-
+    const [loadingS, setLoading] = useState(false);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!token) {
@@ -111,10 +113,10 @@ export function BecomeTechnicianPage() {
       return;
     }
     console.log("Form submitted:", formData);
-    alert(
-      "Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.",
-    );
-    setFormData({ fullName: "", phone: "", age: "", gender: "female" });
+    // alert(
+    //   "Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.",
+    // );
+    setFormData({ name: "", phone: "",email: "", age: "", gender: "female" });
     //
     console.log("Form submitted:", formData);
     try {
@@ -126,6 +128,7 @@ export function BecomeTechnicianPage() {
         },
         body: JSON.stringify({
           ...formData,
+          type: 'partner',
           token: token, // ✅ gửi token ở đây
         }),
       });
@@ -136,9 +139,10 @@ export function BecomeTechnicianPage() {
         console.log(data);
         alert("Gửi thành công");
         setFormData({
-          fullName: "",
+          name: "",
           phone: "",
           age: "",
+          email: "",
           gender: "female",
         });
       } else {
@@ -362,31 +366,49 @@ export function BecomeTechnicianPage() {
                 <input
                   type="text"
                   required
-                  value={formData.fullName}
+                  value={formData.name}
                   onChange={(e) =>
-                    setFormData({ ...formData, fullName: e.target.value })
+                    setFormData({ ...formData, name: e.target.value })
                   }
                   className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
                   placeholder="Nhập họ và tên"
                 />
               </div>
 
-              {/* Số điện thoại */}
-              <div>
-                <label className="block text-gray-700 mb-2 text-[16px]">
-                  Số điện thoại *
-                </label>
-                <input
-                  type="tel"
-                  required
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                  className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
-                  placeholder="Nhập số điện thoại"
-                />
-              </div>
+              {/* Email Số điện thoại */}
+              <div className="grid md:grid-cols-2 gap-6">
+                    <div>
+                      <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                        Email *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        value={formData.email}
+                        onChange={(e) =>
+                          setFormData({ ...formData, email: e.target.value })
+                        }
+                        className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
+                        placeholder="Nhập email"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-gray-700 mb-2 text-[16px] text-[15px]">
+                        Số điện thoại *
+                      </label>
+                      <input
+                        type="tel"
+                        required
+                        value={formData.phone}
+                        onChange={(e) =>
+                          setFormData({ ...formData, phone: e.target.value })
+                        }
+                        className="w-full px-6 py-3 rounded-2xl bg-white/80 border border-gray-200 outline-none focus:border-purple-500 transition-colors"
+                        placeholder="Nhập số điện thoại"
+                      />
+                    </div>
+                  </div>
 
               {/* Tuổi và Giới tính */}
               <div className="grid md:grid-cols-2 gap-6">
@@ -448,10 +470,10 @@ export function BecomeTechnicianPage() {
 
               <button
                     type="submit"
-                    disabled={loading}
+                    disabled={loadingS}
                     className="w-full py-3 bg-[#2dbdb6] text-white rounded-2xl"
                   >
-                    {loading ? "Đang gửi..." : "Gửi tin nhắn"}
+                    {loadingS ? "Đang gửi..." : "Gửi tin nhắn"}
                   </button>
             </div>
             <div

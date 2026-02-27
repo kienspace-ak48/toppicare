@@ -76,7 +76,7 @@ const BlogApi = () => {
         console.log(trainingBlogs);
         return res.json({success: true, data: trainingBlogs});
       } catch (error) {
-        console.log(CANME, error.message);
+        console.log(CNAME, error.message);
         res.status(500).json({success: false, mess: error.message})
       }
     },

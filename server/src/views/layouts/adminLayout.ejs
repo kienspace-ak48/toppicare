@@ -208,6 +208,49 @@
               </div>
 
               <!-- END =============== -->
+               <!-- Article -->
+              <!-- NRW ================= -->
+              <button
+                onclick="toggleSubmenu('articleSub', this)"
+                class="btn_root w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-house-chimney-medical text-blue-600 text-2xl"></i>
+                  <!-- <i class="fa-solid fa-newspaper text-blue-600 text-2xl"></i> -->
+                  <span class="label">Help center</span>
+                </div>
+
+                <!-- Chevron -->
+                <i
+                  class="fa-solid fa-chevron-down chevron transition-transform duration-200"
+                ></i>
+              </button>
+              <!-- sub -->
+              <div
+                id="articleSub"
+                class="hidden ml-6 mt-1 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
+              >
+                <a
+                  href="/admin/help-center/article"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Article
+                </a>
+                <!-- <a
+                  href="/admin/category"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  
+                </a> -->
+                <a
+                  href="/admin/help-center/category"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Category
+                </a>
+              </div>
+
+              <!-- END =============== -->
               <!-- Blogs -->
               <!-- NRW ================= -->
               <button
@@ -300,11 +343,24 @@
                 <span class="label ml-2">Gallery</span>
               </a>
               <a
-                href="/admin/contact/"
+                href="/admin/contact?type=customer"
+                class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px] "
+              >
+              <i class="fa-regular fa-paper-plane text-blue-600 text-2xl relative">
+                <span class="flex justify-center items-center w-4 h-4 text-xs text-white leading-none border border-gray-300 bg-red-500 rounded-full absolute -top-3 -right-4" id="count_mess_customer"></span>
+              </i>
+                
+                <span class="label ml-2">Customer </span>
+              </a>
+              <!-- Partner  -->
+              <a
+                href="/admin/contact/partner"
                 class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
               >
-              <i class="fa-regular fa-paper-plane text-blue-600 text-2xl"></i>
-                <span class="label ml-2">Messages</span>
+              <i class="fa-regular fa-paper-plane text-blue-600 text-2xl relative">
+                <span class="flex justify-center items-center w-4 h-4 text-xs text-white leading-none border border-gray-300 bg-red-500 rounded-full absolute -top-3 -right-4" id="count_mess_partner">0</span>
+              </i>
+                <span class="label ml-2">Partner</span>
               </a>
               <!-- Videos -->
               <!-- <button class="menu-item">
@@ -481,6 +537,39 @@
         // window.location.href = 
         // origin = https://toppicare.vn
       }  
+      // 
+      function countMess(type="customer") {
+        if(type==='partner'){
+          fetch(`/admin/contact/count-mess?type=${type}`, {
+          method: 'GET',
+          headers:{'Content-Type': 'application/json'}
+        })
+        .then(res=>res.json())
+        .then(res=>{if(res.success){
+          document.querySelector("#count_mess_partner").textContent= res.data?.partner;
+        }})
+        .catch(err=>console.log('err: ',err))
+        }
+        if(type==='customer'){
+          fetch(`/admin/contact/count-mess?type=${type}`, {
+          method: 'GET',
+          headers:{'Content-Type': 'application/json'}
+        })
+        .then(res=>res.json())
+        .then(res=>{if(res.success){
+          document.querySelector("#count_mess_customer").textContent= res.data?.customer;
+        }})
+        .catch(err=>console.log('err: ',err))
+        }
+        
+      }
     </script>
+    <script>
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log("Script loaded");
+    countMess('customer');
+    countMess("partner");
+  });
+</script>
   </body>
 </html>
