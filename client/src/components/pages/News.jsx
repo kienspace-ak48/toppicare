@@ -20,6 +20,7 @@ import {
 } from "../../hooks/useNews";
 import { formatDate, formatDateTime } from "../utils/formatDate";
 import { Link } from "react-router-dom";
+import usePageConfig from "../../hooks/usePageConfig";
 // import { useGetAllNewBlog } from '../../hooks/useNews';
 const newsArticles00 = [
   {
@@ -116,7 +117,10 @@ const newsArticles00 = [
 
 function News() {
   const ASSET_URL = window.__ENV__.API_URL;
-  const { data, loading, error } = useNews();
+  // const { data, loading, error } = useNews();
+    const { data, loading, error } = usePageConfig();
+      const newsSection = data?.data?.news;
+      console.log('a',newsSection)
   const { data: dataN, loading: loadinN, error: errorN } = useGetAllNewsBlog();
   console.log("dataN co gi", dataN?.data);
   const {
@@ -151,7 +155,7 @@ function News() {
       {/* Banner */}
       <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
-          src="https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=1200"
+          src={ASSET_URL+newsSection?.img}
           alt="News & Activities"
           className="w-full h-full object-cover"
         />
@@ -159,11 +163,10 @@ function News() {
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
             <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-              Tin tức & Hoạt động
+            {newsSection?.title}
             </h1>
             <p className="text-white/90 text-lg md:text-xl max-w-2xl text-[16px]">
-              Cập nhật tin tức mới nhất từ ToppiCare và những hoạt động cộng
-              đồng ý nghĩa
+              {newsSection?.desc}
             </p>
           </div>
         </div>

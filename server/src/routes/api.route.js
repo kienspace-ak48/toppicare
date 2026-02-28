@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const helpCenterApi = require('../api/helpcenter.api')();
 const PageConfigApi = require('../api/pageconfig.api')();
 const NewsApi = require('../api/blog.api')();
 const ServicesApi = require('../api/services.api')();
@@ -29,6 +30,10 @@ function getYoutubeId(url) {
   const match = url.match(reg)
   return match ? match[1] : null
 }
+// help-center
+router.get('/help-center/get-article-by-slug/:slug', helpCenterApi.GetArticleBySlug);
+router.get('/help-center/get-article', helpCenterApi.Index);
+
 
 router.get("/video", async (req, res) => {
   const data = {

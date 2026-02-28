@@ -33,11 +33,34 @@ class ArticleService {
       return article;
     } catch (error) {
       console.log(CNAME, error.message);
-      return {}
+      return {};
     }
   }
-  update(data, id) {}
-  delete(id) {}
+  async update(data, id) {
+    try {
+      const result = await articleEntity.findByIdAndUpdate(
+        id,
+        {
+          $set: data,
+        },
+        { new: true },
+      );
+      return true;
+    } catch (error) {
+      console.log(CANME, error.message);
+      return false;
+    }
+  }
+  async delete(id) {
+    try {
+      const result = await articleEntity.findByIdAndDelete(id);
+      console.log(result);
+      return true;
+    } catch (error) {
+      console.log(CNAME, error.message);
+      return false;
+    }
+  }
 }
 
 module.exports = new ArticleService();

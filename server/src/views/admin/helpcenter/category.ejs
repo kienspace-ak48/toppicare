@@ -11,6 +11,7 @@
     <thead class="bg-gray-100 font-semibold text-gray-700 uppercase text-xs">
       <tr>
         <th class="px-6 py-4">Name</th>
+        <th class="px-6 py-4">Description</th>
         <th class="px-6 py-4 text-center">Action</th>
       </tr>
     </thead>
@@ -46,6 +47,14 @@
         name="c_name"
         class="px-4 py-3 border border-gray-300 rounded-lg w-full"
        placeholder="Enter title..." 
+      />
+      <!--  -->
+      <label for="" class="w-full mb-3">Desc</label>
+      <input
+        type="text"
+        name="c_desc"
+        class="px-4 py-3 border border-gray-300 rounded-lg w-full"
+       placeholder="Enter desc..." 
       />
       <!-- <label for="" class="w-full">Category root</label>
       <select
@@ -153,6 +162,7 @@
     info: false,
     columns: [
       { data: "name", render: (v) => `<p class="px-4 py-6 ">${v}</p>` },
+      {data: 'desc', render: (v)=>`<p class="px-4 py-6">${v}</p>`},
       // { data: "slug", render: (v) => `<p class="px-4 py-6">${v}</p>` },
       // { data: "category_root", render: (v)=>`<p class="text-center">${v}</p>` },
       // { data: "quantity",render: (v)=>`<p class="text-center">${v}</p>` },
@@ -254,7 +264,8 @@
   }
   btnCtaUpdate.addEventListener("click", (ev) => {
     const id = document.querySelector('#id_hidden').value;
-    const payload = { name: document.querySelector("#c_name_edit").value, slug: document.querySelector('#c_slug_edit').value };
+    const payload = { name: document.querySelector("#c_name_edit").value, 
+    slug: document.querySelector('#c_slug_edit').value };
     updateCategory(id, payload)
   });
   function updateCategory(id, payload) {
@@ -297,6 +308,7 @@
     .addEventListener("click", () => {
       const payload = {
         name: document.querySelector('#modal input[name="c_name"]').value,
+        desc: document.querySelector('#modal input[name="c_desc"]').value
         // category_root: document.querySelector("#modal #c_category_root").value,
       };
       Add(payload);

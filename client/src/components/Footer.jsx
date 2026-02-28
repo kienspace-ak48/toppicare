@@ -10,7 +10,7 @@ function Footer() {
     { name: "Trang chủ", path: "/" },
     { name: "Gới thiệu", path: "/about" },
     { name: "Dịch vụ", path: "/services" },
-    { name: "Học viện đào tạo", path: "/training" },
+    // { name: "Học viện đào tạo", path: "/training" },
     { name: "Tin tức & Hoạt động", path: "/news" },
     { name: "Tuyển dụng", path: "/become-partner" },
   ];

@@ -43,6 +43,7 @@ class CategoryCenterService {
         {
           name: data.name,
           slug: data.slug,
+          desc: data.desc
         },
         { new: true },
       );

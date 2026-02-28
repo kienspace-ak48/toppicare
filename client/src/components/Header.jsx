@@ -23,7 +23,7 @@ export function Header() {
     { name: "Trang Chủ", path: "/", icon: Home },
     { name: "Giới thiệu", path: "/about", icon: Info },
     { name: "Dịch vụ", path: "/services", icon: Briefcase },
-    { name: "Học viện đào tạo", path: "/training", icon: GraduationCap },
+    // { name: "Học viện đào tạo", path: "/training", icon: GraduationCap },
     { name: "Tin tức & Hoạt động", path: "/news", icon: Newspaper },
     { name: "Liên hệ", path: "/contact", icon: Phone },
   ];

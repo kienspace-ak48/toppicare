@@ -55,7 +55,7 @@ function ServiceDetail() {
     setTimeout(() => {
       setBlog(mockBlogDetail);
       setLoading(false);
-    }, 300);
+    }, 100);
   }, [slug]);
 
   if (loading) {

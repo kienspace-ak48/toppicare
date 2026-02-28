@@ -100,7 +100,7 @@ const ASSET_URL = window.__ENV__.API_URL;
     setTimeout(() => {
       setService(serviceDetailMock);
       setLoading(false);
-    }, 300);
+    }, 100);
   }, []);
 
 

@@ -98,7 +98,9 @@ router.delete("/service-package/delete/:id", ServicePackageController.Delete);
 router.get("/featured", ServiceController.GetFeatured);
 
 // HELPCENTER ROUTE
-router.get('/help-center/article/edit/:id', helpCenterController.ArticleEdit)
+router.delete('/help-center/article/delete/:id', helpCenterController.ArticleDelete)
+router.get('/help-center/article/edit/:id', helpCenterController.ArticleEdit);
+router.put('/help-center/article/update/:id', helpCenterController.ArticleUpdate);
 router.post('/help-center/article/create', helpCenterController.ArticleAdd);
 router.get('/help-center/article/form-add', helpCenterController.ArticleFormAdd);
 router.get('/help-center/article/get-all', helpCenterController.ArticleGetAll);

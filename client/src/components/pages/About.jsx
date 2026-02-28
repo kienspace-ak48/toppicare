@@ -67,7 +67,7 @@ function About() {
               alt={slide.title}
               className="w-full h-full object-contain object-center"
             />
-            <div className="absolute inset-0 "></div>
+            <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-7xl mx-auto px-4 w-full">
                 <h1 className="text-white text-4xl md:text-6xl font-bold">

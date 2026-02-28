@@ -121,7 +121,7 @@ console.log("valid:", Date.now() < data.expire)
     setTimeout(() => {
       setBlog(blogData);
       setLoading(false);
-    }, 200);
+    }, 100);
   }, [blogData]);
   //
 

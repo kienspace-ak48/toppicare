@@ -1,4 +1,7 @@
 <style>
+  tbody td{
+    text-align: center;
+  }
   .dt-layout-row {
     display: flex !important;
     flex-wrap: wrap !important;
@@ -68,10 +71,10 @@
       { data: "title", render: (v) => `<p class="line-clamp-2 px-4 py-6 ">${v}</p>` },
       { data: "slug", render: (v) => `<p class="line-clamp-2 px-4 py-6">${v}</p>` },
       {
-        data: "image",
-        render: (v) => `<div class="py-1">
+        data: "image_url",
+        render: (v,t,r) => `<div class="py-1 flex justify-center">
           <img
-            src="/${v}"
+            src="/${r.image_url}"
             alt=""
             loading="lazy"
             style="width: 80px; height: 80px; object-fit: cover"
@@ -110,7 +113,7 @@
     confirmDelete(rowData._id);
   });
   function deleteBlog(id) {
-    fetch(`/admin/blog/delete-blog/${id}`, {
+    fetch(`/admin/help-center/article/delete/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",

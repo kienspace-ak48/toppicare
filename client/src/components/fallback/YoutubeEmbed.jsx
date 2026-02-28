@@ -1,32 +1,41 @@
 import { useState } from "react"
-import { Play } from "lucide-react"
+import { Play } from "lucide-react";
+import pre_video from 'pre_video';
 
-export default function YoutubeEmbed({ videoId, thumbnail }) {
-    // videoId ='3XwRJ4vEApw';
-function getYoutubeId(input) {
+export default function YoutubeEmbed({ videoId, thumbnail=pre_video }) {
+
+  function getYoutubeId(input) {
     if (!input) return null
 
-    // nếu truyền thẳng ID
     if (input.length === 11 && !input.includes("http")) return input
 
     const reg = /(?:v=|\/embed\/|\.be\/)([A-Za-z0-9_-]{11})/
     const match = input.match(reg)
     return match ? match[1] : null
   }
-let videoIdHandle = getYoutubeId(videoId);
-// console.log(videoIdHandle);
 
-  const [play, setPlay] = useState(false);
+  const videoIdHandle = getYoutubeId(videoId)
+  const [play, setPlay] = useState(false)
+
+  // ✅ Nếu không có video → return image luôn
+  if (!videoIdHandle) {
+    return (
+      <div className="relative">
+        <img
+          src={thumbnail || "/no-video.jpg"}
+          className="w-full aspect-video object-cover rounded-3xl shadow-2xl"
+          alt="about image"
+        />
+      </div>
+    )
+  }
 
   return (
     <div className="relative">
-      {/* VIDEO BOX */}
       <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl bg-black z-10">
         
-        {/* Khi chưa play → show thumbnail + nút */}
         {!play && (
           <>
-            {/* nút play */}
             <div className="absolute inset-0 flex items-center justify-center z-20">
               <button
                 onClick={() => setPlay(true)}
@@ -36,20 +45,14 @@ let videoIdHandle = getYoutubeId(videoId);
               </button>
             </div>
 
-            {/* thumbnail */}
             <img
-              src={
-                (videoIdHandle
-                ? `https://img.youtube.com/vi/${videoIdHandle}/hqdefault.jpg`
-                : "/no-video.jpg")
-              }
+              src={`https://img.youtube.com/vi/${videoIdHandle}/hqdefault.jpg`}
               className="w-full h-full object-cover opacity-90"
               alt="video thumbnail"
             />
           </>
         )}
 
-        {/* iframe khi play */}
         {play && (
           <iframe
             className="w-full h-full"
@@ -60,9 +63,6 @@ let videoIdHandle = getYoutubeId(videoId);
           />
         )}
       </div>
-
-      {/* decor box */}
-      <div className="absolute -bottom-6 -left-6 w-32 h-32 bg-gradient-to-br from-green-500 to-teal-500 rounded-3xl -z-10"></div>
     </div>
   )
 }

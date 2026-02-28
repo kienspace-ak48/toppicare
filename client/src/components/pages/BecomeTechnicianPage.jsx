@@ -236,7 +236,7 @@ export function BecomeTechnicianPage() {
                 >
                   <div className="w-16 h-16 rounded-2xl bg-[#2dbdb6] flex items-center justify-center mb-4">
                     {/* <Icon className="w-8 h-8 text-white" /> */}
-                    <DynamicFA className="w-10 h-10 text-white" name={Icon} />
+                    <DynamicFA className="w-10 h-10 text-2xl text-white" name={Icon} />
                   </div>
                   <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
                     {opportunity.title}
@@ -310,7 +310,7 @@ export function BecomeTechnicianPage() {
                   className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-8 text-center hover:shadow-xl transition-all hover:scale-105"
                 >
                   <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-[#2dbdb6] flex items-center justify-center">
-                    <DynamicFA className="w-10 h-10 text-white" name={Icon} />
+                    <DynamicFA className="w-10 h-10 text-2xl text-white" name={Icon} />
                   </div>
                   <h3 className="text-xl mb-3 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent text-[18px] font-bold">
                     {benefit.title}

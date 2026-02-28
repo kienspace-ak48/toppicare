@@ -18,7 +18,7 @@ const articleSchema = new mongoose.Schema({
   },
   type: {
     type: String,
-    enum: ["customer", "teachnician"],
+    enum: ["customer", "technician"],
     default: "customer"
   }
 }, {timestamps:  true});
