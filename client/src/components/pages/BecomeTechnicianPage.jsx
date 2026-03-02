@@ -112,13 +112,11 @@ export function BecomeTechnicianPage() {
       alert("Vui lòng xác minh captcha");
       return;
     }
-    console.log("Form submitted:", formData);
     // alert(
     //   "Cảm ơn bạn đã đăng ký! Chúng tôi sẽ liên hệ lại trong thời gian sớm nhất.",
     // );
     setFormData({ name: "", phone: "",email: "", age: "", gender: "female" });
     //
-    console.log("Form submitted:", formData);
     try {
       setLoading(true);
       const res = await fetch(`${ASSET_URL}api/contact`, {
@@ -136,7 +134,6 @@ export function BecomeTechnicianPage() {
       const data = await res.json();
 
       if (data.success) {
-        console.log(data);
         alert("Gửi thành công");
         setFormData({
           name: "",
@@ -158,7 +155,6 @@ export function BecomeTechnicianPage() {
   //
   const { data, loading, error } = usePageConfig();
   const teachnicianSection = data?.data?.teachnician;
-  console.log(teachnicianSection);
   useEffect(() => {
     window.onTurnstileSuccess = function (t) {
       // console.log("TOKEN:", t);
@@ -193,10 +189,10 @@ export function BecomeTechnicianPage() {
                     <Briefcase className="w-5 h-5 " />
                     <span>Tuyển dụng KTV</span>
                   </div>
-                  <h1 className="text-white text-xl md:text-2xl mb-6">
+                  <h1 className="text-white text-lg md:text-2xl mb-6">
                     {s.title}
                   </h1>
-                  <p className="text-white/90 text-[16px] md:text-2xl mb-8">
+                  <p className="text-white/90 text-sm md:text-2xl mb-8">
                     {s.desc}
                   </p>
                   <button

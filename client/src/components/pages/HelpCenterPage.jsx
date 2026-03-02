@@ -140,7 +140,6 @@ export function HelpCenterPage() {
    const articleData = data?.data ||[];
    const userTopics = articleData?.filter(x=>x.type==='customer');
    const technicianTopics = articleData?.filter(x=>x.type==='technician');
-   console.log(articleData);
    //
 //  <"user" | "technician">
   const [activeTab, setActiveTab] = useState("user");
@@ -157,12 +156,27 @@ export function HelpCenterPage() {
   return (
     <div className="">
       {/* Banner with Search */}
-      <section className="relative h-[400px] overflow-hidden">
+      <section className="relative h-[400px]  overflow-hidden">
+        {/* mobile */}
         <ImageWithFallBack
-          src="https://images.unsplash.com/photo-1761234852163-23f2ededd04e?w=1200"
+          src="/assets/images/help-center-square.png"
+          alt="help center"
+          className="w-full h-full object-cover md:hidden"
+        />
+
+        
+        {/* desktop */}
+        <ImageWithFallBack
+          src="/assets/images/help-center2.png"
+          alt="help center"
+          className="w-full h-full object-cover hidden md:block"
+        />
+        {/*  */}
+        {/* <ImageWithFallBack
+          src="/assets/images/help-center2.png"
           alt="Help Center"
           className="w-full h-full object-cover"
-        />
+        /> */}
         <div className="absolute inset-0 bg-[#2dbdb6]/80 to-cyan-600/90"></div>
         <div className="absolute inset-0 flex items-center justify-center">
           <div className="max-w-3xl mx-auto px-4 w-full text-center">
@@ -234,7 +248,7 @@ export function HelpCenterPage() {
                 return (
                   <Link  
                     key={topic._id}
-                  to={`/help-center/article/${topic.slug}`}
+                  to={`/trung-tam-ho-tro/bai-viet/${topic.slug}`}
                   >
                   <div
                     className="group backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-6 hover:shadow-xl transition-all hover:scale-105 cursor-pointer"

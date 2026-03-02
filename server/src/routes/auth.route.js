@@ -12,8 +12,8 @@ const loginLimiter = rateLimit({
 });
 async function comparePassword(password, hash) {
   const match = await bcrypt.compare(password, hash);
-  console.log("ham compare tra ra gi? ");
-  console.log(typeof match);
+  // console.log("ham compare tra ra gi? ");
+  // console.log(typeof match);
   return match;
 }
 //form login
@@ -48,8 +48,8 @@ router.post("/admin/login",loginLimiter , async (req, res) => {
   }
   const payload = {
         id: account._id,
-        username: account.username,
-        email: account.email,
+        // username: account.username,
+        // email: account.email,
         role: account.role
     }
   const token = jwt.sign(

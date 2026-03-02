@@ -182,7 +182,7 @@ function Traning() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {trainingBlogs?.map((article) => (
-              <Link to={`/blog-detail/${article.slug}`} key={article._id}>
+              <Link to={`/bai-viet/${article.slug}`} key={article._id}>
                 <div
                   className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer group"
                 >

@@ -67,6 +67,7 @@ function ServiceDetail() {
   }
 
   return (
+    <>
     <div className="max-w-4xl mx-auto px-4 py-10">
       {/* CATEGORY */}
       <div className="mb-3">
@@ -104,10 +105,70 @@ function ServiceDetail() {
 
       {/* CONTENT */}
       <article
-        className="prose prose-lg max-w-none"
+        className=""
         dangerouslySetInnerHTML={{ __html: blogData.content }}
       />
     </div>
+    <style>
+        {`
+          .blog-content {
+        font-family: 'Be Vietnam Pro', sans-serif !important;
+        font-size: 17px;
+        line-height: 1.9;
+        color: #1f2937;
+      }
+
+      .blog-content p,
+      .blog-content div {
+        margin-bottom: 16px;
+      }
+
+      .blog-content h1,
+      .blog-content h2,
+      .blog-content h3 {
+        font-weight: 700;
+        margin: 32px 0 16px;
+        line-height: 1.4;
+        color: #111827;
+      }
+
+      .blog-content h1 { font-size: 28px; }
+      .blog-content h2 { font-size: 24px; }
+      .blog-content h3 { font-size: 20px; }
+
+      .blog-content strong {
+        font-weight: 600;
+      }
+
+      .blog-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 24px auto;
+        display: block;
+      }
+
+      .blog-content a {
+        color: #2563eb;
+        text-decoration: underline;
+      }
+
+      .blog-content ul,
+      .blog-content ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+      }
+
+      .blog-content blockquote {
+        border-left: 4px solid #e5e7eb;
+        padding-left: 16px;
+        color: #6b7280;
+        font-style: italic;
+        margin: 20px 0;
+      }
+    `}
+      </style>
+    </>
   );
 }
 

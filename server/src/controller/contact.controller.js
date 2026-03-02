@@ -112,7 +112,7 @@ const contactController = () => {
     CountMess: async(req, res)=>{
       try {
         const type = req.query.type;
-        console.log('type ',type);
+        // console.log('type ',type);
         const task1 = await contactService.countNewNotPartner('partner');
         const task2 = await contactService.countNewNotPartner('customer');
 

@@ -32,17 +32,17 @@ export default function App() {
         {/* CLIENT */}
         <Route element={<ClientLayout />}>
           <Route path="/" element={<HomePage />} />
-          <Route path="/about" element={<About />} />
-          <Route path="/services" element={<Service />} />
-          <Route path="/services/detail/:slug" element={<ServiceDetailPage />} />
-          <Route path="/help-center/article/:slug" element={<ArticleDetail/>}/>
+          <Route path="/gioi-thieu" element={<About />} />
+          <Route path="/dich-vu" element={<Service />} />
+          <Route path="/dich-vu/chi-tiet/:slug" element={<ServiceDetailPage />} />
+          <Route path="/trung-tam-ho-tro/bai-viet/:slug" element={<ArticleDetail/>}/>
           <Route path="/training" element={<Traning />} />
-          <Route path="/news" element={<News />} />
-          <Route path="/contact" element={<Contact />} />
-          <Route path="/help" element={<HelpCenterPage />} />
-          <Route path="/become-teachnician" element={<BecomeTechnicianPage />} />
+          <Route path="/tin-tuc" element={<News />} />
+          <Route path="/lien-he" element={<Contact />} />
+          <Route path="/trung-tam-ho-tro" element={<HelpCenterPage />} />
+          <Route path="/tuyen-ky-thuat-vien" element={<BecomeTechnicianPage />} />
 
-          <Route path="/blog-detail/:slug" element={<BlogDetail/>}/>
+          <Route path="/bai-viet/:slug" element={<BlogDetail/>}/>
           <Route path="/policy/customer" element={<PolicyPage/>}></Route>
           <Route path="/policy/partner" element={<PocicyPartner/>}></Route>
           <Route path="*" element={<NotFound/>}></Route>

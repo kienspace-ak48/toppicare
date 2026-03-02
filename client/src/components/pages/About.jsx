@@ -70,7 +70,7 @@ function About() {
             <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
             <div className="absolute inset-0 flex items-center">
               <div className="max-w-7xl mx-auto px-4 w-full">
-                <h1 className="text-white text-4xl md:text-6xl font-bold">
+                <h1 className="text-white text-lg md:text-6xl font-bold">
                   {slide.title}
                 </h1>
               </div>
@@ -78,7 +78,7 @@ function About() {
           </div>
         ))}
 
-        <button
+        {/* <button
           onClick={prevSlide}
           className="absolute left-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all"
         >
@@ -89,9 +89,9 @@ function About() {
           className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm flex items-center justify-center hover:bg-white/30 transition-all"
         >
           <ChevronRight className="w-6 h-6 text-white" />
-        </button>
+        </button> */}
 
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+        {/* <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
           {bannerSlides?.map((_, index) => (
             <button
               key={index}
@@ -101,7 +101,7 @@ function About() {
               }`}
             />
           ))}
-        </div>
+        </div> */}
       </section>
 
       {/* Vision */}

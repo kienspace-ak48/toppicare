@@ -21,16 +21,16 @@ export function Header() {
   const location = useLocation();
   const mainMenuItems = [
     { name: "Trang Chủ", path: "/", icon: Home },
-    { name: "Giới thiệu", path: "/about", icon: Info },
-    { name: "Dịch vụ", path: "/services", icon: Briefcase },
+    { name: "Giới thiệu", path: "/gioi-thieu", icon: Info },
+    { name: "Dịch vụ", path: "/dich-vu", icon: Briefcase },
     // { name: "Học viện đào tạo", path: "/training", icon: GraduationCap },
-    { name: "Tin tức & Hoạt động", path: "/news", icon: Newspaper },
-    { name: "Liên hệ", path: "/contact", icon: Phone },
+    { name: "Tin tức & Hoạt động", path: "/tin-tuc", icon: Newspaper },
+    { name: "Liên hệ", path: "/lien-he", icon: Phone },
   ];
   const horizontalMenuItems = [
     { name: "Tải ứng dụng", icon: Download, action: "download" },
-    { name: "Trở thành KTV", icon: UserPlus, path: "/become-teachnician" },
-    { name: "Trung tâm hỗ trợ", icon: HelpCircle, path: "/help" },
+    { name: "Trở thành KTV", icon: UserPlus, path: "/tuyen-ky-thuat-vien" },
+    { name: "Trung tâm hỗ trợ", icon: HelpCircle, path: "/trung-tam-ho-tro" },
   ];
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);
@@ -73,6 +73,7 @@ export function Header() {
               {horizontalMenuItems.map((item) => (
                               item.path ? (
                                 <Link
+                                 onClick={closeDropdown}
                                   key={item.name}
                                   to={item.path}
                                   className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
@@ -84,6 +85,7 @@ export function Header() {
                                 <button
                                   key={item.name}
                                   onClick={() => {
+                                    closeDropdown()
                                     if (item.action === 'download') {
                                       window.open(ASSET_URL+'api/action-link/download-app', '_blank');
                                     }

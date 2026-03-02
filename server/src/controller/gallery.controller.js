@@ -8,10 +8,16 @@ const ImageEntity = require("../model/image.model");
 const FolderEntity = require("../model/folder.model");
 const galleryController = () => {
   //tao thu muc
+  const pathDefault = "uploads/default";
   const pathPrefix = "uploads/imgs/";
-  const pathPrefix2 = "uploads/sys_folder/";
+  const pathPrefix2 = "uploads/dynamic/"; //folder: uploads/dynamic/
   const uploadDir = path.join(myPathConfig.public, pathPrefix);
   const uploadDir2 = path.join(myPathConfig.public, pathPrefix2);
+  //fix
+  const physicalPathDefault = path.join(myPathConfig.public, pathDefault)
+  if(!fs.existsSync(physicalPathDefault)){
+    fs.mkdirSync(physicalPathDefault, {recursive: true});
+  }
 
   function mySlugify(str) {
     return str
@@ -147,12 +153,11 @@ const galleryController = () => {
     CreateFolder: async (req, res) => {
       try {
         const name = req.body.folder_name;
-        console.log(name);
         if (!name)
           return res.status(400).json({ success: false, mess: "lose input" });
         const slug = mySlugify(name);
         //path vat ly
-        const folderPath = `${pathPrefix2}/${slug}`;
+        const folderPath = `${pathPrefix2+slug}`; //dynamic/+[folder_name]
         //path tuyet doi
         const absolutePath = path.join(myPathConfig.public, folderPath);
         //neu chua co thi tao
@@ -160,7 +165,7 @@ const galleryController = () => {
           fs.mkdirSync(absolutePath, { recursive: true });
         }
         //check DB trung
-        const exit = await FolderEntity.findOne({ path: folderPath });
+        const exit =await FolderEntity.findOne({ path: folderPath });
         if (exit) {
           return res
             .status(400)
@@ -211,7 +216,7 @@ const galleryController = () => {
       try {
     const folderId = req.body.folder_id;
     const file = req.file;
-
+    console.log('inra folderId: ',folderId);
     if (!file) {
       return res.json({ success: false, mess: "No file" });
     }
@@ -223,17 +228,11 @@ const galleryController = () => {
       if (!folder) return res.json({ success: false, mess: "Folder not found" });
     }
 
-    const slug = folder ? folder.path : "default";
-
-    // ===== tạo path vật lý theo folder
-    // const uploadRoot = path.join(process.cwd(), "sys_upload");
-    const uploadRoot = path.join(myPathConfig.public, "uploads");
-
-    const folderPath = path.join(uploadRoot, slug);
-
-    if (!fs.existsSync(folderPath)) {
-      fs.mkdirSync(folderPath, { recursive: true });
-    }
+    const slug = folder ? folder.path : pathDefault;
+    console.log('path truyen len', slug);
+    const folderPath = path.join(myPathConfig.public, slug);
+    console.log('folder pre luu anh: ',folderPath)
+    
 
     // ===== file name
     const original = file.originalname;
@@ -242,7 +241,7 @@ const galleryController = () => {
     const unique = `toppicare-${Date.now()}-${Math.round(Math.random()*1e6)}.webp`;
 
     const physicalPath = path.join(folderPath, unique);
-
+    console.log('path co image ',physicalPath)
     // ===== sharp convert
     await sharp(file.buffer)
       .webp({ quality: 85 })
@@ -251,7 +250,7 @@ const galleryController = () => {
     // ===== save DB
     const img = await ImageEntity.create({
       name,
-      path: `uploads/${slug}/${unique}`,
+      path: `${slug}/${unique}`,
       folder_id: folder ? folder._id : null,
     });
 
@@ -284,7 +283,7 @@ const galleryController = () => {
     if (fs.existsSync(folderPath)) {
       fs.rmSync(folderPath, { recursive: true, force: true });
     }else{
-      console.log('ko ton tai folder')
+      // console.log('ko ton tai folder')
       return res.status(500).json({success: false, mess: 'xoa loi'})
     }
 

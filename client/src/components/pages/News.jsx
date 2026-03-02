@@ -118,11 +118,9 @@ const newsArticles00 = [
 function News() {
   const ASSET_URL = window.__ENV__.API_URL;
   // const { data, loading, error } = useNews();
-    const { data, loading, error } = usePageConfig();
-      const newsSection = data?.data?.news;
-      console.log('a',newsSection)
+  const { data, loading, error } = usePageConfig();
+  const newsSection = data?.data?.news;
   const { data: dataN, loading: loadinN, error: errorN } = useGetAllNewsBlog();
-  console.log("dataN co gi", dataN?.data);
   const {
     data: dataM,
     loading: loadinM,
@@ -130,14 +128,11 @@ function News() {
   } = useGetCategoryByRoot("news");
   const articleMenu = dataM?.data;
 
-  console.log("dataM ", articleMenu);
   var newsCategories = articleMenu;
-  // console.log('data type ', newsCategories)
 
   const [selectedCategory, setSelectedCategory] = useState("all");
   var newsArticles = dataN?.data;
   // var newCategorySlug = dataN?.data?.category_id?.slug;
-  console.log("choose current ", selectedCategory);
 
   const filteredArticles =
     selectedCategory === "all"
@@ -155,17 +150,17 @@ function News() {
       {/* Banner */}
       <section className="relative w-full aspect-3/1 overflow-hidden">
         <ImageWithFallBack
-          src={ASSET_URL+newsSection?.img}
+          src={ASSET_URL + newsSection?.img_url}
           alt="News & Activities"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
-            <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
-            {newsSection?.title}
+            <h1 className="text-white text-lg md:text-6xl mb-6 font-bold">
+              {newsSection?.title}
             </h1>
-            <p className="text-white/90 text-lg md:text-xl max-w-2xl text-[16px]">
+            <p className="text-white/90 text-sm md:text-xl max-w-2xl text-[16px]">
               {newsSection?.desc}
             </p>
           </div>
@@ -178,7 +173,7 @@ function News() {
           <div className="flex items-center gap-3 overflow-x-auto pb-2 scrollbar-hide">
             <button
               onClick={() => setSelectedCategory("all")}
-              className={`px-6 py-2 rounded-full ${
+              className={`px-6 py-2 rounded-full whitespace-nowrap ${
                 selectedCategory === "all"
                   ? "bg-[#2dbdb6] text-white"
                   : "bg-white/60 text-gray-700"
@@ -216,7 +211,7 @@ function News() {
 
             <div className="grid md:grid-cols-2 gap-6">
               {featuredArticles.map((article) => (
-                <Link key={article._id} to={`/blog-detail/${article.slug}`}>
+                <Link key={article._id} to={`/bai-viet/${article.slug}`}>
                   <div className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
                     <div className="relative aspect-video overflow-hidden group">
                       <ImageWithFallBack
@@ -264,13 +259,15 @@ function News() {
       <section className="py-8 md:py-8 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50">
         <div className="max-w-7xl mx-auto px-4">
           <h2 className="text-3xl md:text-4xl mb-12 bg-[#2dbdb6] bg-clip-text text-transparent font-bold">
-            {selectedCategory === "all" ? "Tất cả bài viết" : (articleMenu.find(c=>c.slug ===selectedCategory)?.name)}
+            {selectedCategory === "all"
+              ? "Tất cả bài viết"
+              : articleMenu.find((c) => c.slug === selectedCategory)?.name}
           </h2>
           {/* edit here */}
           {regularArticles?.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {regularArticles?.map((article) => (
-                <Link to={`/blog-detail/${article.slug}`} key={article._id}>
+                <Link to={`/bai-viet/${article.slug}`} key={article._id}>
                   <div className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
                     <div className="relative aspect-video overflow-hidden">
                       <ImageWithFallBack

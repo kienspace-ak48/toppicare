@@ -54,7 +54,7 @@ router.get('/gallery/category/get-all', galleryController.GetAllFolder);
 router.get('/gallery/images', galleryController.GetAllImageByFolder);
 router.post('/gallery/image-upload-ajax',uploadImage.single("image"),
 (req, res, next) => {
-  console.log("REQ.FILE =", req.file);
+  // console.log("REQ.FILE =", req.file);
   next();
 },galleryController.UploadImage);
 router.delete('/gallery/image-delete-ajax', galleryController.DeleteImageAjax);

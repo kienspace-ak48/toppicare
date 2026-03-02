@@ -38,7 +38,7 @@ const Sidebar = ({ isDarkMode, toggleDarkMode, activeItem, setActiveItem }) => {
       label: "Page Config",
       children: [
         { id: "home", label: "Home", path: "/admin/pageconfig/homepage" },
-        { id: "menus", label: "Menus", path: "/admin/pageconfig/about" },
+        { id: "menus", label: "Menus", path: "/admin/pageconfig/gioi-thieu" },
         {
           id: "seo",
           label: "SEO Settings",

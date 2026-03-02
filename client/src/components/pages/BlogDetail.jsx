@@ -9,27 +9,27 @@ function BlogDetail() {
 
   //fix
   function cleanExpiredViews() {
-  const now = Date.now()
+    const now = Date.now();
 
-  Object.keys(localStorage).forEach(key => {
-    if (!key.startsWith("viewed_blog_")) return
+    Object.keys(localStorage).forEach((key) => {
+      if (!key.startsWith("viewed_blog_")) return;
 
-    try {
-      const data = JSON.parse(localStorage.getItem(key))
+      try {
+        const data = JSON.parse(localStorage.getItem(key));
 
-      if (!data?.expire || now > data.expire) {
-        localStorage.removeItem(key)
+        if (!data?.expire || now > data.expire) {
+          localStorage.removeItem(key);
+        }
+      } catch {
+        localStorage.removeItem(key);
       }
-    } catch {
-      localStorage.removeItem(key)
-    }
-  })
-}
+    });
+  }
 
   const VIEW_EXPIRE_HOURS = 1; // đổi 24 nếu muốn 1 ngày
 
   function setViewWithExpire(key) {
-    const expireTime = Date.now() + VIEW_EXPIRE_HOURS * 60 * 60 * 1000//* 60 * 60 * 1000;
+    const expireTime = Date.now() + VIEW_EXPIRE_HOURS * 60 * 60 * 1000; //* 60 * 60 * 1000;
 
     const data = {
       viewed: true,
@@ -37,10 +37,9 @@ function BlogDetail() {
     };
 
     localStorage.setItem(key, JSON.stringify(data));
-    console.log("now:", Date.now())
-console.log("expire:", data.expire)
-console.log("valid:", Date.now() < data.expire)
-
+    console.log("now:", Date.now());
+    console.log("expire:", data.expire);
+    console.log("valid:", Date.now() < data.expire);
   }
 
   function hasValidView(key) {
@@ -127,17 +126,17 @@ console.log("valid:", Date.now() < data.expire)
 
   //now
   useEffect(() => {
-  if (!blogData?.slug) return
+    if (!blogData?.slug) return;
 
-  // 🔥 xoá key hết hạn trước
-  cleanExpiredViews()
-  const viewedKey = `viewed_blog_${blogData.slug}`
+    // 🔥 xoá key hết hạn trước
+    cleanExpiredViews();
+    const viewedKey = `viewed_blog_${blogData.slug}`;
 
-  if (!hasValidView(viewedKey)) {
-    increaseView(blogData.slug)
-    setViewWithExpire(viewedKey)
-  }
-}, [blogData?.slug])
+    if (!hasValidView(viewedKey)) {
+      increaseView(blogData.slug);
+      setViewWithExpire(viewedKey);
+    }
+  }, [blogData?.slug]);
 
   //end
 
@@ -146,47 +145,113 @@ console.log("valid:", Date.now() < data.expire)
   }
 
   return (
-    <div className="max-w-4xl mx-auto px-4 py-10">
-      {/* CATEGORY */}
-      <div className="mb-3">
-        <span className="text-sm text-blue-600 font-medium uppercase">
-          {blogData?.category_id?.name}
-        </span>
-      </div>
-
-      {/* TITLE */}
-      <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
-        {blogData?.title}
-      </h1>
-
-      {/* META */}
-      <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
-        <span>{blogData?.author || "Admin"}</span>
-        <span>•</span>
-        <span>{new Date(blogData?.createdAt).toLocaleDateString()}</span>
-        <span>•</span>
-        <span>{blogData?.views} lượt xem</span>
-      </div>
-
-      {/* IMAGE */}
-      {blogData?.img && (
-        <div className="mb-8">
-          <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
-            <img
-              src={`${ASSET_URL + blogData?.img}`}
-              alt={blogData?.title}
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-          </div>
+    <>
+      <div className="max-w-4xl mx-auto px-4 py-10 my-special-box">
+        {/* CATEGORY */}
+        <div className="mb-3">
+          <span className="text-sm text-blue-600 font-medium uppercase">
+            {blogData?.category_id?.name}
+          </span>
         </div>
-      )}
 
-      {/* CONTENT */}
-      <article
-        className="prose prose-lg max-w-none"
-        dangerouslySetInnerHTML={{ __html: blogData?.content }}
-      />
-    </div>
+        {/* TITLE */}
+        <h1 className="text-3xl md:text-4xl font-bold leading-tight mb-4">
+          {blogData?.title}
+        </h1>
+
+        {/* META */}
+        <div className="flex items-center gap-4 text-sm text-gray-500 mb-6">
+          <span>{blogData?.author || "Admin"}</span>
+          <span>•</span>
+          <span>{new Date(blogData?.createdAt).toLocaleDateString()}</span>
+          <span>•</span>
+          <span>{blogData?.views} lượt xem</span>
+        </div>
+
+        {/* IMAGE */}
+        {blogData?.img && (
+          <div className="mb-8">
+            <div className="relative w-full aspect-[16/9] overflow-hidden rounded-xl bg-gray-100">
+              <img
+                src={`${ASSET_URL + blogData?.img}`}
+                alt={blogData?.title}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+            </div>
+          </div>
+        )}
+
+        {/* CONTENT */}
+        <article
+          className=" blog-content"
+          dangerouslySetInnerHTML={{ __html: blogData?.content }}
+        />
+      </div>
+      <style>
+        {`
+          .blog-content {
+        font-family:  sans-serif;
+        font-size: inherit !important;
+        line-height: 1.9;
+        color: #1f2937;
+      }
+        .blog-content span {
+  font-size: inherit !important;
+}
+      .blog-content p,
+      .blog-content div {
+        margin-bottom: 16px;
+      }
+
+      .blog-content h1,
+      .blog-content h2,
+      .blog-content h3 {
+        font-weight: 700;
+        margin: 32px 0 16px;
+        line-height: 1.4;
+        color: #111827;
+      }
+
+      .blog-content h1 { font-size: clamp(30px, 5vw, 48px) !important; }
+      .blog-content h2 { font-size: clamp(22px, 5vw, 40px) !important; }
+      .blog-content h3 { font-size: clamp(14px, 5vw, 33px) !important;}
+      .blog-content h4 { font-size: clamp(10px, 5vw, 28px) !important;}
+      .blog-content h5 { font-size: clamp(8px, 5vw, 18px) !important;}
+
+
+      .blog-content strong {
+        font-weight: 600;
+      }
+
+      .blog-content img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 12px;
+        margin: 24px auto;
+        display: block;
+      }
+
+      .blog-content a {
+        color: #2563eb;
+        text-decoration: underline;
+      }
+
+      .blog-content ul,
+      .blog-content ol {
+        padding-left: 20px;
+        margin-bottom: 16px;
+      }
+
+      .blog-content blockquote {
+        border-left: 4px solid #e5e7eb;
+        padding-left: 16px;
+        color: #6b7280;
+        font-style: italic;
+        margin: 20px 0;
+      }
+    `}
+      </style>
+    </>
   );
 }
 

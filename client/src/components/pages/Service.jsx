@@ -166,12 +166,12 @@ function Service() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
-            <h1 className="text-white text-4xl md:text-6xl mb-6 font-bold">
+            <h1 className="text-white text-lg md:text-6xl mb-6 font-bold">
               {serviceSection?.banner?.title
                 ? serviceSection?.banner?.title
                 : `Dịch vụ của chúng tôi`}
             </h1>
-            <p className="text-white/90 text-lg md:text-xl max-w-2xl mb-8 text-[16px]">
+            <p className="text-white/90 text-sm md:text-xl max-w-2xl mb-8">
               {serviceSection?.banner?.desc
                 ? serviceSection?.banner?.desc
                 : `Khám phá các dịch vụ chăm sóc sức khỏe chuyên nghiệp với đội ngũ kỹ thuật viên tay nghề cao`}
@@ -200,7 +200,7 @@ function Service() {
             {services?.map((service) => (
               <Link
                 key={service._id}
-                to={`/services/detail/${service.slug}`}
+                to={`/dich-vu/chi-tiet/${service.slug}`}
                 className="group backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105"
               >
                 <div className="relative aspect-video overflow-hidden">
@@ -245,7 +245,7 @@ function Service() {
               : `5 bước đơn giản để đặt dịch vụ chăm sóc sức khỏe tại nhà`}
           </p>
 
-          <div className="grid lg:grid-cols-2 gap-8 items-start">
+          <div className="grid lg:grid-cols-2 gap-8 items-stretch">
             {/* Steps List - Left Side */}
             <div className="flex flex-col gap-4">
               {serviceSection?.booking_guide?.steps
@@ -300,8 +300,8 @@ function Service() {
             </div>
 
             {/* Image Display - Right Side */}
-            <div className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col">
-              <div className="relative aspect-[4/3] overflow-hidden">
+            <div className="backdrop-blur-lg bg-white/70 border border-white/20 rounded-3xl overflow-hidden shadow-2xl flex flex-col h-full">
+              <div className="relative h-full overflow-hidden">
                 {serviceSection?.booking_guide?.steps.map((step) => (
                   <div
                     key={step.step_number}

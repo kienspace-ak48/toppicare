@@ -10,8 +10,8 @@ class ArticleService {
   async create(data) {
     try {
       const result = await articleEntity.create(data);
-      console.log(result);
-      console.log(typeof result);
+      // console.log(result);
+      // console.log(typeof result);
       return true;
     } catch (error) {
       console.log(CNAME, error.message);

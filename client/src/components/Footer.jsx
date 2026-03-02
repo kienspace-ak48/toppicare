@@ -8,10 +8,10 @@ import { Facebook, Mail, MapPin, Phone, Youtube } from "lucide-react";
 function Footer() {
   const aboutLinks = [
     { name: "Trang chủ", path: "/" },
-    { name: "Gới thiệu", path: "/about" },
-    { name: "Dịch vụ", path: "/services" },
+    { name: "Gới thiệu", path: "/gioi-thieu" },
+    { name: "Dịch vụ", path: "/dich-vu" },
     // { name: "Học viện đào tạo", path: "/training" },
-    { name: "Tin tức & Hoạt động", path: "/news" },
+    { name: "Tin tức & Hoạt động", path: "/tin-tuc" },
     { name: "Tuyển dụng", path: "/become-partner" },
   ];
   const policyLinks = [
@@ -26,8 +26,8 @@ function Footer() {
           {/* Chia lam 2 khối lớn trên màn hình lớn (LG) */}
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 mb-12">
             {/* --- Khoi ben trai (logo, contact, about) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              {/* 1.logo & contact info */}
+            <div className="grid grid-cols-1  gap-8">
+              {/* 1.logo & contact info md:grid-cols-2 */}
               <div className="space-y-4">
                 <Link to="/" className="flex items-center gap-3">
                   <img
@@ -56,7 +56,7 @@ function Footer() {
                 </div>
               </div>
               {/* 2. About ToppiCare */}
-              <div>
+              {/* <div>
                 <h3 className="text-lg mb-4 bg-[#cc9000] bg-clip-text text-[rgb(228,228,228)] font-bold">
                   Về ToppiCare
                 </h3>
@@ -72,7 +72,7 @@ function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div>
+              </div> */}
             </div>
             {/* --- KHỐI BÊN PHẢI (Policies, Social, Download App) --- */}
             <div className="flex flex-col gap-8">

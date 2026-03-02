@@ -221,10 +221,46 @@ function HomePage() {
     setCurrentSlide(
       (prev) => (prev - 1 + heroSlides.length) % heroSlides.length,
     );
+    // fix auto run slide
+    useEffect(() => {
+  setCurrentSlide(0);
+}, [heroSlides]);
+
+useEffect(() => {
+  if (!heroSlides.length) return;
+
+  const interval = setInterval(() => {
+    setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+  }, 15*1000);
+
+  return () => clearInterval(interval);
+}, [heroSlides]);
+//
   return (
     <div className="">
       {/* Hero slider */}
-      <section className="relative w-full aspect-3/1 overflow-hidden">
+      <section className="relative w-full aspect-[3/1] overflow-hidden">
+  <div
+    className="flex w-full h-full transition-transform duration-1000 ease-in-out"
+    style={{
+      transform: `translateX(-${currentSlide * 100}%)`,
+    }}
+  >
+    {heroSlides.map((slide, index) => (
+      <div
+        key={index}
+        className="w-full h-full flex-shrink-0"
+      >
+        <ImageWithFallBack
+          src={ASSET_URL + slide.banner_img}
+          alt={slide.title}
+          className="w-full h-full object-contain object-center"
+        />
+      </div>
+    ))}
+  </div>
+</section>
+      {/* <section className="relative w-full aspect-3/1 overflow-hidden">
         {heroSlides.map((slide, index) => (
           <div
             key={index}
@@ -264,7 +300,7 @@ function HomePage() {
             />
           ))}
         </div>
-      </section>
+      </section> */}
 
       {/* Slogan */}
       <section className="py-2 bg-[#2bdbd6] md:py-6 ">
@@ -301,7 +337,7 @@ function HomePage() {
                 cải thiện sức khỏe một cách toàn diện.
               </p> */}
               <Link
-                to="/about"
+                to="/gioi-thieu"
                 className="inline-block px-6 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
               >
                 Tìm hiểu thêm
@@ -365,7 +401,7 @@ function HomePage() {
 
               {/* CTA Button */}
               <Link
-                to="/services"
+                to="/dich-vu"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-[#2dbdb6] text-white rounded-full font-semibold hover:bg-teal-600 hover:shadow-lg hover:-translate-y-1 transition-all duration-300"
               >
                 Tìm hiểu thêm các dịch vụ của chúng tôi
@@ -420,7 +456,7 @@ function HomePage() {
               Tin tức & Hoạt động mới nhất
             </h2>
             <Link
-              to="/news"
+              to="/tin-tuc"
               className="text-[#2dbdb6] hover:text-teal-600 transition-colors flex items-center gap-2"
             >
               Xem thêm
@@ -430,7 +466,7 @@ function HomePage() {
 
           <div className="grid md:grid-cols-3 gap-6">
             {newsArticles_2?.map((article) => (
-              <Link to={`/blog-detail/${article.slug}`} key={article._id}>
+              <Link to={`/bai-viet/${article.slug}`} key={article._id}>
                 <div className="backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl overflow-hidden hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
                   <div className="aspect-video overflow-hidden">
                     <ImageWithFallBack
@@ -503,7 +539,7 @@ function HomePage() {
           </div>
           <div className="mt-10 text-center">
             <Link
-              to="/help" // Thay đường dẫn trang FAQ của bạn vào đây
+              to="/trung-tam-ho-tro" // Thay đường dẫn trang FAQ của bạn vào đây
               className="inline-flex items-center gap-2 px-8 py-3 bg-[#2dbdb6] text-white rounded-full font-semibold hover:opacity-90 hover:shadow-lg hover:-translate-y-0.5 transition-all duration-300"
             >
               Xem thêm
