@@ -102,7 +102,7 @@
       <!-- SIDEBAR -->
       <aside
         id="sidebar"
-        class="w-64 bg-white dark:bg-gray-800 shadow-xl  h-screen flex flex-col space-y-1 flex-shrink-0 transition-[width] duration-300 ease-in-out"
+        class="w-64 bg-white dark:bg-gray-800 shadow-xl h-screen flex flex-col space-y-1 flex-shrink-0 transition-[width] duration-300 ease-in-out"
       >
         <div class="flex flex-col h-full px-3 py-4">
           <!-- LOGO -->
@@ -132,7 +132,9 @@
             }
           </style>
           <!-- NAV -->
-          <nav class="navbar flex-col flex-1 space-y-1 overflow-y-auto scrollbar-hide">
+          <nav
+            class="navbar flex-col flex-1 space-y-1 overflow-y-auto scrollbar-hide"
+          >
             <div class="flex flex-col">
               <!-- Dashboard -->
               <a
@@ -162,6 +164,14 @@
                 id="pageConfigSub"
                 class="hidden ml-6 mt-1 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
               >
+                <!--  -->
+              <a
+                  href="/admin/page-config/customize-section"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Customize
+                </a>
+                <!--  -->
                 <a
                   href="/admin/page-config"
                   class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
@@ -208,14 +218,16 @@
               </div>
 
               <!-- END =============== -->
-               <!-- Article -->
+              <!-- Article -->
               <!-- NRW ================= -->
               <button
                 onclick="toggleSubmenu('articleSub', this)"
                 class="btn_root w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
               >
                 <div class="flex items-center gap-3">
-                  <i class="fa-solid fa-house-chimney-medical text-blue-600 text-2xl"></i>
+                  <i
+                    class="fa-solid fa-house-chimney-medical text-blue-600 text-2xl"
+                  ></i>
                   <!-- <i class="fa-solid fa-newspaper text-blue-600 text-2xl"></i> -->
                   <span class="label">Help center</span>
                 </div>
@@ -344,12 +356,17 @@
               </a>
               <a
                 href="/admin/contact?type=customer"
-                class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px] "
+                class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
               >
-              <i class="fa-regular fa-paper-plane text-blue-600 text-2xl relative">
-                <span class="flex justify-center items-center w-4 h-4 text-xs text-white leading-none border border-gray-300 bg-red-500 rounded-full absolute -top-3 -right-4" id="count_mess_customer"></span>
-              </i>
-                
+                <i
+                  class="fa-regular fa-paper-plane text-blue-600 text-2xl relative"
+                >
+                  <span
+                    class="flex justify-center items-center w-4 h-4 text-xs text-white leading-none border border-gray-300 bg-red-500 rounded-full absolute -top-3 -right-4"
+                    id="count_mess_customer"
+                  ></span>
+                </i>
+
                 <span class="label ml-2">Customer </span>
               </a>
               <!-- Partner  -->
@@ -357,9 +374,15 @@
                 href="/admin/contact/partner"
                 class="px-4 py-3 hover:bg-gray-300 w-full font-semibold text-[16px]"
               >
-              <i class="fa-regular fa-paper-plane text-blue-600 text-2xl relative">
-                <span class="flex justify-center items-center w-4 h-4 text-xs text-white leading-none border border-gray-300 bg-red-500 rounded-full absolute -top-3 -right-4" id="count_mess_partner">0</span>
-              </i>
+                <i
+                  class="fa-regular fa-paper-plane text-blue-600 text-2xl relative"
+                >
+                  <span
+                    class="flex justify-center items-center w-4 h-4 text-xs text-white leading-none border border-gray-300 bg-red-500 rounded-full absolute -top-3 -right-4"
+                    id="count_mess_partner"
+                    ></span
+                  >
+                </i>
                 <span class="label ml-2">Partner</span>
               </a>
               <!-- Videos -->
@@ -387,19 +410,23 @@
                 </p>
                 <p class="text-xs font-bold text-gray-500 dark:text-gray-300">
                   <!-- admin@example.com -->
-                   <%=user.name%>
-                    <%= (typeof user !== "undefined" && user) ? user.email : "" %>
+                  <%=user.name%> <br> <%= (typeof user !== "undefined" && user) ?
+                  user.email : "" %>
                 </p>
               </div>
             </div>
 
             <!-- THEME -->
-             <form action="/auth/admin/logout" method="post">
-               <button id="btn_logout" type="submit" class="font-medium text-sm px-4 py-3 w-full  rounded-xl bg-gray-300 hover:bg-red-500 transition hover:cursor-pointer hover:text-white">
-                <i class="fa-solid fa-arrow-right-from-bracket  "></i>
-               </button>
-               <!-- <i class="fa-solid fa-arrow-right-from-bracket"></i> -->
-             </form>
+            <form action="/auth/admin/logout" method="post">
+              <button
+                id="btn_logout"
+                type="submit"
+                class="font-medium text-sm px-4 py-3 w-full rounded-xl bg-gray-300 hover:bg-red-500 transition hover:cursor-pointer hover:text-white"
+              >
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+              </button>
+              <!-- <i class="fa-solid fa-arrow-right-from-bracket"></i> -->
+            </form>
             <!-- <button
               id="toggleDarkMode"
               class="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 transition"
@@ -509,10 +536,10 @@
           if (parentSub) parentSub.classList.remove("hidden");
           //
           const btn = parentSub.previousElementSibling;
-          if(!btn || !btn.classList.contains("btn_root")) return;
+          if (!btn || !btn.classList.contains("btn_root")) return;
           //rotate
-          const chevron = btn.querySelector('.chevron');
-          chevron?.classList.add('rotate-180')
+          const chevron = btn.querySelector(".chevron");
+          chevron?.classList.add("rotate-180");
         }
       });
 
@@ -532,44 +559,62 @@
       //     document.documentElement.classList.toggle("dark");
       //   });
       //
-      function goToActionBlank(action){
-        window.open(window.location.origin+action, '_blank')
-        // window.location.href = 
+      function goToActionBlank(action) {
+        window.open(window.location.origin + action, "_blank");
+        // window.location.href =
         // origin = https://toppicare.vn
-      }  
-      // 
-      function countMess(type="customer") {
-        if(type==='partner'){
+      }
+      //
+      function countMess(type = "customer") {
+        if (type === "partner") {
           fetch(`/admin/contact/count-mess?type=${type}`, {
-          method: 'GET',
-          headers:{'Content-Type': 'application/json'}
-        })
-        .then(res=>res.json())
-        .then(res=>{if(res.success){
-          document.querySelector("#count_mess_partner").textContent= res.data?.partner;
-        }})
-        .catch(err=>console.log('err: ',err))
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.success) {
+                // document.querySelector("#count_mess_partner").textContent =
+                //   res.data?.partner;
+                  const count =  res.data?.partner;
+                updateMessCount(count, "#count_mess_partner");
+              }
+            })
+            .catch((err) => console.log("err: ", err));
         }
-        if(type==='customer'){
+        if (type === "customer") {
           fetch(`/admin/contact/count-mess?type=${type}`, {
-          method: 'GET',
-          headers:{'Content-Type': 'application/json'}
-        })
-        .then(res=>res.json())
-        .then(res=>{if(res.success){
-          document.querySelector("#count_mess_customer").textContent= res.data?.customer;
-        }})
-        .catch(err=>console.log('err: ',err))
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.success) {
+                // document.querySelector("#count_mess_customer").textContent= res.data?.customer;
+                const count =  res.data?.customer;
+                updateMessCount(count, "#count_mess_customer");
+              }
+            })
+            .catch((err) => console.log("err: ", err));
         }
-        
+      }
+      //
+      function updateMessCount(count = 0, type = "count_mess_partner") {
+        const badge = document.querySelector(type);
+        if (!badge) return;
+        if (count <= 0) {
+          badge.style.display = "none";
+        } else {
+          badge.style.display = "flex"; // vì bạn đang dùng flex
+          badge.innerText = count;
+        }
       }
     </script>
     <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    console.log("Script loaded");
-    countMess('customer');
-    countMess("partner");
-  });
-</script>
+      document.addEventListener("DOMContentLoaded", function () {
+        countMess("customer");
+        countMess("partner");
+      });
+    </script>
   </body>
 </html>

@@ -11,6 +11,8 @@ const contactController = require("../controller/contact.controller")();
 const ServicePackageController = require("../controller/servicePackage.controller")();
 const ServiceController = require('../controller/service.controller')();
 //page config
+// -cutomize
+router.get('/page-config/customize-section', PageConfigController.CustomizeSection);
 //-teachnician
 router.get('/page-config/teachnician-section', PageConfigController.TeachnicianSection);
 router.put('/page-config/teachnician-section',PageConfigController.SaveTeachnicianSection);

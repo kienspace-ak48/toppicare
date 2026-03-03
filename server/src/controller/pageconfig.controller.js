@@ -46,6 +46,16 @@ const PageConfigController = () => {
         res.status(500).json({ success: false, mess: error.message });
       }
     },
+    // 
+    CustomizeSection: async (req, res) => {
+      try {
+        const pc = await getPageConfigFx();
+        res.render(VNAME + "customize", { data: pc });
+      } catch (error) {
+        res.render(VNAME + "customize", { data: {} });
+      }
+    },
+    // 
     NewsSection: async (req, res) => {
       try {
         const pc = await pageconfigService.getNewsSection();

@@ -11,6 +11,15 @@ class ContactService {
       return [];
     }
   }
+  async getByRangeFromTo(filter){
+    try {
+      const data = await contactEntity.find(filter).select("-_id -__v").sort({createdAt: -1}).lean();
+      return data;
+    } catch (error) {
+      console.log(CANME, error.message);
+      return [];
+    }
+  }
   async getByNotType(type='partner'){
     try {
       const data = await contactEntity.find(

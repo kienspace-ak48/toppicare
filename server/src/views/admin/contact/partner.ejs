@@ -1,28 +1,65 @@
 <div class="flex justify-between items-center my-2">
-    <h1 class="font-bold">Contact view</h1>
-    <div>
-      <a href="/admin/contact/export-csv" class="px-4 py-2 border border-gray-300 rounded-lg bg-green-500 text-white font-bold hover:scale-110">Export CSV</a>
-<button id="delete-bulk" class="text-white font-bold px-4 py-2 bg-red-500 rounded-lg">Delete</button>
-      
-      <!--  -->
-      | <select id="bulk-status" class="border border-gray-300 rounded-lg p-2">
-          <option value="">-- Change status --</option>
-          <option value="read">Readed</option>
-          <option value="new">New</option>
-        </select>
+  <h1 class="font-bold">Contact view</h1>
+  <div class="flex flex-col gap-2">
+    <div class="flex items-end gap-2">
+      <div>
+        <!-- <label class="text-xs">From</label> -->
+        <input
+          type="date"
+          id="from-date"
+          class="border border-gray-300 rounded px-4 py-2"
+        />
+      </div>
 
-<button id="apply-bulk" class="font-bold px-4 py-2 bg-blue-500 text-white rounded-lg">
-  Apply
-</button>
+      <div>
+        <label class="text-xs">To</label>
+        <input
+          type="date"
+          id="to-date"
+          class="border border-gray-300 rounded px-4 py-2"
+        />
+      </div>
+
+      <button
+        id="btn-export"
+        class="px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:scale-105"
+      >
+        Export
+      </button>
     </div>
+    <!--  -->
+    <!-- <a href="/admin/contact/export-csv" class="px-4 py-2 border border-gray-300 rounded-lg bg-green-500 text-white font-bold hover:scale-110">Export CSV</a> -->
+    <div>
+      <!--  -->
+      <select id="bulk-status" class="border border-gray-300 rounded-lg p-2">
+        <option value="">-- Change status --</option>
+        <option value="read">Readed</option>
+        <option value="new">New</option>
+      </select>
+
+      <button
+        id="apply-bulk"
+        class="font-bold px-4 py-2 bg-blue-500 text-white rounded-lg"
+      >
+        Apply
+      </button>
+      <button
+        id="delete-bulk"
+        class="text-white font-bold px-4 py-2 bg-red-500 rounded-lg"
+      >
+        Delete
+      </button>
+    </div>
+  </div>
 </div>
 <div class="table_wrapper overflow-x-auto">
   <table id="mess_tbl" class="min-w-full text-sm text-center text-garay-600">
     <thead class="text-xs bg-gray-100 font-semibold text-gray-700 uppercase">
       <tr>
         <th class="px-6 py-4">
-          <input type="checkbox" id="check-all">
+          <input type="checkbox" id="check-all" />
         </th>
+        <th class="px-6 py-4">Date</th>
         <th class="px-6 py-4">From</th>
         <th class="px-6 py-4">name</th>
         <th class="px-6 py-4">gender</th>
@@ -31,91 +68,134 @@
         <!-- <th class="px-6 py-4">Actions</th> -->
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-100">
-    </tbody>
+    <tbody class="divide-y divide-gray-100"></tbody>
   </table>
 </div>
 
 <!-- ==========SCRIPT========= -->
 <script>
-    var blogTable = null;
-    $('#mess_tbl').DataTable().destroy();
-    blogTable =new DataTable('#mess_tbl',{
-        ajax: {
-            url: `/admin/contact/get-all-ajax?type=partner`,
-            dataSrc: 'data'
-        },
-        ordering: false,
-        info: false,
-        columns: [
-            {data: '_id',
-              render: (v, t,r)=>`
+  var blogTable = null;
+  $("#mess_tbl").DataTable().destroy();
+  blogTable = new DataTable("#mess_tbl", {
+    ajax: {
+      url: `/admin/contact/get-all-ajax?type=partner`,
+      dataSrc: "data",
+    },
+    ordering: false,
+    info: false,
+    columns: [
+      {
+        data: "_id",
+        render: (v, t, r) => `
               <input type="checkbox" class="row-check" value="${r._id}"></input>
-              `
-            },
-            // {data: null, render:(v,t,r)=>`<p>${r.index}</p>`},
-            {data: 'email', render:(v,t,r)=>`<span class="px-4 py-5"> <p>${r.email}</p><p>${r.phone}</p>  </span>`},
-            {data: 'name', render:(v,t,r)=>`<p class="px-4 py-5">${r.name}</p>`},
-            {data: 'gender', render:(v,t,r)=>` ${r.gender=='female'?'<p class="px-4 py-5"><i class="text-pink-500 fa-solid fa-venus"></i></p>':'<p class="text-blue-500 px-4 py-5"><i class="fa-solid fa-mars"></i></p>'}`},
-            {data: 'age', render:(v,t,r)=>`<p class="px-4 py-5">${r.age}</p>`},
-            {data: 'status', render:(v,t,r)=>`
-            ${r.status =='new'? '<i class="text-blue-500 px-4 py-5 fa-solid fa-envelope"></i>':'<i class="px-4 py-5 fa-solid fa-envelope-open"></i>'}
-          `},
-          //   {data: null, render:(v,t,r)=>`
-          //     <p class="text-center">
-          //   <a href="/admin/blog/edit-blog/${r._id}"
-          //   ><i class="fa-solid fa-pen-to-square hover:text-blue-600"></i></a
-          // >
-          // <i class="fa-solid fa-trash-can btn_delete_blog hover:text-blue-600"></i>
-          //   </p>`
-          // },
-        ]
+              `,
+      },
+      {
+        data: null,
+        render: (v, t, r) =>
+          `<p>${new Date(r.createdAt).toLocaleDateString("vi-VN")}</p>`,
+      },
+      {
+        data: "email",
+        render: (v, t, r) =>
+          `<span class="px-4 py-5"> <p>${r.email}</p><p>${r.phone}</p>  </span>`,
+      },
+      {
+        data: "name",
+        render: (v, t, r) => `<p class="px-4 py-5">${r.name}</p>`,
+      },
+      {
+        data: "gender",
+        render: (v, t, r) =>
+          ` ${r.gender == "female" ? '<p class="px-4 py-5"><i class="text-pink-500 fa-solid fa-venus"></i></p>' : '<p class="text-blue-500 px-4 py-5"><i class="fa-solid fa-mars"></i></p>'}`,
+      },
+      { data: "age", render: (v, t, r) => `<p class="px-4 py-5">${r.age}</p>` },
+      {
+        data: "status",
+        render: (v, t, r) => `
+            ${r.status == "new" ? '<i class="text-blue-500 px-4 py-5 fa-solid fa-envelope"></i>' : '<i class="px-4 py-5 fa-solid fa-envelope-open"></i>'}
+          `,
+      },
+      //   {data: null, render:(v,t,r)=>`
+      //     <p class="text-center">
+      //   <a href="/admin/blog/edit-blog/${r._id}"
+      //   ><i class="fa-solid fa-pen-to-square hover:text-blue-600"></i></a
+      // >
+      // <i class="fa-solid fa-trash-can btn_delete_blog hover:text-blue-600"></i>
+      //   </p>`
+      // },
+    ],
+  });
+  const messTbodyTable = document.querySelector("#mess_tbl tbody");
+  messTbodyTable.addEventListener("click", function (ev) {});
+  //
+  document.querySelector("#check-all").addEventListener("change", function (e) {
+    document.querySelectorAll(".row-check").forEach((cb) => {
+      cb.checked = e.target.checked;
     });
-    const messTbodyTable = document.querySelector('#mess_tbl tbody');
-    messTbodyTable.addEventListener('click', function(ev){
-        
+  });
+  //delete
+  document.querySelector("#delete-bulk").addEventListener("click", function () {
+    let ids = getAllRowChecked();
+    if (ids.length === 0) return alert("Chua chon dong nao");
+    fetch(`/admin/contact/delete-many-mess`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids }),
     })
-    // 
-    document.querySelector('#check-all').addEventListener('change', function(e){
-      document.querySelectorAll('.row-check').forEach(cb=>{
-        cb.checked = e.target.checked;
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+        if (res.success) {
+          blogTable.ajax.reload();
+        }
       })
-    })
-    //delete 
-    document.querySelector('#delete-bulk').addEventListener('click', function(){
+      .catch((err) => console.log("Co loi xay ra", err));
+  });
+  //change status
+  document
+    .querySelector("#apply-bulk")
+    .addEventListener("click", async function () {
+      const status = document.querySelector("#bulk-status").value;
+      if (!status) return alert("Chon status truoc");
       let ids = getAllRowChecked();
-      if(ids.length===0) return alert('Chua chon dong nao');
-      fetch(`/admin/contact/delete-many-mess`, {
-          method: 'DELETE',
-          headers: {'Content-Type':'application/json'},
-          body: JSON.stringify({ids})
-      })
-      .then(res=>res.json())
-      .then(res=>{console.log(res);
-        if(res.success){ blogTable.ajax.reload()}
-      })
-      .catch(err=>console.log('Co loi xay ra', err))
-    })
-    //change status
-    document.querySelector('#apply-bulk').addEventListener('click', async function(){
-      const status = document.querySelector('#bulk-status').value;
-      if(!status) return alert('Chon status truoc');
-      let ids = getAllRowChecked();
-      if(ids.length=== 0 )return alert('Chua chon dong nao');
-      console.log(JSON.stringify({ids, status}))
+      if (ids.length === 0) return alert("Chua chon dong nao");
+      console.log(JSON.stringify({ ids, status }));
       fetch(`/admin/contact/change-status`, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify({ids, status})
-      }).then(res=>res.json())
-      .then(res=>{console.log(res); if(res.success){
-        blogTable.ajax.reload();
-      }}).catch(err=>console.log(err))
-    })
-    //getAllRowChecked
-    //lay danh sach id da chon
-    function getAllRowChecked(){
-      const ids = Array.from(document.querySelectorAll('.row-check:checked')).map(cb=>cb.value);
-      return ids;
-    }
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ids, status }),
+      })
+        .then((res) => res.json())
+        .then((res) => {
+          console.log(res);
+          if (res.success) {
+            blogTable.ajax.reload();
+          }
+        })
+        .catch((err) => console.log(err));
+    });
+  //getAllRowChecked
+  //lay danh sach id da chon
+  function getAllRowChecked() {
+    const ids = Array.from(document.querySelectorAll(".row-check:checked")).map(
+      (cb) => cb.value,
+    );
+    return ids;
+  }
+  //export excel
+  document.querySelector('#btn-export').addEventListener('click', function () {
+
+  const from = document.querySelector('#from-date').value;
+  const to = document.querySelector('#to-date').value;
+  const type="partner"
+
+  let url = '/admin/contact/export-csv?';
+
+  if (type) url += `type=${type}&`;
+  if (from) url += `from=${from}&`;
+  if (to) url += `to=${to}`;
+
+  window.location.href = url;
+});
 </script>

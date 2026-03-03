@@ -8,8 +8,8 @@ const CNAME = 'auth.middleware.js ';
 async function auth(req, res, next){
     // const count = await contactService.countNewNotPartner();
     // res.locals.count = count;
-    // res.locals.user = {username: "kien_vu"};
-    // return next();
+    res.locals.user = {email: "admin@gmail.com",username: "kien_vu", name:"KienVu"};
+    return next();
     const token = req.cookies.token ||(req.headers.authorization && req.headers.authorization.split(' ')[1]);
     // console.log('nho comment doan nay di khi deploy');
     // console.log('token ',token)

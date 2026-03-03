@@ -276,17 +276,16 @@ const galleryController = () => {
     const folder = await FolderEntity.findById(folder_id);
     if (!folder) return res.json({ success: false });
     // 1. xoá file trong folder
-    // const folderPath0 = path.join(process.cwd(), "sys_upload", folder.slug);
     const folderPath = path.join(myPathConfig.public, folder.path);
-
-
     if (fs.existsSync(folderPath)) {
+      console.log('co runday ?')
       fs.rmSync(folderPath, { recursive: true, force: true });
     }else{
-      // console.log('ko ton tai folder')
+      console.log('ko ton tai folder')
       return res.status(500).json({success: false, mess: 'xoa loi'})
     }
 
+    //C:\Workspaces\my_projects\toppicare\server\public\uploads\dynamic\xin_chao
     // 2. xoá images DB
     await ImageEntity.deleteMany({ folder_id });
 
