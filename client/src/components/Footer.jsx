@@ -4,6 +4,8 @@ import imgLogo2 from "t_logo2";
 import chplay_qr from 'chplay_qr';
 import chplay_qr2 from 'chplay_qr2';
 import { Facebook, Mail, MapPin, Phone, Youtube } from "lucide-react";
+import usePageConfig from "../hooks/usePageConfig";
+import { formatPhone442 } from "./utils/formatPhone";
 
 function Footer() {
   const aboutLinks = [
@@ -18,6 +20,8 @@ function Footer() {
     { name: "Chính sách cho Khách hàng", path: "/policy/customer" },
     { name: "Chính sách cho KTV", path: "/policy/partner" },
   ];
+  const { data, loading, error } = usePageConfig();
+  const pageInfo = data?.data?.customize;
 
   return (
     <>
@@ -40,17 +44,17 @@ function Footer() {
                   <div className="flex items-start gap-3">
                     <MapPin className="w-5 h-5 mt-0.5 flex-shrink-0 text-white-200" />
                     <span className="text-[rgb(255,255,255)]">
-                      16A Lê Hồng Phong, Phường Hòa Hưng, Ho Chi Minh City, Vietnam
+                      {pageInfo?.address}
                     </span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Phone className="w-5 h-5 flex-shrink-0 text-white-200" />
-                    <span className="text-[rgb(255,255,255)]">0862.4848.98</span>
+                    <span className="text-[rgb(255,255,255)]">{formatPhone442(pageInfo?.phone)}</span>
                   </div>
                   <div className="flex items-center gap-3">
                     <Mail className="w-5 h-5 flex-shrink-0 text-white-200" />
                     <span className="text-[rgb(255,255,255)]">
-                      info@toppicare.vn
+                      {pageInfo?.email}
                     </span>
                   </div>
                 </div>
@@ -104,7 +108,7 @@ function Footer() {
                   </h3>
                   <div className="flex gap-4">
                     <a
-                      href="https://www.facebook.com/toppicare/"
+                      href={pageInfo?.facebook}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all hover:scale-110"
@@ -112,7 +116,7 @@ function Footer() {
                       <Facebook className="w-5 h-5" />
                     </a>
                     <a
-                      href="https://www.youtube.com/@ToppiCare"
+                      href={pageInfo?.youtube}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all hover:scale-110"
@@ -120,7 +124,7 @@ function Footer() {
                       <Youtube className="w-5 h-5" />
                     </a>
                     <a
-                      href="https://www.tiktok.com/@toppicare"
+                      href={pageInfo?.tiktok}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm flex items-center justify-center hover:bg-white/20 transition-all hover:scale-110"

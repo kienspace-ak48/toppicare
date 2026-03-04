@@ -15,12 +15,14 @@ import {
   ClipboardList,
   Star,
   Award,
-  Newspaper ,
+  Newspaper,
   HelpCircle,
 } from "lucide-react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
 import { useGetArticleByType } from "../../hooks/useArticle";
 import { Link } from "react-router-dom";
+import { formatPhone442 } from "../utils/formatPhone";
+import usePageConfig from "../../hooks/usePageConfig";
 
 // const userTopics = [
 //   {
@@ -136,12 +138,15 @@ import { Link } from "react-router-dom";
 const ASSET_URL = window.__ENV__.API_URL;
 export function HelpCenterPage() {
   //
-   const {data, loading, error} = useGetArticleByType();
-   const articleData = data?.data ||[];
-   const userTopics = articleData?.filter(x=>x.type==='customer');
-   const technicianTopics = articleData?.filter(x=>x.type==='technician');
-   //
-//  <"user" | "technician">
+  const { data, loading, error } = useGetArticleByType();
+    const { data :dataI, loading: loadingP, error: errorP } = usePageConfig();
+  
+  const articleData = data?.data || [];
+  const pageInfo = dataI?.data?.customize;
+  const userTopics = articleData?.filter((x) => x.type === "customer");
+  const technicianTopics = articleData?.filter((x) => x.type === "technician");
+  //
+  //  <"user" | "technician">
   const [activeTab, setActiveTab] = useState("user");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -152,7 +157,7 @@ export function HelpCenterPage() {
       topic.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
       topic.desc.toLowerCase().includes(searchQuery.toLowerCase()),
   );
-  
+
   return (
     <div className="">
       {/* Banner with Search */}
@@ -164,7 +169,6 @@ export function HelpCenterPage() {
           className="w-full h-full object-cover md:hidden"
         />
 
-        
         {/* desktop */}
         <ImageWithFallBack
           src="/assets/images/help-center2.png"
@@ -244,37 +248,34 @@ export function HelpCenterPage() {
           {filteredTopics.length > 0 ? (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               {filteredTopics.map((topic) => {
-                const Icon = Newspaper ;
+                const Icon = Newspaper;
                 return (
-                  <Link  
+                  <Link
                     key={topic._id}
-                  to={`/trung-tam-ho-tro/bai-viet/${topic.slug}`}
+                    to={`/trung-tam-ho-tro/bai-viet/${topic.slug}`}
                   >
-                  <div
-                    className="group backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-6 hover:shadow-xl transition-all hover:scale-105 cursor-pointer"
-                  >
-                    <div className="flex items-start gap-4 mb-4">
-                      <div className="w-12 h-12 rounded-2xl bg-[#2dbdb6] flex items-center justify-center flex-shrink-0">
-                        <Icon className="w-6 h-6 text-white" />
+                    <div className="group backdrop-blur-lg bg-white/60 border border-white/20 rounded-3xl p-6 hover:shadow-xl transition-all hover:scale-105 cursor-pointer">
+                      <div className="flex items-start gap-4 mb-4">
+                        <div className="w-12 h-12 rounded-2xl bg-[#2dbdb6] flex items-center justify-center flex-shrink-0">
+                          <Icon className="w-6 h-6 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="text-lg mb-2 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent group-hover:text-green-600 transition-colors text-[18px] font-bold">
+                            {topic?.title}
+                          </h3>
+                          <p className="text-gray-600 leading-relaxed text-[16px]">
+                            {topic.desc}
+                          </p>
+                        </div>
                       </div>
-                      <div className="flex-1">
-                        <h3 className="text-lg mb-2 bg-gradient-to-r from-[#FF6B6B] to-[#FF8C42] bg-clip-text text-transparent group-hover:text-green-600 transition-colors text-[18px] font-bold">
-                          {topic?.title}
-                        </h3>
-                        <p className="text-gray-600 leading-relaxed text-[16px]">
-                          {topic.desc}
-                        </p>
+                      <div className="flex items-center justify-between pt-4 border-t border-gray-200">
+                        <span className="text-sm text-gray-500">
+                          {topic.articles} bài viết
+                        </span>
+                        <ChevronRight className="w-5 h-5 text-[#2dbdb6] group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
-                    <div className="flex items-center justify-between pt-4 border-t border-gray-200">
-                      <span className="text-sm text-gray-500">
-                        {topic.articles} bài viết
-                      </span>
-                      <ChevronRight className="w-5 h-5 text-[#2dbdb6] group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
                   </Link>
-                  
                 );
               })}
             </div>
@@ -303,7 +304,7 @@ export function HelpCenterPage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <a
-              href="tel:0862484898"
+              href={"tel:"+pageInfo?.phone}
               className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-[#2dbdb6] text-white rounded-full hover:shadow-lg hover:scale-105 transition-all"
             >
               <svg
@@ -319,10 +320,10 @@ export function HelpCenterPage() {
                   d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                 />
               </svg>
-              Gọi hotline: 0862.4848.98
+              Gọi hotline: {formatPhone442(pageInfo?.phone)}
             </a>
             <a
-              href="mailto:info@toppicare.vn"
+              href={"mailto:"+pageInfo?.email}
               className="inline-flex items-center justify-center gap-2 px-8 py-3 bg-white text-[rgb(45,189,182)] border-2 border-[#2dbdb6] rounded-full hover:shadow-lg hover:scale-105 transition-all"
             >
               <svg

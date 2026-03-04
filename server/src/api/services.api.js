@@ -8,7 +8,6 @@ const ServicesApi = ()=>{
         Index: async(req, res)=>{
             try {
                 const services = await ServiceEntity.find().lean();
-                console.log(services);
                 res.json({success: true, data: services});
             } catch (error) {
                 console.log(CNAME, error.message);

@@ -34,9 +34,7 @@ const ASSET_URL = window.__ENV__.API_URL;
 function About() {
   //
   const { data, loading, error } = usePageConfig();
-  // console.log(data)
   const aboutSection = data?.data?.about;
-  // console.log("aboutSection co gi", aboutSection);
   const [currentSlide, setCurrentSlide] = useState(0);
   //
   const bannerSlides = aboutSection?.slider;

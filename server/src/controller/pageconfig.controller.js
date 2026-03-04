@@ -55,6 +55,39 @@ const PageConfigController = () => {
         res.render(VNAME + "customize", { data: {} });
       }
     },
+    //
+    SaveCustomizeSection: async(req, res)=>{
+      try {
+        const data = req.body;
+        const cDTO = {
+          email: data.pageinfo_email,
+          phone: data.pageinfo_phone,
+          zalo: data.pageinfo_zalo,
+          address: data.pageinfo_address,
+          facebook: data.pageinfo_facebook,
+          tiktok: data.pageinfo_tiktok,
+          youtube: data.pageinfo_youtube,
+          worktime: data.worktime,
+          title: data.webname,
+          img: data.img || "image1.jpg",
+          desc: data.desc,
+          keywords: data.keywords,
+          gg_a: data.gg_a||'--no--',
+          gg_wt: data.gg_wt||'--no--',
+      };
+      console.log(cDTO);
+      const task1 = pageconfigService.updateCustomizeSection(cDTO);
+      // const task1 = true;
+      if (!task1) {
+          throw new Error(CNAME + "update customize_section failed");
+        }
+        res.json({ success: true })
+      } catch (error) {
+        // res.render(VANME+'')
+        console.log(CNAME, error.message);
+        res.status(500).json({success: false, mess: 'Server error'});
+      }
+    },
     // 
     NewsSection: async (req, res) => {
       try {

@@ -96,6 +96,7 @@ const benefits = [
 ];
 const SITE_KEY = "0x4AAAAAACZ49bnQxOXBIeHL";
 const SITE_KEY_DOMAIN = "0x4AAAAAACZ4I-nJdAG-KT38";
+const SITE_KEY_DOMAIN2= "0x4AAAAAACls8f3FV63gRkmU";
 export function BecomeTechnicianPage() {
   const [formData, setFormData] = useState({
     name: "",
@@ -318,21 +319,23 @@ export function BecomeTechnicianPage() {
           </div>
 
           {/* Work Environment Images */}
-          {/* <div className="grid md:grid-cols-3 gap-6">
-            {[
-              'https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=400',
-              'https://images.unsplash.com/photo-1761234852163-23f2ededd04e?w=400',
-              'https://images.unsplash.com/photo-1757689314932-bec6e9c39e51?w=400',
-            ].map((image, index) => (
+          <div className="grid md:grid-cols-3 gap-6">
+            {
+            // [
+            //   'https://images.unsplash.com/photo-1764690690771-b4522d66b433?w=400',
+            //   'https://images.unsplash.com/photo-1761234852163-23f2ededd04e?w=400',
+            //   'https://images.unsplash.com/photo-1757689314932-bec6e9c39e51?w=400',
+            // ]
+            teachnicianSection?.images?.map((image, index) => (
               <div key={index} className="aspect-video rounded-3xl overflow-hidden shadow-lg">
                 <ImageWithFallBack
-                  src={image}
+                  src={ASSET_URL+image}
                   alt={`Work Environment ${index + 1}`}
                   className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
                 />
               </div>
             ))}
-          </div> */}
+          </div>
         </div>
       </section>
 
@@ -474,7 +477,7 @@ export function BecomeTechnicianPage() {
             </div>
             <div
                   className="cf-turnstile text-end my-4"
-                  data-sitekey={SITE_KEY_DOMAIN}
+                  data-sitekey={SITE_KEY_DOMAIN2}
                   data-callback="onTurnstileSuccess"
                 ></div>
           </form>

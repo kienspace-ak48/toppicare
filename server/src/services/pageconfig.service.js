@@ -46,6 +46,28 @@ class PageConfigService {
             return {success: false, mess: error.message}
         }
     }
+    //Customize
+    async updateCustomizeSection(customizeData){
+        try {
+            const result = await PageConfigEntity.findOneAndUpdate(
+                {},
+                {
+                    $set: {
+                        customize: customizeData
+                    }
+                },
+                {
+                    new: true, // tra ve document moi tao
+                    upsert: true// chua co thi tao moi
+                }
+            )
+            return {success: true, data: result};
+        } catch (error) {
+            console.log(CNAME, error);
+            return {success: false, mess: error.message}
+        }
+    }
+    //
     async updateNewsSection(newsData){
         try {
             const result = await PageConfigEntity.findOneAndUpdate(

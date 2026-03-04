@@ -2,6 +2,7 @@ import { MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { ImageWithFallBack } from "../fallback/ImageWithFallback";
 import { useState, useEffect } from "react";
 import usePageConfig from "../../hooks/usePageConfig";
+import { formatPhone442 } from "../utils/formatPhone";
 
 // import { useGetAllServices } from "../../hooks/useServices";
 const contactInfo = [
@@ -61,6 +62,7 @@ const branches = [
 ];
 const SITE_KEY = "0x4AAAAAACZ49bnQxOXBIeHL";
 const SITE_KEY_DOMAIN = "0x4AAAAAACZ4I-nJdAG-KT38";
+const SITE_KEY_DOMAIN2= "0x4AAAAAACls8f3FV63gRkmU";
 function Contact() {
   const [token, setToken] = useState("");
   //capcha
@@ -88,6 +90,14 @@ function Contact() {
   //
   const { data, loadingP: laoding, error } = usePageConfig();
   const contactSection = data?.data?.contact;
+  const pageInfo = data?.data?.customize;
+  if(pageInfo){
+    contactInfo[0].content = pageInfo?.address;
+    contactInfo[1].content = pageInfo?.phone;
+    contactInfo[2].content = pageInfo?.email;
+    contactInfo[3].content = pageInfo?.worktime;
+
+  }
   // const ASSET_URL = import.meta.env.VITE_API_URL;
   const ASSET_URL = window.__ENV__.API_URL;
   const [formData, setFormData] = useState({
@@ -317,7 +327,7 @@ function Contact() {
                 {/*  */}
                 <div
                   className="cf-turnstile text-end my-4"
-                  data-sitekey={SITE_KEY_DOMAIN}
+                  data-sitekey={SITE_KEY_DOMAIN2}
                   data-callback="onTurnstileSuccess"
                 ></div>
               </form>
@@ -398,13 +408,15 @@ function Contact() {
             Cần hỗ trợ ngay?
           </h2>
           <p className="text-white/90 text-lg mb-8 text-[16px]">
-            Gọi hotline 0862.4848.98 để được tư vấn 24/7
+            Gọi hotline {formatPhone442(pageInfo?.phone)} để được tư vấn 24/7
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button className="px-8 py-3 bg-white text-[rgb(45,189,182)] rounded-full hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2">
+            <a href={"tel:"+pageInfo?.phone}>
+              <button className="px-8 py-3 bg-white text-[rgb(45,189,182)] rounded-full hover:shadow-lg hover:scale-105 transition-all flex items-center justify-center gap-2">
               <Phone className="w-5 h-5" />
               Gọi ngay
             </button>
+            </a>
             <button
               onClick={() => {
                 window.open(

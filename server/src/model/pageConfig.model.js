@@ -169,6 +169,23 @@ const pageConfig = new mongoose.Schema({
       }
     ],
     images: []
+  },
+  customize: {
+    email: String,
+    phone: String,
+    zalo: String,
+    address: String,
+    facebook: String,
+    tiktok: String,
+    youtube: String,
+    worktime: String,
+    img: String,
+
+    title: String,
+    desc: String,
+    keywords: String,
+    gg_a: String,
+    gg_wt: String,
   }
 });
 

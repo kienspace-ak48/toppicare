@@ -15,8 +15,15 @@ import {
   Phone,
 } from "lucide-react";
 const ASSET_URL = window.__ENV__.API_URL;
+import usePageConfig from "../hooks/usePageConfig";
+import { formatPhone442 } from "./utils/formatPhone";
 import imgLogo from "t_logo";
 export function Header() {
+  //
+  const { data, loading, error } = usePageConfig();
+  const pageInfo = data?.data?.customize;
+  console.log(pageInfo);
+  //
   const [dropdownOpen, setDropdownOpen] = useState();
   const location = useLocation();
   const mainMenuItems = [
@@ -38,6 +45,10 @@ export function Header() {
   const closeDropdown = () => {
     setDropdownOpen(false);
   };
+  const formatPhone = (phone = "") => {
+  const cleaned = phone.replace(/\D/g, ""); // bỏ ký tự lạ
+  return cleaned.replace(/(\d{4})(\d{4})(\d{2})/, "$1.$2.$3");
+};
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-lg bg-white/70 border-b border-white/20 shadow-lg ">
@@ -70,33 +81,40 @@ export function Header() {
             </div>
 
             <div className="flex items-center justify-end gap-4 md:gap-6 text-sm ml-auto">
-              {horizontalMenuItems.map((item) => (
-                              item.path ? (
-                                <Link
-                                 onClick={closeDropdown}
-                                  key={item.name}
-                                  to={item.path}
-                                  className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
-                                >
-                                  <item.icon className="w-4 h-4" />
-                                  <span className="hidden sm:inline text-[16px]">{item.name}</span>
-                                </Link>
-                              ) : (
-                                <button
-                                  key={item.name}
-                                  onClick={() => {
-                                    closeDropdown()
-                                    if (item.action === 'download') {
-                                      window.open(ASSET_URL+'api/action-link/download-app', '_blank');
-                                    }
-                                  }}
-                                  className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
-                                >
-                                  <item.icon className="w-4 h-4" />
-                                  <span className="hidden sm:inline text-[16px]">{item.name}</span>
-                                </button>
-                              )
-              ))}
+              {horizontalMenuItems.map((item) =>
+                item.path ? (
+                  <Link
+                    onClick={closeDropdown}
+                    key={item.name}
+                    to={item.path}
+                    className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span className="hidden sm:inline text-[16px]">
+                      {item.name}
+                    </span>
+                  </Link>
+                ) : (
+                  <button
+                    key={item.name}
+                    onClick={() => {
+                      closeDropdown();
+                      if (item.action === "download") {
+                        window.open(
+                          ASSET_URL + "api/action-link/download-app",
+                          "_blank",
+                        );
+                      }
+                    }}
+                    className="hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
+                  >
+                    <item.icon className="w-4 h-4" />
+                    <span className="hidden sm:inline text-[16px]">
+                      {item.name}
+                    </span>
+                  </button>
+                ),
+              )}
               <button className="flex items-center gap-1 hover:opacity-80 transition-opacity">
                 <Globe className="w-4 h-4" />
                 <span className="hidden sm:inline text-[16px] ">VI</span>
@@ -140,54 +158,50 @@ export function Header() {
                     );
                   })}
                   {/* <div> */}
-                    {horizontalMenuItems.map((item) => 
-                    {
-                      const Icon = item.icon;
+                  {horizontalMenuItems.map((item) => {
+                    const Icon = item.icon;
                     const isActive = location.pathname === item.path;
-                      return (
-                              item.path ? (
-                                <li
-                                  key={item.name}
-                                >
-                                  <Link
-                                      to={item.path}
-                                      onClick={closeDropdown}   // 🔥 thêm dòng này
-                                      className={`flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
-                                        isActive
-                                          ? "bg-[#2bdbd6] text-white shadowlg"
-                                          : "text-gray-700 hover:bg-white/80 hover:shadow-md"
-                                      }`}
-                                    >
-                                      <item.icon className="w-4 h-4" />
-                                      <span className="sm:inline text-[16px]">{item.name}</span>
-                                    </Link>
-                                </li>
-                                
-                              ) : (
-                                <button
-                                  key={item.name}
-                                  onClick={() => {
-                                    closeDropdown()   // 🔥 thêm dòng này
-                                    if (item.action === 'download') {
-                                      window.open(ASSET_URL+'api/action-link/download-app', '_blank');
-                                    }
-                                  }}
-                                  className={
-                                    ` flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
+                    return item.path ? (
+                      <li key={item.name}>
+                        <Link
+                          to={item.path}
+                          onClick={closeDropdown} // 🔥 thêm dòng này
+                          className={`flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
                             isActive
                               ? "bg-[#2bdbd6] text-white shadowlg"
                               : "text-gray-700 hover:bg-white/80 hover:shadow-md"
-                          }`
-                                  }
-                                  // className=" hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
-                                >
-                                  <item.icon className="w-4 h-4" />
-                                  <span className="flex  text-[16px]">{item.name}</span>
-                                </button>
-                              )
-              )
-                    }
-              )}
+                          }`}
+                        >
+                          <item.icon className="w-4 h-4" />
+                          <span className="sm:inline text-[16px]">
+                            {item.name}
+                          </span>
+                        </Link>
+                      </li>
+                    ) : (
+                      <button
+                        key={item.name}
+                        onClick={() => {
+                          closeDropdown(); // 🔥 thêm dòng này
+                          if (item.action === "download") {
+                            window.open(
+                              ASSET_URL + "api/action-link/download-app",
+                              "_blank",
+                            );
+                          }
+                        }}
+                        className={` flex md:hidden items-center gap-3 px-4 py-2 md:py-3  rounded-2xl transition-all ${
+                          isActive
+                            ? "bg-[#2bdbd6] text-white shadowlg"
+                            : "text-gray-700 hover:bg-white/80 hover:shadow-md"
+                        }`}
+                        // className=" hidden md:flex items-center gap-1 hover:opacity-80 transition-opacity"
+                      >
+                        <item.icon className="w-4 h-4" />
+                        <span className="flex  text-[16px]">{item.name}</span>
+                      </button>
+                    );
+                  })}
                   {/* </div> */}
                 </ul>
               </nav>
@@ -200,10 +214,10 @@ export function Header() {
                     Liên hệ hotline để được tư vấn
                   </p>
                   <a
-                    href="tel:0862484898"
+                    href={"tel:"+pageInfo?.phone}
                     className="inline-block px-6 py-2 bg-[#2dbdb6] text-white text-sm rounded-xl hover:shadow-lg transition-all"
                   >
-                    0862.4848.98
+                    {formatPhone442(pageInfo?.phone)}
                   </a>
                 </div>
               </div>

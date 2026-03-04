@@ -13,6 +13,8 @@ const ServiceController = require('../controller/service.controller')();
 //page config
 // -cutomize
 router.get('/page-config/customize-section', PageConfigController.CustomizeSection);
+router.put('/page-config/customize-section', PageConfigController.SaveCustomizeSection);
+
 //-teachnician
 router.get('/page-config/teachnician-section', PageConfigController.TeachnicianSection);
 router.put('/page-config/teachnician-section',PageConfigController.SaveTeachnicianSection);
@@ -34,7 +36,7 @@ router.put('/page-config/services-section', PageConfigController.SaveServiceSeti
 //-home
 router.post("/page-config", homeController.CreatePageConfig);
 router.get("/page-config", homeController.PageConfig);
-// gallery
+// gallery ---Ham nay da ko dùng!
 router.post(
   "/gallery/image-upload",
   uploadImage.single("image"),
