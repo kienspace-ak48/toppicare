@@ -18,3 +18,6 @@ client/node_modules/.vite-temp
 # OS
 .DS_Store
 Thumbs.db
+
+#my config
+server/public/uploads/
