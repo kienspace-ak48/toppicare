@@ -10,7 +10,6 @@ const ServiceApi = () => {
           "category_id",
           "name slug category_root",
         );
-        // console.log(result)
         res.json({ success: true, data: result });
       } catch (error) {
         console.log(CNAME, error.message);
@@ -28,8 +27,6 @@ const ServiceApi = () => {
           })
           .sort({ createdAt: -1 })
           .limit(3);
-        console.log("Data check here");
-        console.log(newThreeBlog);
         res.json({ success: true, data: newThreeBlog });
       } catch (error) {
         console.log(CNAME, error.message);
@@ -42,7 +39,6 @@ const ServiceApi = () => {
           { category_root: "service" },
           "_id",
         );
-        console.log('list category ', categories)
         const categoryIds = categories.map((c) => c._id);
         const blogs = await BlogEntity.find({
           category_id: { $in: categoryIds },
@@ -57,7 +53,6 @@ const ServiceApi = () => {
     GetBlogById: async(req, res)=>{
         try {
             const _id = req.params.id;
-            console.log(_id)
             const blog =await BlogEntity.findById(_id);
             res.json({success: true, data: blog})
         } catch (error) {

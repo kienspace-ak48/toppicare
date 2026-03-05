@@ -4,15 +4,12 @@ const cors = require("cors");
 const path = require("path");
 const fs = require("fs");
 const helmet = require("helmet");
-const rateLimit = require("express-rate-limit");
 const expressLayouts = require("express-ejs-layouts");
 const dbConnection = require("./config/dbConnection");
-const UserEntity = require("./model/user.model");
 const myPath = require("./config/myPath.config");
 const routes = require("./routes/index");
 const deviceInfoMiddleware = require("./middlewares/clientInfo");
 const cookieParser = require("cookie-parser");
-const imageModel = require("./model/image.model");
 const pageConfigModel = require("./model/pageConfig.model");
 
 //connect DB
@@ -51,27 +48,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 routes(app);
 
-// test area
-
-// app.get("/api/user", async (req, res) => {
-//   try {
-//     const u = new UserEntity({
-//       name: "Kien Vu",
-//       username: "kienvu_ak48",
-//       password: "123",
-//       email: "test@gmail.com",
-//       phone: "0123456789",
-//     });
-//     await u.save();
-//     res.json({ sucess: true, user: u });
-//   } catch (error) {
-//     console.log("error ", error);
-//     res.json({ success: false, mess: error.message });
-//   }
-// });
 app.get("/test", (req, res) => {
   res.json({
     deviceInfo: req.deviceInfo,
+    design: "kienvu_dev"
   });
 });
 async function getSeoFromDB() {

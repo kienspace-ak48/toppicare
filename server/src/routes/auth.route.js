@@ -6,14 +6,23 @@ const rateLimit= require('express-rate-limit');
 const bcrypt = require("bcrypt");
 const isProd = process.env.NODE_ENV === "production";
 const userEntity = require("../model/user.model");
+//fx
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
-  max: 20,
+  max: 10,
+  handler: (req, res) => {
+    return res.render("pages/login", {
+      layout: false,
+      success: false,
+      mess: "Too many login attempts. Please try again in 15 minutes."
+    });
+  },
+  skipSuccessfulRequests: true,
+  standardHeaders: true,
+  legacyHeaders: false
 });
 async function comparePassword(password, hash) {
   const match = await bcrypt.compare(password, hash);
-  // console.log("ham compare tra ra gi? ");
-  // console.log(typeof match);
   return match;
 }
 //form login
@@ -22,18 +31,21 @@ router.get("/admin/login", (req, res) => {
 });
 //login
 router.post("/admin/login",loginLimiter , async (req, res) => {
-  // const {email, password}= req.query
   const { email, password } = req.body;
-  console.log(email, password);
-
   const account = await userEntity.findOne({ email: email });
   if (!account) {
-    // return res.status(401).json({success: false, mess: 'Sai tai khoan'});
-    console.log("ko thay user");
+    // console.log("ko thay user");
     return res.render("pages/login", {
       layout: false,
       success: false,
       mess: "username or password is incorrect!",
+    });
+  }
+  if(!account.status){
+    return res.render("pages/login", {
+      layout: false,
+      success: false,
+      mess: "Your account has been banned. Please contact the administrator.",
     });
   }
   const match = await comparePassword(password, account.password);
@@ -48,8 +60,6 @@ router.post("/admin/login",loginLimiter , async (req, res) => {
   }
   const payload = {
         id: account._id,
-        // username: account.username,
-        // email: account.email,
         role: account.role
     }
   const token = jwt.sign(
@@ -72,29 +82,29 @@ router.post("/admin/logout", (req, res) => {
   res.redirect("/");
 });
 // register
-router.get("/admin/register", async (req, res) => {
-  try {
-    const { email, password } = { email: "admin@gmail.com", password: "123@" };
-    const exitAccount = await userEntity.findOne({ email });
-    if (exitAccount) {
-      return res
-        .status(400)
-        .json({ success: false, data: "da ton tai account nay" });
-    }
-    //hash password
-    const hashPassword = await bcrypt.hash(password, 10);
-    const uDTO = new userEntity({
-      email: email,
-      password: hashPassword,
-    });
-    await uDTO.save();
-    res.json({ success: true, data: "creating user is success" });
-    // {email, hashPassword};
-  } catch (error) {
-    console.log(CNAME, error.message);
-    res
-      .status(500)
-      .json({ success: false, mess: "Creating account is failed" });
-  }
-});
+// router.get("/admin/register", async (req, res) => {
+//   try {
+//     const { email, password } = { email: "admin@gmail.com", password: "123@" };
+//     const exitAccount = await userEntity.findOne({ email });
+//     if (exitAccount) {
+//       return res
+//         .status(400)
+//         .json({ success: false, data: "da ton tai account nay" });
+//     }
+//     //hash password
+//     const hashPassword = await bcrypt.hash(password, 10);
+//     const uDTO = new userEntity({
+//       email: email,
+//       password: hashPassword,
+//     });
+//     await uDTO.save();
+//     res.json({ success: true, data: "creating user is success" });
+//     // {email, hashPassword};
+//   } catch (error) {
+//     console.log(CNAME, error.message);
+//     res
+//       .status(500)
+//       .json({ success: false, mess: "Creating account is failed" });
+//   }
+// });
 module.exports = router;

@@ -123,7 +123,6 @@ const BlogApi = () => {
     GetMenuByRoot: async(req, res)=>{
         try {
           const _root = req.params.root;
-          console.log(_root)
             const menus = await getAllCategoryByRoot(_root);
             res.json({success: true, data: menus})
         } catch (error) {

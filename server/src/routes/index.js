@@ -1,5 +1,3 @@
-const rateLimit = require("express-rate-limit");
-
 const adminRoute = require("./admin.route");
 const apiRoute = require("./api.route");
 const authRoute = require("./auth.route");
