@@ -15,7 +15,6 @@ const cookieParser = require("cookie-parser");
 const imageModel = require("./model/image.model");
 const pageConfigModel = require("./model/pageConfig.model");
 
-
 //connect DB
 dbConnection();
 
@@ -94,7 +93,6 @@ async function getSeoFromDB() {
     description: c.desc || "",
     keywords: c.keywords || "",
     image: c.img || "https://toppicare.vn/represent_web.webp",
-
   };
 }
 function escapeHtml(text = "") {
@@ -112,7 +110,7 @@ let template = fs.readFileSync(
   "utf-8",
 );
 // html = html.replace(/__API_URL__/g, process.env.API_URL);
-app.use(async (req, res) => {
+app.use(async (req, res, next) => {
   const seo = await getSeoFromDB(req.path);
 
   let html = template

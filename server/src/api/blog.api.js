@@ -65,7 +65,6 @@ const BlogApi = () => {
           {category_root: "training"},
           "_id");
         const categoryIds = categories.map(c=>c._id);
-        console.log('category: ',categoryIds)
         const trainingBlogs = await BlogEntity.find({
           category_id: { $in: categoryIds }
         })
@@ -73,7 +72,6 @@ const BlogApi = () => {
           path: 'category_id',
           select: 'name slug category_root'
         });
-        console.log(trainingBlogs);
         return res.json({success: true, data: trainingBlogs});
       } catch (error) {
         console.log(CNAME, error.message);
@@ -135,9 +133,7 @@ const BlogApi = () => {
     },
     IncreaseBlogView: async(req, res)=>{
       try {
-        console.log('co run o day ko ?')
         const _slug = req.params.slug;
-        console.log('id ',_slug);
         await BlogEntity.updateOne(
           {slug: _slug},
           {$inc: {views: 1}}

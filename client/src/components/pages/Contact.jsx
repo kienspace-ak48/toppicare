@@ -93,7 +93,7 @@ function Contact() {
   const pageInfo = data?.data?.customize;
   if(pageInfo){
     contactInfo[0].content = pageInfo?.address;
-    contactInfo[1].content = pageInfo?.phone;
+    contactInfo[1].content = formatPhone442(pageInfo?.phone);
     contactInfo[2].content = pageInfo?.email;
     contactInfo[3].content = pageInfo?.worktime;
 

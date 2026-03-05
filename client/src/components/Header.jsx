@@ -22,7 +22,6 @@ export function Header() {
   //
   const { data, loading, error } = usePageConfig();
   const pageInfo = data?.data?.customize;
-  console.log(pageInfo);
   //
   const [dropdownOpen, setDropdownOpen] = useState();
   const location = useLocation();

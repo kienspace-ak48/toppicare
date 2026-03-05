@@ -38,7 +38,6 @@ function About() {
   const [currentSlide, setCurrentSlide] = useState(0);
   //
   const bannerSlides = aboutSection?.slider;
-  console.log(bannerSlides)
   //
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % bannerSlides.length);

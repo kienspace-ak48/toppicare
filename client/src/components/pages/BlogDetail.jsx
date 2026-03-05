@@ -26,10 +26,10 @@ function BlogDetail() {
     });
   }
 
-  const VIEW_EXPIRE_HOURS = 1; // đổi 24 nếu muốn 1 ngày
+  const VIEW_EXPIRE_HOURS = 2; // đổi 24 nếu muốn 1 ngày
 
   function setViewWithExpire(key) {
-    const expireTime = Date.now() + VIEW_EXPIRE_HOURS * 60 * 60 * 1000; //* 60 * 60 * 1000;
+    const expireTime = Date.now() + VIEW_EXPIRE_HOURS  * 60 * 1000; //Ngay* 60 * 60 * 1000;
 
     const data = {
       viewed: true,
