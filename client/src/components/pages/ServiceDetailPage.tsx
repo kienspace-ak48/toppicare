@@ -52,10 +52,8 @@ export default function ServiceDetailPage() {
   
 const ASSET_URL = window.__ENV__.API_URL;
   const { slug } = useParams();
-  console.log(slug);
 
   const {data: dataS, loading: loadingS, error: errorS} = useGetAllServicesPkg(slug);
-    console.log(dataS);
   const service2 = dataS?.data;
     // 
   const { serviceId } = useParams(); // slug
@@ -112,7 +110,6 @@ const ASSET_URL = window.__ENV__.API_URL;
   //   );
   // }
   // var services = null;
-  console.log('service 2', service2)
   if (!service2?.packages.length) {
     return (
       <div className="pt-20 md:pt-24 min-h-screen flex flex-col items-center justify-center">

@@ -37,9 +37,9 @@ function BlogDetail() {
     };
 
     localStorage.setItem(key, JSON.stringify(data));
-    console.log("now:", Date.now());
-    console.log("expire:", data.expire);
-    console.log("valid:", Date.now() < data.expire);
+    // console.log("now:", Date.now());
+    // console.log("expire:", data.expire);
+    // console.log("valid:", Date.now() < data.expire);
   }
 
   function hasValidView(key) {
@@ -106,8 +106,6 @@ function BlogDetail() {
   //fx tang view
   const increaseView = async (slug) => {
     try {
-      console.log("processing inscrease view ");
-      console.log(`${ASSET_URL}api/blog/${slug}/view`);
       await fetch(`${ASSET_URL}api/blog/${slug}/view`, {
         //${'http://localhost:3500'}
         method: "POST",

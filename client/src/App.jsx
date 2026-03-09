@@ -14,7 +14,6 @@ import HomeAdminConfig from './components/admin/pageconfig/HomeCF'
 import BlogDetail from "./components/pages/BlogDetail";
 import PolicyPage from "./components/pages/PolicyPage";
 import PocicyPartner from './components/pages/PolicyPartner';
-import ServiceDetail from "./components/pages/ServiceDetail";
 import Dashboard from "./pages/admin/Dashboard";
 import ServiceDetailPage from "./components/pages/ServiceDetailPage";
 

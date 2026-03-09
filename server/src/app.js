@@ -29,7 +29,15 @@ app.set("layout", "layouts/adminLayout");
 
 app.use(cookieParser());
 
-app.use(cors({ origin: "*" }));
+app.use(
+  cors({
+    
+    origin: [
+      "https://toppicare.vn",
+      "http://localhost:5173",
+    ],
+  })
+);
 // app.use(
 //   helmet({
 //     contentSecurityPolicy: {
