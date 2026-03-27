@@ -260,12 +260,10 @@ Nội dung bài viết....</textarea
     chooseImgModal.classList.add("hidden");
   }
   ctaChooseImg.forEach((el) => {
-    el.addEventListener("click", (ev) => {
-      console.log(el);
+    el.addEventListener("click", (ev) => {      
       loadImage();
       let input = el.closest(".image_action");
       imgInputIsFocusing = input;
-      console.log("input ", input);
       openChooseImgModal();
     });
   });

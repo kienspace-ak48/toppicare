@@ -233,11 +233,9 @@ titleInput.addEventListener('input', () => {
   }
   ctaChooseImg.forEach((el) => {
     el.addEventListener("click", (ev) => {
-      console.log(el);
       loadImage();
       let input = el.closest('.image_action');
       imgInputIsFocusing = input;
-      console.log("input ", input);
       openChooseImgModal();
     });
   });

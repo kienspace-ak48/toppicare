@@ -131,12 +131,10 @@ document.getElementById("serviceForm").addEventListener("submit", async (e)=>{
   }
   ctaChooseImg.forEach((el) => {
     el.addEventListener("click", (ev) => {
-      console.log(el);
       ev.preventDefault();
       loadImage();
       let input = el.closest('.image_action');
       imgInputIsFocusing = input;
-      console.log("input ", input);
       openChooseImgModal();
     });
   });
