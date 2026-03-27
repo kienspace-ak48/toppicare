@@ -14,7 +14,7 @@ function Footer() {
     { name: "Dịch vụ", path: "/dich-vu" },
     // { name: "Học viện đào tạo", path: "/training" },
     { name: "Tin tức & Hoạt động", path: "/tin-tuc" },
-    { name: "Tuyển dụng", path: "/become-partner" },
+    { name: "Tuyển dụng", path: "/tuyen-ky-thuat-vien" },
   ];
   const policyLinks = [
     { name: "Chính sách cho Khách hàng", path: "/policy/customer" },
@@ -60,7 +60,7 @@ function Footer() {
                 </div>
               </div>
               {/* 2. About ToppiCare */}
-              {/* <div>
+              <div className="hidden md:block">
                 <h3 className="text-lg mb-4 bg-[#cc9000] bg-clip-text text-[rgb(228,228,228)] font-bold">
                   Về ToppiCare
                 </h3>
@@ -76,7 +76,7 @@ function Footer() {
                     </li>
                   ))}
                 </ul>
-              </div> */}
+              </div>
             </div>
             {/* --- KHỐI BÊN PHẢI (Policies, Social, Download App) --- */}
             <div className="flex flex-col gap-8">
@@ -161,7 +161,7 @@ function Footer() {
                           d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
                         />
                       </svg> */}
-                      <img src={chplay_qr2} alt="qr code" />
+                      <img src={"/qr-code.png"} alt="qr code" />
                     </div>
                   </div>
 

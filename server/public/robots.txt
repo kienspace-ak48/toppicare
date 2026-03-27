@@ -1,0 +1,12 @@
+# https://toppicare.vn — hướng dẫn bot lập chỉ mục
+User-agent: *
+Allow: /
+
+# Không lập chỉ mục khu vực quản trị, API và luồng xác thực
+Disallow: /admin
+Disallow: /admin-old
+Disallow: /api
+Disallow: /auth
+
+# Sơ đồ trang (URL tĩnh SPA; bài viết/dịch vụ theo slug cần sitemap động nếu muốn liệt kê đầy đủ)
+Sitemap: https://toppicare.vn/sitemap.xml

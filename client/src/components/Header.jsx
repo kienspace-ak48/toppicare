@@ -114,7 +114,7 @@ export function Header() {
                   </button>
                 ),
               )}
-              <button className="flex items-center gap-1 hover:opacity-80 transition-opacity">
+              <button className="flex items-center gap-1 hover:opacity-80 transition-opacity  sm:hidden">
                 <Globe className="w-4 h-4" />
                 <span className="hidden sm:inline text-[16px] ">VI</span>
               </button>

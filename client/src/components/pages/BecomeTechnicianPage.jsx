@@ -190,10 +190,10 @@ export function BecomeTechnicianPage() {
                     <Briefcase className="w-5 h-5 " />
                     <span>Tuyển dụng KTV</span>
                   </div>
-                  <h1 className="text-white text-lg md:text-2xl mb-6">
+                  <h1 className="text-white text-lg md:text-2xl mb-4">
                     {s.title}
                   </h1>
-                  <p className="text-white/90 text-sm md:text-2xl mb-8">
+                  <p className="text-white/90 text-sm md:text-xl max-w-[250px]  md:max-w-2xl mb-4">
                     {s.desc}
                   </p>
                   <button

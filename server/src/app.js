@@ -35,6 +35,7 @@ app.use(
     origin: [
       "https://toppicare.vn",
       "http://localhost:5173",
+      "https://kienvu.id.vn",
     ],
   })
 );
@@ -106,8 +107,8 @@ app.use(async (req, res, next) => {
     .replace(/__TITLE__/g, escapeHtml(seo.title))
     .replace(/__DESCRIPTION__/g, escapeHtml(seo.description))
     .replace(/__KEYWORDS__/g, escapeHtml(seo.keywords))
-    .replace(/__IMAGE__/g, seo.image)
-    .replace(/__URL__/g, "https://toppicare.vn" + req.originalUrl);
+    .replace(/__IMAGE__/g, `${"/"+seo.image}`)
+    .replace(/__URL__/g, "https://toppicare.vn" +req.originalUrl);
 
   res.send(html);
 });

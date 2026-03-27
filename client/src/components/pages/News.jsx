@@ -157,10 +157,10 @@ function News() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent"></div>
         <div className="absolute inset-0 flex items-center">
           <div className="max-w-7xl mx-auto px-4 w-full">
-            <h1 className="text-white text-lg md:text-6xl mb-6 font-bold">
+            <h1 className="text-white text-lg md:text-6xl mb-4 font-bold">
               {newsSection?.title}
             </h1>
-            <p className="text-white/90 text-sm md:text-xl max-w-2xl text-[16px]">
+            <p className="text-white/90 text-sm md:text-xl max-w-[250px]  md:max-w-2xl mb-4">
               {newsSection?.desc}
             </p>
           </div>
