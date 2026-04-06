@@ -1,5 +1,6 @@
 export default {
   content: [
+    "./src/views/**/*.ejs",
     "./views/**/*.ejs",
     "./views/**/*.html",
     "./public/**/*.js",

@@ -1,0 +1,117 @@
+<div class="warranty-admin">
+  <div class="wa-shell">
+    <% if (!device) { %>
+    <p class="text-gray-600">Không tìm thấy thiết bị.</p>
+    <% } else {
+      const pt = device.productType;
+      const ptName = pt && pt.name ? pt.name : "";
+      const ptCode = pt && pt.code ? pt.code : "";
+    %>
+    <div class="wa-toolbar">
+      <div>
+        <h1 class="wa-page-title">Chi tiết thiết bị</h1>
+        <p class="wa-page-sub">
+          Mã máy <span class="wa-serial"><%= device.serialNumber %></span>
+          <% if (ptCode) { %> · <%= ptCode %> — <%= ptName %><% } %>
+        </p>
+      </div>
+      <div class="flex flex-wrap gap-2">
+        <a href="/admin/warranty/devices/edit/<%= device._id %>" class="wa-btn wa-btn--ghost">Sửa thông tin</a>
+      </div>
+    </div>
+
+    <div class="wa-help">
+      <strong>Lịch sử &amp; log thiết bị ở đâu?</strong>
+      Khối <em>« Lịch sử thiết bị (log) »</em> bên dưới ghi các sự kiện theo máy (đăng ký bán, ghi chú nội bộ / hiển thị khách).
+      Khách tra cứu trên web chỉ thấy các dòng log được đánh dấu hiển thị.
+    </div>
+
+    <div class="wa-grid-2 mb-8">
+      <div class="wa-card">
+        <h2 class="wa-card-title">Khách hàng</h2>
+        <p class="text-gray-900 font-medium text-base m-0"><%= device.customerName %></p>
+        <p class="text-sm text-gray-600 mt-1 m-0"><%= device.phone %></p>
+        <% if (device.email) { %><p class="text-sm text-gray-700 mt-1 m-0"><%= device.email %></p><% } %>
+        <p class="text-sm text-gray-600 mt-3 m-0">
+          <span class="text-gray-500">Ngày bán:</span>
+          <%= device.soldAt ? new Date(device.soldAt).toLocaleString("vi-VN") : "—" %>
+        </p>
+        <% if (device.warrantyEndAt) { %>
+        <p class="text-sm text-gray-600 mt-2 m-0">
+          <span class="text-gray-500">Hạn bảo hành:</span>
+          <span class="font-semibold text-teal-800"><%= new Date(device.warrantyEndAt).toLocaleDateString("vi-VN") %></span>
+          <% if (device.warrantyMonths) { %> (<%= device.warrantyMonths %> tháng)<% } %>
+        </p>
+        <% } %>
+        <% if (device.notes) { %>
+        <p class="text-sm mt-3 p-3 rounded-lg bg-amber-50 border border-amber-100 text-amber-950 m-0">
+          <span class="font-semibold">Ghi chú nội bộ:</span> <%= device.notes %>
+        </p>
+        <% } %>
+      </div>
+
+      <div class="wa-card">
+        <h2 class="wa-card-title">Lịch sử thiết bị (log)</h2>
+        <p class="text-xs text-gray-500 mb-3 m-0">Gồm bản ghi đăng ký bán và các dòng bạn thêm. Khách chỉ thấy mục có nhãn &quot;KH&quot;.</p>
+        <% if (!(device.deviceLog && device.deviceLog.length)) { %>
+        <p class="text-sm text-gray-500 italic m-0">Chưa có log.</p>
+        <% } else { %>
+        <ul class="wa-timeline max-h-64 overflow-y-auto pr-1">
+          <% (device.deviceLog || []).forEach(function (log) { %>
+          <li class="wa-timeline__item <%= log.visibleToCustomer ? '' : 'wa-timeline__item--internal' %>">
+            <span class="wa-timeline__dot" aria-hidden="true"></span>
+            <div class="wa-timeline__time"><%= new Date(log.at).toLocaleString("vi-VN") %></div>
+            <div class="flex flex-wrap items-center gap-2 mb-0.5">
+              <span class="wa-timeline__title m-0"><%= log.title %></span>
+              <span class="<%= log.visibleToCustomer ? 'wa-badge wa-badge--public' : 'wa-badge wa-badge--private' %>">
+                <%= log.visibleToCustomer ? 'Khách thấy' : 'Nội bộ' %>
+              </span>
+            </div>
+            <% if (log.detail) { %><p class="wa-timeline__detail"><%= log.detail %></p><% } %>
+          </li>
+          <% }); %>
+        </ul>
+        <% } %>
+
+        <form id="logForm" class="mt-5 pt-5 border-t border-gray-200 space-y-3">
+          <p class="text-xs font-semibold text-gray-700 m-0">Thêm dòng log</p>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Tiêu đề</label>
+            <input type="text" name="title" placeholder="VD: Đổi tem, kiểm tra tại cửa hàng" class="wa-input" required />
+          </div>
+          <div>
+            <label class="block text-xs font-medium text-gray-600 mb-1">Chi tiết</label>
+            <textarea name="detail" rows="2" class="wa-input" placeholder="Tùy chọn"></textarea>
+          </div>
+          <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+            <input type="checkbox" name="visibleToCustomer" checked class="rounded border-gray-300" />
+            Hiển thị trên trang tra cứu của khách
+          </label>
+          <button type="submit" class="wa-btn wa-btn--primary text-sm">Thêm log</button>
+        </form>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
+<% if (device) { %>
+<script>
+document.getElementById("logForm").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = {
+    title: fd.get("title"),
+    detail: fd.get("detail") || "",
+    visibleToCustomer: fd.get("visibleToCustomer") === "on",
+  };
+  const res = await fetch("/admin/warranty/devices/<%= device._id %>/device-log", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (j.success) location.reload();
+  else alert(j.mess || "Lỗi");
+});
+</script>
+<% } %>

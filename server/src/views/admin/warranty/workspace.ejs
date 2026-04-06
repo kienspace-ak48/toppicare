@@ -1,0 +1,830 @@
+<div class="max-w-7xl mx-auto px-4 sm:px-6 py-6">
+  <div class="flex flex-wrap items-start justify-between gap-4 mb-8">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900 tracking-tight">Quản lý thiết bị &amp; bảo hành</h1>
+      <p class="text-sm text-gray-500 mt-1 max-w-2xl">
+        Danh sách máy, <strong class="text-gray-700">hạn bảo hành</strong>, trạng thái &amp; log. Đăng ký qua nút bên phải. Loại sản phẩm tại
+        <a href="/admin/warranty/product-types" class="text-teal-700 font-medium hover:underline">trang loại SP</a>.
+      </p>
+      <div class="mt-4 max-w-2xl rounded-xl border border-gray-200 bg-white px-4 py-3 shadow-sm">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+          <div class="min-w-0">
+            <p class="text-sm font-semibold text-gray-900 m-0">Kích hoạt bảo hành khi đăng ký máy</p>
+            <p class="text-xs text-gray-500 m-0 mt-1">
+              <strong class="text-gray-700">Bật:</strong> tự lấy <em>ngày bán</em> làm ngày bắt đầu BH, hạn = bắt đầu + số tháng của <em>loại SP</em>.
+              <strong class="text-gray-700">Tắt:</strong> mỗi lần đăng ký chọn thẳng <em>khoảng BH</em> (ngày bắt đầu → ngày kết thúc), không lấy hạn theo loại SP.
+            </p>
+          </div>
+          <label class="inline-flex shrink-0 items-center gap-2 cursor-pointer select-none">
+            <span class="text-sm text-gray-700 whitespace-nowrap">Tự động theo ngày bán</span>
+            <input type="checkbox" id="settingAutoActivateWarranty" class="h-4 w-4 rounded border-gray-300 text-teal-600 focus:ring-teal-500" />
+          </label>
+        </div>
+        <p id="warrantySettingsSaveMsg" class="text-xs text-teal-700 m-0 mt-2 hidden" role="status"></p>
+      </div>
+    </div>
+    <div class="flex flex-wrap items-center gap-2 shrink-0">
+      <button
+        type="button"
+        id="openDevAddModal"
+        class="inline-flex items-center gap-2 rounded-lg bg-teal-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2"
+      >
+        <i class="fa-solid fa-plus" aria-hidden="true"></i> Đăng ký thiết bị
+      </button>
+      <a
+        href="/admin/warranty/product-types"
+        class="inline-flex items-center gap-2 rounded-lg border border-teal-200 bg-teal-50 px-4 py-2 text-sm font-medium text-teal-800 hover:bg-teal-100"
+      >
+        <i class="fa-solid fa-tags"></i> Loại sản phẩm
+      </a>
+    </div>
+  </div>
+
+  <!-- Modal: đăng ký thiết bị -->
+  <div id="devAddModal" class="fixed inset-0 z-[100] hidden" aria-hidden="true" role="presentation">
+    <div
+      id="devAddModalBackdrop"
+      class="absolute inset-0 bg-gray-900/50 backdrop-blur-[1px]"
+      aria-hidden="true"
+    ></div>
+    <div class="absolute inset-0 flex items-center justify-center p-4 pointer-events-none">
+      <div
+        class="pointer-events-auto w-full max-w-2xl max-h-[min(90vh,720px)] flex flex-col rounded-xl border border-gray-200 bg-white shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="devAddModalTitle"
+      >
+        <div class="flex shrink-0 items-center justify-between gap-3 border-b border-gray-100 px-5 py-4">
+          <h2 id="devAddModalTitle" class="text-lg font-bold text-gray-900 m-0">Đăng ký thiết bị (bán hàng)</h2>
+          <button
+            type="button"
+            id="closeDevAddModal"
+            class="rounded-lg p-2 text-gray-500 hover:bg-gray-100 hover:text-gray-800 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            aria-label="Đóng"
+          >
+            <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div class="overflow-y-auto px-5 py-4">
+          <p class="text-sm text-gray-500 mb-4 m-0" id="devAddIntro">Sau khi lưu: ghi nhận máy và tính thời hạn BH theo loại SP (fetch, không reload).</p>
+          <form id="devAdd" class="space-y-0">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 gap-x-6">
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Mã máy *</label>
+                <input name="serialNumber" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" required />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Loại SP *</label>
+                <select name="productType" id="selProductType" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none bg-white" required>
+                  <option value="">— Đang tải —</option>
+                </select>
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Tên khách *</label>
+                <input name="customerName" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" required />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">SĐT tra cứu *</label>
+                <input name="phone" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" placeholder="09xx / +84" required />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Email</label>
+                <input name="email" type="email" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" />
+              </div>
+              <div>
+                <label class="block text-xs font-medium text-gray-600 mb-1">Ngày bán</label>
+                <input name="soldAt" type="datetime-local" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" />
+              </div>
+              <div id="wrapManualWarrantyRange" class="md:col-span-2 hidden grid grid-cols-1 md:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Bắt đầu bảo hành *</label>
+                  <input
+                    name="warrantyActivatedAt"
+                    id="inpWarrantyActivatedAt"
+                    type="datetime-local"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-gray-600 mb-1">Kết thúc bảo hành *</label>
+                  <input
+                    name="warrantyEndAt"
+                    id="inpWarrantyEndAt"
+                    type="datetime-local"
+                    class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"
+                  />
+                </div>
+                <p class="text-xs text-gray-500 m-0 md:col-span-2">Loại SP vẫn dùng để phân loại máy; thời hạn BH do hai mốc trên quyết định.</p>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-xs font-medium text-gray-600 mb-1">Ghi chú nội bộ</label>
+                <textarea name="notes" rows="2" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"></textarea>
+              </div>
+              <div class="md:col-span-2">
+                <label class="block text-xs font-medium text-gray-600 mb-1">Nội dung log &quot;Đăng ký bán&quot; (hiển thị KH)</label>
+                <textarea name="saleLogDetail" rows="2" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" placeholder="Để trống = tự điền ngày"></textarea>
+              </div>
+              <div class="md:col-span-2 flex flex-wrap gap-2 pt-1">
+                <button type="submit" class="rounded-lg bg-teal-600 px-5 py-2.5 text-sm font-semibold text-white hover:bg-teal-700">Lưu đăng ký máy</button>
+                <button type="button" id="cancelDevAddModal" class="rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-gray-50">Hủy</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: chi tiết thiết bị (Bootstrap-style: nền mờ + hộp giữa màn hình) -->
+  <div id="deviceDetailModal" class="fixed inset-0 z-[105] hidden" aria-hidden="true" role="presentation">
+    <div id="deviceDetailModalBackdrop" class="absolute inset-0 bg-black/50 backdrop-blur-[2px]" aria-hidden="true"></div>
+    <div class="absolute inset-0 flex items-center justify-center p-3 sm:p-4 pointer-events-none">
+      <div
+        class="pointer-events-auto flex w-full max-w-3xl max-h-[min(92vh,880px)] flex-col rounded-xl border border-gray-200 bg-white shadow-2xl"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="deviceDetailModalTitle"
+      >
+        <div class="flex shrink-0 items-center justify-between gap-3 border-b border-gray-100 px-4 py-3 rounded-t-xl bg-gray-50/80">
+          <h2 id="deviceDetailModalTitle" class="text-base font-bold text-gray-900 m-0 pr-2">Chi tiết thiết bị</h2>
+          <button
+            type="button"
+            id="closeDeviceDetailModal"
+            class="rounded-lg p-2 text-gray-500 hover:bg-gray-200 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            aria-label="Đóng"
+          >
+            <i class="fa-solid fa-xmark text-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div id="detailInner" class="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4"></div>
+      </div>
+    </div>
+  </div>
+
+  <section class="mb-8">
+    <h2 class="text-base font-bold text-gray-900 border-b border-teal-100 pb-2 mb-3">Danh sách thiết bị</h2>
+    <p class="text-sm text-gray-500 mb-3">Tìm theo mã máy, tên khách hoặc SĐT — tối đa 25 bản ghi/trang (phù hợp khi có nhiều nghìn máy).</p>
+    <div class="flex flex-wrap items-center gap-2 mb-3">
+      <label for="devSearch" class="sr-only">Tìm thiết bị</label>
+      <input
+        type="search"
+        id="devSearch"
+        autocomplete="off"
+        placeholder="Mã máy, tên khách, SĐT…"
+        class="flex-1 min-w-[200px] max-w-md rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none"
+      />
+      <button type="button" id="devSearchBtn" class="rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">Tìm</button>
+      <button type="button" id="devSearchClear" class="rounded-lg border border-gray-300 bg-white px-3 py-2 text-sm text-gray-700 hover:bg-gray-50">Xóa lọc</button>
+    </div>
+    <p id="devListMeta" class="text-xs text-gray-500 mb-2 min-h-[1.25rem]"></p>
+    <div class="flex flex-wrap items-center gap-2 mb-3" id="devPager" hidden>
+      <button type="button" id="devPagePrev" class="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-50 disabled:opacity-40 disabled:pointer-events-none">Trước</button>
+      <span id="devPageLabel" class="text-sm text-gray-600 px-1"></span>
+      <button type="button" id="devPageNext" class="rounded-lg border border-gray-300 bg-white px-3 py-1.5 text-sm text-gray-800 hover:bg-gray-50 disabled:opacity-40 disabled:pointer-events-none">Sau</button>
+    </div>
+    <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+      <table class="min-w-full text-sm text-left">
+        <thead class="bg-gray-50 text-gray-700 font-semibold border-b border-gray-200">
+          <tr>
+            <th class="px-4 py-3">Mã máy</th>
+            <th class="px-4 py-3">Loại</th>
+            <th class="px-4 py-3">Khách</th>
+            <th class="px-4 py-3">SĐT</th>
+            <th class="px-4 py-3">Ngày bán</th>
+            <th class="px-4 py-3 whitespace-nowrap">Hạn BH</th>
+            <th class="px-4 py-3">Trạng thái BH</th>
+          </tr>
+        </thead>
+        <tbody id="devRows" class="divide-y divide-gray-100"></tbody>
+      </table>
+    </div>
+  </section>
+</div>
+
+<script>
+(function () {
+  const WARRANTY_STATUS_OPTIONS = <%- JSON.stringify(typeof warrantyStatusOptions !== "undefined" ? warrantyStatusOptions : []) %>;
+  let WARRANTY_SETTINGS = <%- JSON.stringify(typeof warrantySettings !== "undefined" ? warrantySettings : { autoActivateWarranty: true }) %>;
+
+  let currentDetailDeviceId = null;
+
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  function syncAutoActivateUI() {
+    const chk = document.getElementById("settingAutoActivateWarranty");
+    const wrap = document.getElementById("wrapManualWarrantyRange");
+    const inpStart = document.getElementById("inpWarrantyActivatedAt");
+    const inpEnd = document.getElementById("inpWarrantyEndAt");
+    const intro = document.getElementById("devAddIntro");
+    if (chk) chk.checked = WARRANTY_SETTINGS.autoActivateWarranty !== false;
+    if (wrap && inpStart && inpEnd) {
+      if (WARRANTY_SETTINGS.autoActivateWarranty !== false) {
+        wrap.classList.add("hidden");
+        inpStart.removeAttribute("required");
+        inpEnd.removeAttribute("required");
+      } else {
+        wrap.classList.remove("hidden");
+        inpStart.setAttribute("required", "required");
+        inpEnd.setAttribute("required", "required");
+      }
+    }
+    if (intro) {
+      intro.textContent =
+        WARRANTY_SETTINGS.autoActivateWarranty !== false
+          ? "Sau khi lưu: ghi nhận máy — ngày bán = ngày bắt đầu BH; hạn = bắt đầu + số tháng loại SP (fetch, không reload)."
+          : "Sau khi lưu: ghi nhận máy — chọn bắt đầu và kết thúc BH (fetch, không reload).";
+    }
+  }
+
+  const settingAutoChk = document.getElementById("settingAutoActivateWarranty");
+  if (settingAutoChk) {
+    settingAutoChk.addEventListener("change", async function () {
+      const autoActivateWarranty = this.checked;
+      const r = await fetch("/admin/warranty/settings", {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ autoActivateWarranty }),
+      });
+      const j = await r.json();
+      if (j.success) {
+        WARRANTY_SETTINGS = j.warrantySettings || { autoActivateWarranty };
+        syncAutoActivateUI();
+        const msg = document.getElementById("warrantySettingsSaveMsg");
+        if (msg) {
+          msg.textContent = "Đã lưu cài đặt.";
+          msg.classList.remove("hidden");
+          setTimeout(function () {
+            msg.classList.add("hidden");
+          }, 2800);
+        }
+      } else {
+        this.checked = !autoActivateWarranty;
+        alert(j.mess || "Lỗi lưu cài đặt");
+      }
+    });
+  }
+  syncAutoActivateUI();
+
+  /** Chỉ cập nhật &lt;select&gt; loại SP (fetch, không reload trang). */
+  async function refreshPTSelect() {
+    const r = await fetch("/admin/warranty/product-types/list-all");
+    const j = await r.json();
+    const sel = document.getElementById("selProductType");
+    if (!j.success || !sel) return;
+    let opts = '<option value="">— Chọn —</option>';
+    j.data.forEach((x) => {
+      opts += `<option value="${x._id}">${esc(x.code)} — ${esc(x.name)}</option>`;
+    });
+    sel.innerHTML = opts;
+  }
+
+  const devAddModalEl = document.getElementById("devAddModal");
+  const openDevAddModalBtn = document.getElementById("openDevAddModal");
+
+  function openDevAddModal() {
+    if (!devAddModalEl) return;
+    devAddModalEl.classList.remove("hidden");
+    devAddModalEl.setAttribute("aria-hidden", "false");
+    refreshBodyScrollLock();
+    syncAutoActivateUI();
+    refreshPTSelect();
+    const first = document.querySelector('#devAdd input[name="serialNumber"]');
+    if (first) requestAnimationFrame(function () {
+      first.focus();
+    });
+  }
+
+  function closeDevAddModal() {
+    if (!devAddModalEl) return;
+    devAddModalEl.classList.add("hidden");
+    devAddModalEl.setAttribute("aria-hidden", "true");
+    refreshBodyScrollLock();
+    if (openDevAddModalBtn) openDevAddModalBtn.focus();
+  }
+
+  let devListPage = 1;
+  let devListQ = "";
+  let devSearchTimer = null;
+
+  function buildDevListUrl() {
+    const p = new URLSearchParams();
+    p.set("page", String(devListPage));
+    p.set("limit", "25");
+    if (devListQ) p.set("q", devListQ);
+    return "/admin/warranty/devices/list-all?" + p.toString();
+  }
+
+  async function refreshDev(page) {
+    if (typeof page === "number") devListPage = page;
+    const r = await fetch(buildDevListUrl());
+    const j = await r.json();
+    if (!j.success) return;
+    const tb = document.getElementById("devRows");
+    const meta = document.getElementById("devListMeta");
+    const pager = document.getElementById("devPager");
+    const prev = document.getElementById("devPagePrev");
+    const next = document.getElementById("devPageNext");
+    const label = document.getElementById("devPageLabel");
+    tb.innerHTML = "";
+    const total = j.total != null ? j.total : (j.data && j.data.length) || 0;
+    const pageNum = j.page || 1;
+    const limit = j.limit || 25;
+    const totalPages = j.totalPages || 1;
+    devListPage = pageNum;
+    if (meta) {
+      if (total === 0) {
+        meta.textContent = devListQ ? "Không có thiết bị khớp từ khóa." : "Chưa có thiết bị.";
+      } else {
+        const from = (pageNum - 1) * limit + 1;
+        const to = Math.min(pageNum * limit, total);
+        meta.textContent = "Hiển thị " + from + "–" + to + " / " + total + " thiết bị" + (devListQ ? " (lọc: «" + devListQ + "»)" : "");
+      }
+    }
+    if (pager && prev && next && label) {
+      pager.hidden = totalPages <= 1;
+      label.textContent = "Trang " + pageNum + " / " + totalPages;
+      prev.disabled = pageNum <= 1;
+      next.disabled = pageNum >= totalPages;
+    }
+    (j.data || []).forEach((d) => {
+      const pt = d.productType && d.productType.name ? d.productType.name : "";
+      const sold = d.soldAt ? new Date(d.soldAt).toLocaleDateString("vi-VN") : "";
+      const wEnd = d.warrantyEndAt ? new Date(d.warrantyEndAt).toLocaleDateString("vi-VN") : "—";
+      const wLab = esc(d.warrantyStatusLabel || d.warrantyStatus || "—");
+      tb.innerHTML += `<tr class="cursor-pointer hover:bg-teal-50/60" data-dev-id="${d._id}" title="Mở chi tiết (popup)">
+        <td class="px-4 py-3 font-mono font-semibold text-teal-800">${esc(d.serialNumber)}</td>
+        <td class="px-4 py-3">${esc(pt)}</td>
+        <td class="px-4 py-3">${esc(d.customerName)}</td>
+        <td class="px-4 py-3 text-gray-600">${esc(d.phone)}</td>
+        <td class="px-4 py-3 text-gray-600">${sold}</td>
+        <td class="px-4 py-3 text-gray-600 text-xs whitespace-nowrap">${esc(wEnd)}</td>
+        <td class="px-4 py-3"><span class="text-xs font-medium text-gray-800">${wLab}</span></td>
+      </tr>`;
+    });
+    tb.querySelectorAll("tr[data-dev-id]").forEach((row) => {
+      row.addEventListener("click", () => loadDetail(row.getAttribute("data-dev-id")));
+    });
+  }
+
+  function scheduleDevSearch() {
+    if (devSearchTimer) clearTimeout(devSearchTimer);
+    devSearchTimer = setTimeout(function () {
+      devSearchTimer = null;
+      const el = document.getElementById("devSearch");
+      devListQ = el && el.value ? el.value.trim() : "";
+      devListPage = 1;
+      refreshDev();
+    }, 400);
+  }
+
+  function refreshBodyScrollLock() {
+    const ids = ["deviceDetailModal", "devAddModal"];
+    const anyOpen = ids.some(function (id) {
+      const el = document.getElementById(id);
+      return el && !el.classList.contains("hidden");
+    });
+    document.body.style.overflow = anyOpen ? "hidden" : "";
+  }
+
+  const deviceDetailModalEl = document.getElementById("deviceDetailModal");
+
+  function openDeviceDetailModal() {
+    if (!deviceDetailModalEl) return;
+    deviceDetailModalEl.classList.remove("hidden");
+    deviceDetailModalEl.setAttribute("aria-hidden", "false");
+    refreshBodyScrollLock();
+  }
+
+  function closeDeviceDetailModal() {
+    if (!deviceDetailModalEl) return;
+    deviceDetailModalEl.classList.add("hidden");
+    deviceDetailModalEl.setAttribute("aria-hidden", "true");
+    refreshBodyScrollLock();
+  }
+
+  /** opts.editLogId: mở form sửa cho đúng một dòng log (tránh nhiều ô nhập cùng lúc). */
+  async function loadDetail(id, opts) {
+    opts = opts || {};
+    currentDetailDeviceId = id;
+    let j;
+    try {
+      const r = await fetch("/admin/warranty/devices/json/" + id);
+      j = await r.json();
+    } catch (err) {
+      alert("Không tải được chi tiết. Kiểm tra kết nối và thử lại.");
+      return false;
+    }
+    if (!j.success) {
+      alert(j.mess || "Lỗi tải");
+      return false;
+    }
+    const d = j.device;
+    const pt = d.productType && d.productType.name ? d.productType.code + " — " + d.productType.name : "";
+    const soldAt = d.soldAt ? new Date(d.soldAt).toISOString().slice(0, 16) : "";
+
+    const logsSorted = (d.deviceLog || [])
+      .slice()
+      .sort((a, b) => new Date(b.at) - new Date(a.at));
+    const editLogId = opts.editLogId ? String(opts.editLogId) : null;
+
+    let logsHtml = "";
+    if (logsSorted.length === 0) {
+      logsHtml = '<p class="text-sm text-gray-500 m-0 py-2">Chưa có dòng log nào.</p>';
+    } else {
+      logsHtml += '<div class="relative ml-1 border-l-2 border-teal-100 pl-5 space-y-0">';
+      logsSorted.forEach((log) => {
+        const lid = String(log._id);
+        const t = new Date(log.at).toLocaleString("vi-VN");
+        if (editLogId === lid) {
+          logsHtml += `<div class="relative pb-6 last:pb-0 log-edit-wrap" data-log-id="${lid}">
+            <span class="absolute -left-[25px] top-2 h-2.5 w-2.5 rounded-full bg-amber-500 ring-4 ring-white"></span>
+            <div class="rounded-xl border-2 border-amber-200 bg-amber-50/40 p-4 shadow-sm">
+              <p class="text-xs font-semibold text-amber-900 uppercase tracking-wide mb-3">Sửa dòng log</p>
+              <div class="space-y-3 max-w-lg">
+                <div><span class="text-xs text-gray-500">Thời điểm ghi (cố định)</span><p class="text-sm text-gray-700 m-0">${esc(t)}</p></div>
+                <div><label class="block text-xs font-medium text-gray-600 mb-1">Tiêu đề</label>
+                  <input type="text" class="log-title-edit w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(log.title)}" /></div>
+                <div><label class="block text-xs font-medium text-gray-600 mb-1">Chi tiết</label>
+                  <textarea class="log-detail-edit w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" rows="3">${esc(log.detail)}</textarea></div>
+                <label class="flex items-center gap-2 text-sm text-gray-700"><input type="checkbox" class="log-vis-edit rounded border-gray-300" ${log.visibleToCustomer ? "checked" : ""}/> Hiển thị trên trang tra cứu của khách</label>
+                <div class="flex flex-wrap gap-2 pt-1">
+                  <button type="button" class="log-save-btn rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">Lưu thay đổi</button>
+                  <button type="button" class="log-cancel-btn rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">Hủy</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        } else {
+          const pub = log.visibleToCustomer;
+          const detailShort = (log.detail || "").trim();
+          logsHtml += `<div class="relative pb-6 last:pb-2 log-view" data-log-id="${lid}">
+            <span class="absolute -left-[25px] top-2 h-2.5 w-2.5 rounded-full bg-teal-500 ring-4 ring-white"></span>
+            <div class="flex flex-wrap items-start justify-between gap-3">
+              <div class="min-w-0 flex-1">
+                <p class="text-xs text-gray-400 mb-0.5">${esc(t)}</p>
+                <p class="font-semibold text-gray-900 leading-snug">${esc(log.title)}</p>
+                ${detailShort ? `<p class="text-sm text-gray-600 mt-1 m-0 line-clamp-3">${esc(detailShort)}</p>` : ""}
+              </div>
+              <div class="flex shrink-0 flex-col items-end gap-1 sm:flex-row sm:items-center">
+                <span class="text-xs font-medium px-2 py-0.5 rounded-full ${pub ? "bg-emerald-100 text-emerald-800" : "bg-gray-100 text-gray-600"}">${pub ? "Khách thấy" : "Nội bộ"}</span>
+                <div class="flex gap-2">
+                  <button type="button" class="log-edit-btn text-teal-700 text-sm font-medium hover:underline">Sửa</button>
+                  <button type="button" class="log-del-btn text-red-600 text-sm font-medium hover:underline">Xóa</button>
+                </div>
+              </div>
+            </div>
+          </div>`;
+        }
+      });
+      logsHtml += "</div>";
+    }
+
+    const ptDefaultMo =
+      d.productType && d.productType.defaultWarrantyMonths != null ? String(d.productType.defaultWarrantyMonths) : "12";
+    const wMoInput = d.warrantyMonths != null ? String(d.warrantyMonths) : ptDefaultMo;
+
+    const wEndStr = d.warrantyEndAt ? new Date(d.warrantyEndAt).toLocaleDateString("vi-VN") : "—";
+    const soldStr = d.soldAt ? new Date(d.soldAt).toLocaleDateString("vi-VN") : "—";
+    const wStartForBh = d.warrantyActivatedAt || d.soldAt;
+    const wStartStr = wStartForBh ? new Date(wStartForBh).toLocaleDateString("vi-VN") : "—";
+    const wActIso = wStartForBh ? new Date(wStartForBh).toISOString().slice(0, 16) : "";
+    const wEndIso = d.warrantyEndAt ? new Date(d.warrantyEndAt).toISOString().slice(0, 16) : "";
+    const wMonths = d.warrantyMonths != null ? String(d.warrantyMonths) : "—";
+    const wEff = d.warrantyStatusEffective || d.warrantyStatus || "active";
+    const wDisp = esc(d.warrantyStatusLabel || wEff);
+    const wsOpts = WARRANTY_STATUS_OPTIONS.map(function (o) {
+      const sel = (d.warrantyStatus || "active") === o.value ? " selected" : "";
+      return `<option value="${esc(o.value)}"${sel}>${esc(o.label)}</option>`;
+    }).join("");
+
+    const titleEl = document.getElementById("deviceDetailModalTitle");
+    if (titleEl) titleEl.textContent = "Chi tiết — " + (d.serialNumber || "thiết bị");
+
+    document.getElementById("detailInner").innerHTML = `
+      <p class="text-sm text-gray-600 m-0 mb-4">Mã máy: <strong class="font-mono text-teal-800">${esc(d.serialNumber)}</strong> · ${esc(pt)}</p>
+      <div class="rounded-xl border border-teal-100 bg-teal-50/50 p-5 shadow-sm mb-4">
+        <p class="text-xs font-bold uppercase tracking-wide text-teal-900 mb-2">Bảo hành theo máy</p>
+        <p class="text-sm text-gray-800 m-0 mb-1">Ngày bán: <strong>${esc(soldStr)}</strong> · Bắt đầu BH: <strong>${esc(wStartStr)}</strong> · Hạn: <strong>${esc(wEndStr)}</strong> (${esc(wMonths)} tháng)</p>
+        <p class="text-sm text-gray-700 m-0 mb-3">Trạng thái hiện tại: <span class="font-semibold text-teal-900">${wDisp}</span>${wEff === "expired" ? ' <span class="text-xs text-gray-500">(tự hết hạn nếu quá ngày và đang «Đang hiệu lực»)</span>' : ""}</p>
+        <div class="flex flex-wrap gap-3 items-end max-w-xl">
+          <div class="flex-1 min-w-[200px]">
+            <label class="block text-xs font-medium text-gray-600 mb-1" for="warrantyStatusSel">Cập nhật trạng thái</label>
+            <select id="warrantyStatusSel" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white">${wsOpts}</select>
+          </div>
+          <div class="flex flex-col items-stretch gap-1">
+            <button type="button" id="warrantyStatusSave" class="inline-flex items-center justify-center gap-2 rounded-lg bg-gray-900 px-4 py-2 text-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-55 disabled:cursor-not-allowed min-w-[158px]">
+              <svg id="warrantyStatusSaveSpinner" class="hidden h-4 w-4 shrink-0 animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <span id="warrantyStatusSaveLabel">Lưu trạng thái</span>
+            </button>
+            <p id="warrantyStatusSaveHint" class="text-xs text-gray-500 m-0 min-h-[1.1rem]" role="status" aria-live="polite"></p>
+          </div>
+        </div>
+      </div>
+      <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm mb-4">
+        <p class="text-xs font-bold uppercase tracking-wide text-gray-500 mb-3">Sửa thiết bị</p>
+        <form id="formDevEdit" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Mã máy</label><input name="serialNumber" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono" value="${esc(d.serialNumber)}" required /></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Loại SP</label><select name="productType" id="editPtSel" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm bg-white" required></select></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Khách</label><input name="customerName" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(d.customerName)}" required /></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">SĐT</label><input name="phone" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(d.phone)}" required /></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Email</label><input name="email" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(d.email || "")}" /></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Ngày bán</label><input name="soldAt" type="datetime-local" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${soldAt}" /></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Bắt đầu BH</label><input name="warrantyActivatedAt" type="datetime-local" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(wActIso)}" /></div>
+          <div><label class="block text-xs font-medium text-gray-600 mb-1">Kết thúc BH</label><input name="warrantyEndAt" type="datetime-local" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(wEndIso)}" /></div>
+          <div class="md:col-span-2">
+            <p class="text-xs text-gray-500 m-0 mb-2">Có thể chỉnh khoảng bắt đầu — kết thúc trực tiếp (số tháng ghi nhận sẽ khớp khoảng). Để trống « Kết thúc BH » thì hạn được tính lại theo số tháng bên dưới.</p>
+          </div>
+          <div class="md:col-span-2">
+            <label class="block text-xs font-medium text-gray-600 mb-1">Thời hạn bảo hành (tháng)</label>
+            <input name="warrantyMonths" type="number" min="1" max="120" step="1" class="w-full max-w-[200px] rounded-lg border border-gray-300 px-3 py-2 text-sm" value="${esc(wMoInput)}" />
+            <p class="text-xs text-gray-500 m-0 mt-1">Áp dụng khi không dùng ngày kết thúc ở trên (hạn = bắt đầu + tháng). Mặc định loại SP: ${esc(ptDefaultMo)} tháng.</p>
+          </div>
+          <div class="md:col-span-2"><label class="block text-xs font-medium text-gray-600 mb-1">Ghi chú nội bộ</label><textarea name="notes" rows="2" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm">${esc(d.notes || "")}</textarea></div>
+          <div class="md:col-span-2 flex items-center gap-2"><input type="checkbox" name="isActive" id="editActive" class="rounded border-gray-300" ${d.isActive !== false ? "checked" : ""} /> <label for="editActive" class="text-sm m-0">Cho phép tra cứu</label></div>
+          <div class="md:col-span-2"><button type="submit" class="rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">Cập nhật thiết bị</button></div>
+        </form>
+        <div class="mt-6 border-t border-red-100 pt-4">
+          <button type="button" id="btnDeleteDevice" class="rounded-lg border border-red-300 bg-red-50 px-4 py-2 text-sm font-semibold text-red-900 hover:bg-red-100">Xóa thiết bị khỏi hệ thống</button>
+          <p class="text-xs text-red-700/90 m-0 mt-2">Xóa vĩnh viễn khỏi cơ sở dữ liệu — không thể hoàn tác.</p>
+        </div>
+      </div>
+      <div class="rounded-xl border border-emerald-100 bg-gradient-to-b from-emerald-50/80 to-white p-5 shadow-sm mb-4">
+        <p class="text-xs font-bold uppercase tracking-wide text-emerald-900 mb-2">Lịch sử — khách hàng cũng thấy (tra cứu web)</p>
+        <p class="text-sm text-gray-700 m-0 mb-4 leading-relaxed">
+          Trên trang tra cứu bảo hành, khách chỉ đọc được các dòng có nhãn <span class="inline-flex items-center rounded-full bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-900">Khách thấy</span>.
+          Danh sách bên dưới là toàn bộ log; mới nhất ở trên. Dòng <span class="font-medium text-gray-600">Nội bộ</span> chỉ admin thấy.
+        </p>
+        <p class="text-xs font-bold uppercase tracking-wide text-gray-600 mb-3 border-b border-emerald-100/80 pb-2">Lịch sử &amp; ghi nhận</p>
+        ${logsHtml}
+        <div class="mt-6 pt-5 border-t border-gray-100">
+          <p class="text-xs font-semibold text-gray-800 mb-2">Thêm sự kiện mới</p>
+          <form id="formNewLog" class="grid grid-cols-1 md:grid-cols-12 gap-2 items-end max-w-4xl">
+            <div class="md:col-span-4">
+              <label class="block text-xs text-gray-500 mb-0.5">Tiêu đề ngắn *</label>
+              <input type="text" name="title" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm" placeholder="VD: Gọi xác nhận bảo hành" required />
+            </div>
+            <div class="md:col-span-5">
+              <label class="block text-xs text-gray-500 mb-0.5">Chi tiết (tuỳ chọn)</label>
+              <textarea name="detail" rows="2" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm resize-y min-h-[2.5rem]" placeholder="Mô tả ngắn"></textarea>
+            </div>
+            <div class="md:col-span-2 flex items-center pb-2">
+              <label class="flex items-center gap-2 text-sm text-gray-700 whitespace-nowrap"><input type="checkbox" name="visibleToCustomer" checked class="rounded border-gray-300" /> Khách thấy</label>
+            </div>
+            <div class="md:col-span-1">
+              <button type="submit" class="w-full rounded-lg bg-gray-800 px-3 py-2 text-sm font-semibold text-white hover:bg-gray-900">Thêm</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    `;
+
+    const ptId = d.productType && d.productType._id ? d.productType._id : d.productType;
+    fetch("/admin/warranty/product-types/list-all")
+      .then((r) => r.json())
+      .then((pj) => {
+        const sel = document.getElementById("editPtSel");
+        if (!sel || !pj.success) return;
+        sel.innerHTML = pj.data
+          .map(
+            (x) =>
+              `<option value="${x._id}" ${String(x._id) === String(ptId) ? "selected" : ""}>${esc(x.code)} — ${esc(x.name)}</option>`
+          )
+          .join("");
+      });
+
+    document.getElementById("warrantyStatusSave").addEventListener("click", async function () {
+      const sel = document.getElementById("warrantyStatusSel");
+      const btn = document.getElementById("warrantyStatusSave");
+      const spin = document.getElementById("warrantyStatusSaveSpinner");
+      const lbl = document.getElementById("warrantyStatusSaveLabel");
+      const hint = document.getElementById("warrantyStatusSaveHint");
+      if (!sel || !btn) return;
+
+      function setSaving(on) {
+        btn.disabled = !!on;
+        sel.disabled = !!on;
+        if (spin) spin.classList.toggle("hidden", !on);
+        if (lbl) lbl.textContent = on ? "Đang lưu…" : "Lưu trạng thái";
+        if (hint) {
+          hint.textContent = on ? "Đang gửi yêu cầu, vui lòng chờ…" : "";
+          hint.classList.toggle("text-teal-700", !!on);
+          hint.classList.toggle("text-gray-500", !on);
+        }
+      }
+
+      setSaving(true);
+      try {
+        const res = await fetch("/admin/warranty/devices/" + id + "/warranty-status", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ status: sel.value }),
+        });
+        const jj = await res.json();
+        if (jj.success) {
+          refreshDev();
+          const ok = await loadDetail(id);
+          if (ok === false) setSaving(false);
+        } else {
+          alert(jj.mess || "Lỗi");
+          setSaving(false);
+        }
+      } catch (e) {
+        alert("Không kết nối được máy chủ. Vui lòng thử lại.");
+        setSaving(false);
+      }
+    });
+
+    const btnDel = document.getElementById("btnDeleteDevice");
+    if (btnDel) {
+      btnDel.addEventListener("click", async function () {
+        if (!confirm("Xóa vĩnh viễn thiết bị này khỏi cơ sở dữ liệu? Không thể hoàn tác.")) return;
+        const res = await fetch("/admin/warranty/devices/delete/" + id, { method: "DELETE" });
+        const jj = await res.json();
+        if (jj.success) {
+          closeDeviceDetailModal();
+          currentDetailDeviceId = null;
+          refreshDev();
+        } else alert(jj.mess || "Lỗi");
+      });
+    }
+
+    document.getElementById("formDevEdit").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = Object.fromEntries(fd.entries());
+      delete body._id;
+      body.isActive = document.getElementById("editActive").checked;
+      if (body.warrantyMonths != null && body.warrantyMonths !== "") {
+        body.warrantyMonths = parseInt(body.warrantyMonths, 10);
+      }
+      if (body.warrantyActivatedAt === "") delete body.warrantyActivatedAt;
+      if (body.warrantyEndAt === "") delete body.warrantyEndAt;
+      const res = await fetch("/admin/warranty/devices/update/" + id, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const jj = await res.json();
+      if (jj.success) {
+        refreshDev();
+        loadDetail(id);
+      } else alert(jj.mess || "Lỗi");
+    });
+
+    document.getElementById("formNewLog").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const fd = new FormData(e.target);
+      const body = {
+        title: fd.get("title"),
+        detail: fd.get("detail") || "",
+        visibleToCustomer: fd.get("visibleToCustomer") === "on",
+      };
+      const res = await fetch("/admin/warranty/devices/" + id + "/device-log", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      const jj = await res.json();
+      if (jj.success) {
+        e.target.reset();
+        loadDetail(id);
+      } else alert(jj.mess || "Lỗi");
+    });
+
+    const innerEl = document.getElementById("detailInner");
+    innerEl.querySelectorAll(".log-edit-btn").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const row = btn.closest(".log-view");
+        if (!row) return;
+        loadDetail(id, { editLogId: row.getAttribute("data-log-id") });
+      });
+    });
+    innerEl.querySelectorAll(".log-del-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Xóa dòng log này?")) return;
+        const row = btn.closest(".log-view");
+        const logId = row.getAttribute("data-log-id");
+        const res = await fetch("/admin/warranty/devices/" + id + "/device-log/" + logId, { method: "DELETE" });
+        const jj = await res.json();
+        if (jj.success) loadDetail(id);
+        else alert(jj.mess || "Lỗi");
+      });
+    });
+    innerEl.querySelectorAll(".log-save-btn").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        const wrap = btn.closest(".log-edit-wrap");
+        const logId = wrap.getAttribute("data-log-id");
+        const res = await fetch("/admin/warranty/devices/" + id + "/device-log/" + logId, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            title: wrap.querySelector(".log-title-edit").value,
+            detail: wrap.querySelector(".log-detail-edit").value,
+            visibleToCustomer: wrap.querySelector(".log-vis-edit").checked,
+          }),
+        });
+        const jj = await res.json();
+        if (jj.success) loadDetail(id);
+        else alert(jj.mess || "Lỗi");
+      });
+    });
+    innerEl.querySelectorAll(".log-cancel-btn").forEach((btn) => {
+      btn.addEventListener("click", () => loadDetail(id));
+    });
+
+    openDeviceDetailModal();
+    return true;
+  }
+
+  document.getElementById("devAdd").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const body = Object.fromEntries(fd.entries());
+    if (WARRANTY_SETTINGS.autoActivateWarranty !== false) {
+      delete body.warrantyActivatedAt;
+      delete body.warrantyEndAt;
+    }
+    const res = await fetch("/admin/warranty/devices/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const j = await res.json();
+    if (j.success) {
+      e.target.reset();
+      closeDevAddModal();
+      await refreshPTSelect();
+      const searchEl = document.getElementById("devSearch");
+      if (searchEl) searchEl.value = "";
+      devListQ = "";
+      await refreshDev(1);
+      loadDetail(j.id);
+    } else alert(j.mess || "Lỗi");
+  });
+
+  if (openDevAddModalBtn) openDevAddModalBtn.addEventListener("click", openDevAddModal);
+  const closeDevAddModalBtn = document.getElementById("closeDevAddModal");
+  const cancelDevAddModalBtn = document.getElementById("cancelDevAddModal");
+  const devAddBackdrop = document.getElementById("devAddModalBackdrop");
+  if (closeDevAddModalBtn) closeDevAddModalBtn.addEventListener("click", closeDevAddModal);
+  if (cancelDevAddModalBtn) cancelDevAddModalBtn.addEventListener("click", closeDevAddModal);
+  if (devAddBackdrop) devAddBackdrop.addEventListener("click", closeDevAddModal);
+
+  const closeDeviceDetailBtn = document.getElementById("closeDeviceDetailModal");
+  const deviceDetailBackdrop = document.getElementById("deviceDetailModalBackdrop");
+  if (closeDeviceDetailBtn) closeDeviceDetailBtn.addEventListener("click", closeDeviceDetailModal);
+  if (deviceDetailBackdrop) deviceDetailBackdrop.addEventListener("click", closeDeviceDetailModal);
+
+  document.addEventListener("keydown", function (ev) {
+    if (ev.key !== "Escape") return;
+    if (deviceDetailModalEl && !deviceDetailModalEl.classList.contains("hidden")) {
+      closeDeviceDetailModal();
+      return;
+    }
+    if (!devAddModalEl || devAddModalEl.classList.contains("hidden")) return;
+    closeDevAddModal();
+  });
+
+  document.getElementById("devSearchBtn").addEventListener("click", function () {
+    const el = document.getElementById("devSearch");
+    devListQ = el && el.value ? el.value.trim() : "";
+    devListPage = 1;
+    refreshDev();
+  });
+  document.getElementById("devSearchClear").addEventListener("click", function () {
+    const el = document.getElementById("devSearch");
+    if (el) el.value = "";
+    devListQ = "";
+    devListPage = 1;
+    refreshDev();
+  });
+  document.getElementById("devSearch").addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter") {
+      ev.preventDefault();
+      document.getElementById("devSearchBtn").click();
+    }
+  });
+  document.getElementById("devSearch").addEventListener("input", scheduleDevSearch);
+  document.getElementById("devPagePrev").addEventListener("click", function () {
+    if (devListPage > 1) refreshDev(devListPage - 1);
+  });
+  document.getElementById("devPageNext").addEventListener("click", function () {
+    refreshDev(devListPage + 1);
+  });
+
+  refreshPTSelect();
+  refreshDev(1);
+
+  const params = new URLSearchParams(window.location.search);
+  const pre = params.get("device");
+  if (pre) loadDetail(pre);
+})();
+</script>

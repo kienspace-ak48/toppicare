@@ -1,0 +1,62 @@
+<div class="warranty-admin">
+  <div class="wa-shell">
+    <div class="wa-toolbar">
+      <div>
+        <h1 class="wa-page-title">Thiết bị</h1>
+        <p class="wa-page-sub m-0">Danh sách máy đã đăng ký — vào chi tiết để xem <strong>hạn bảo hành</strong>, lịch sử &amp; log.</p>
+      </div>
+      <a href="/admin/warranty/devices/add" class="wa-btn wa-btn--primary">
+        <i class="fa-solid fa-plus text-xs"></i> Đăng ký bán
+      </a>
+    </div>
+    <div class="wa-table-wrap">
+      <table class="wa-table">
+        <thead>
+          <tr>
+            <th>Mã máy</th>
+            <th>Loại SP</th>
+            <th>Khách hàng</th>
+            <th>SĐT</th>
+            <th>Ngày bán</th>
+            <th class="text-center">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody id="tbl"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<script>
+fetch("/admin/warranty/devices/list-all")
+  .then((r) => r.json())
+  .then((res) => {
+    if (!res.success) return;
+    const tb = document.getElementById("tbl");
+    tb.innerHTML = "";
+    res.data.forEach((d) => {
+      const pt = d.productType && d.productType.name ? d.productType.name : "";
+      const sold = d.soldAt ? new Date(d.soldAt).toLocaleDateString("vi-VN") : "";
+      tb.innerHTML += `<tr>
+        <td class="wa-serial">${d.serialNumber}</td>
+        <td>${pt}</td>
+        <td>${d.customerName}</td>
+        <td class="text-gray-600">${d.phone}</td>
+        <td class="text-gray-600">${sold}</td>
+        <td class="text-center space-x-3 whitespace-nowrap">
+          <a href="/admin/warranty/devices/detail/${d._id}" title="Chi tiết & log" class="text-teal-700 hover:text-teal-900"><i class="fa-solid fa-clipboard-list"></i></a>
+          <a href="/admin/warranty/devices/edit/${d._id}" title="Sửa" class="text-gray-600 hover:text-teal-700"><i class="fa-solid fa-pen-to-square"></i></a>
+          <button type="button" onclick="del('${d._id}')" title="Xóa" class="text-gray-400 hover:text-red-600 bg-transparent border-0 cursor-pointer p-0"><i class="fa-solid fa-trash-can"></i></button>
+        </td>
+      </tr>`;
+    });
+  });
+function del(id) {
+  if (!confirm("Xóa thiết bị này? (Dữ liệu bảo hành và log sẽ bị xóa.)")) return;
+  fetch("/admin/warranty/devices/delete/" + id, { method: "DELETE" })
+    .then((r) => r.json())
+    .then((res) => {
+      if (res.success) location.reload();
+      else alert(res.mess || "Lỗi");
+    });
+}
+</script>

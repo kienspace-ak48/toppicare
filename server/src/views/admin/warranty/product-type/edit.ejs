@@ -1,0 +1,48 @@
+<div class="warranty-admin">
+  <div class="wa-shell max-w-xl">
+    <h1 class="wa-page-title">Sửa loại sản phẩm</h1>
+    <% if (!item) { %>
+    <p class="text-gray-600">Không tìm thấy dữ liệu.</p>
+    <% } else { %>
+    <form id="f" class="wa-card space-y-4">
+      <div class="wa-form-grid">
+        <label>Mã loại</label>
+        <input name="code" required value="<%= item.code %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Tên</label>
+        <input name="name" required value="<%= item.name %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Thứ tự</label>
+        <input name="sortOrder" type="number" value="<%= item.sortOrder %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Bảo hành (tháng)</label>
+        <input name="defaultWarrantyMonths" type="number" value="<%= item.defaultWarrantyMonths %>" class="wa-input" />
+      </div>
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button type="submit" class="wa-btn wa-btn--primary">Cập nhật</button>
+        <a href="/admin/warranty/product-types" class="wa-btn wa-btn--ghost">Quay lại</a>
+      </div>
+    </form>
+    <% } %>
+  </div>
+</div>
+<script>
+<% if (item) { %>
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = Object.fromEntries(fd.entries());
+  const res = await fetch("/admin/warranty/product-types/update/<%= item._id %>", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (j.success) location.href = "/admin/warranty/product-types";
+  else alert(j.mess || "Lỗi");
+});
+<% } %>
+</script>

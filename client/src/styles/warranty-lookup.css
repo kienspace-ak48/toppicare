@@ -1,0 +1,188 @@
+/* Trang tra cứu bảo hành — khách hàng */
+.warranty-lookup {
+  --wl-teal: #0d9488;
+  --wl-teal-light: #14b8a6;
+  --wl-surface: rgba(255, 255, 255, 0.92);
+  --wl-border: rgba(13, 148, 136, 0.15);
+  --wl-shadow: 0 4px 24px rgba(15, 118, 110, 0.08);
+}
+
+.warranty-lookup__hero {
+  position: relative;
+  padding-bottom: 0.5rem;
+}
+
+.warranty-lookup__hero::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 4rem;
+  height: 3px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, var(--wl-teal), var(--wl-teal-light));
+}
+
+.warranty-lookup__intro {
+  color: #4b5563;
+  font-size: 0.95rem;
+  line-height: 1.65;
+  max-width: 42rem;
+}
+
+.warranty-lookup__panel {
+  background: var(--wl-surface);
+  backdrop-filter: blur(12px);
+  border: 1px solid var(--wl-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--wl-shadow);
+}
+
+.warranty-lookup__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.375rem;
+}
+
+.warranty-lookup__input {
+  width: 100%;
+  border-radius: 0.875rem;
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: #111827;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.warranty-lookup__input:focus {
+  outline: none;
+  border-color: var(--wl-teal);
+  box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.15);
+}
+
+.warranty-lookup__submit {
+  border-radius: 0.875rem;
+  padding: 0.75rem 2rem;
+  font-weight: 600;
+  background: linear-gradient(135deg, var(--wl-teal) 0%, #0f766e 100%);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.warranty-lookup__submit:hover:not(:disabled) {
+  opacity: 0.95;
+}
+.warranty-lookup__submit:active:not(:disabled) {
+  transform: scale(0.99);
+}
+.warranty-lookup__submit:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.warranty-lookup__section {
+  background: var(--wl-surface);
+  border: 1px solid var(--wl-border);
+  border-radius: 1.25rem;
+  box-shadow: var(--wl-shadow);
+  padding: 1.5rem;
+}
+
+.warranty-lookup__section-title {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 1rem 0;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.warranty-lookup__dl {
+  display: grid;
+  gap: 0.75rem 1.5rem;
+}
+@media (min-width: 640px) {
+  .warranty-lookup__dl {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.warranty-lookup__dt {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #9ca3af;
+}
+.warranty-lookup__dd {
+  margin: 0.15rem 0 0 0;
+  font-size: 0.9375rem;
+  color: #111827;
+}
+
+.warranty-lookup__timeline {
+  position: relative;
+  padding-left: 0.5rem;
+}
+
+.warranty-lookup__timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.25rem;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: 2px;
+  background: linear-gradient(180deg, var(--wl-teal), #e5e7eb);
+  border-radius: 2px;
+}
+
+.warranty-lookup__timeline-item {
+  position: relative;
+  padding-left: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+
+.warranty-lookup__timeline-item:last-child {
+  padding-bottom: 0;
+}
+
+.warranty-lookup__timeline-item::before {
+  content: "";
+  position: absolute;
+  left: -0.2rem;
+  top: 0.35rem;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #fff;
+  border: 2px solid var(--wl-teal);
+}
+
+.warranty-lookup__ticket {
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  background: linear-gradient(180deg, #fafafa 0%, #fff 100%);
+  padding: 1.25rem;
+}
+
+.warranty-lookup__status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  background: rgba(13, 148, 136, 0.12);
+  color: #0f766e;
+}
+
+.warranty-lookup__err {
+  font-size: 0.875rem;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1rem;
+}

@@ -7,6 +7,7 @@ import {
   Download,
   UserPlus,
   HelpCircle,
+  ShieldCheck,
   Home,
   Info,
   Briefcase,
@@ -37,6 +38,7 @@ export function Header() {
     { name: "Tải ứng dụng", icon: Download, action: "download" },
     { name: "Trở thành KTV", icon: UserPlus, path: "/tuyen-ky-thuat-vien" },
     { name: "Trung tâm hỗ trợ", icon: HelpCircle, path: "/trung-tam-ho-tro" },
+    { name: "Tra cứu bảo hành", icon: ShieldCheck, path: "/tra-cuu-bao-hanh" },
   ];
   const toggleDropdown = () => {
     setDropdownOpen(!dropdownOpen);

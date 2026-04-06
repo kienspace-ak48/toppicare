@@ -347,6 +347,38 @@
               </div>
 
               <!-- END =============== -->
+              <!-- Bảo hành (submenu) -->
+              <button
+                type="button"
+                onclick="toggleSubmenu('warrantySub', this)"
+                class="btn_root w-full flex items-center justify-between px-4 py-3 hover:bg-gray-300 font-semibold text-[16px]"
+              >
+                <div class="flex items-center gap-3">
+                  <i class="fa-solid fa-shield-halved text-blue-600 text-2xl"></i>
+                  <span class="label">Bảo hành</span>
+                </div>
+                <i
+                  class="fa-solid fa-chevron-down chevron transition-transform duration-200"
+                ></i>
+              </button>
+              <div
+                id="warrantySub"
+                class="hidden ml-6 mt-1 pl-3 border-l border-gray-200 dark:border-gray-700 space-y-1"
+              >
+                <a
+                  href="/admin/warranty"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Thiết bị
+                </a>
+                <a
+                  href="/admin/warranty/product-types"
+                  class="block px-3 py-2 text-sm rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+                >
+                  Loại sản phẩm
+                </a>
+              </div>
+
               <!-- Gallery -->
               <a
                 href="/admin/gallery"

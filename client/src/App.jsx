@@ -23,6 +23,7 @@ import './index_original.css'
 import { HelpCenterPage } from "./components/pages/HelpCenterPage";
 import { BecomeTechnicianPage } from "./components/pages/BecomeTechnicianPage";
 import ArticleDetail from "./components/pages/ArticleDetail";
+import { WarrantyLookupPage } from "./components/pages/WarrantyLookupPage";
 export default function App() {
   return (
     <Router>
@@ -40,6 +41,7 @@ export default function App() {
           <Route path="/lien-he" element={<Contact />} />
           <Route path="/trung-tam-ho-tro" element={<HelpCenterPage />} />
           <Route path="/tuyen-ky-thuat-vien" element={<BecomeTechnicianPage />} />
+          <Route path="/tra-cuu-bao-hanh" element={<WarrantyLookupPage />} />
 
           <Route path="/bai-viet/:slug" element={<BlogDetail/>}/>
           <Route path="/policy/customer" element={<PolicyPage/>}></Route>

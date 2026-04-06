@@ -1,0 +1,193 @@
+<div class="p-6 max-w-5xl mx-auto">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div>
+      <h1 class="text-2xl font-bold text-gray-900">Loại sản phẩm bảo hành</h1>
+      <p class="text-sm text-gray-500 mt-1">Thêm / sửa / xóa bằng fetch — không tải lại trang.</p>
+    </div>
+    <a
+      href="/admin/warranty"
+      class="inline-flex items-center gap-2 rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50"
+    >
+      <i class="fa-solid fa-arrow-left text-teal-600"></i> Về thiết bị
+    </a>
+  </div>
+
+  <!-- Sửa (ẩn đến khi bấm Sửa) -->
+  <div id="editBox" class="hidden mb-6 rounded-xl border border-amber-200 bg-amber-50/50 p-5 shadow-sm">
+    <h2 class="text-sm font-bold text-amber-900 uppercase tracking-wide mb-3">Sửa loại</h2>
+    <form id="formEdit" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 items-end">
+      <input type="hidden" name="id" id="editId" />
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">Mã</label>
+        <input name="code" id="editCode" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" required />
+      </div>
+      <div class="sm:col-span-2">
+        <label class="block text-xs font-medium text-gray-600 mb-1">Tên</label>
+        <input name="name" id="editName" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" required />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">Thứ tự</label>
+        <input name="sortOrder" id="editSort" type="number" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">BH (tháng)</label>
+        <input name="defaultWarrantyMonths" id="editMonths" type="number" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" />
+      </div>
+      <div class="flex flex-wrap gap-2 sm:col-span-2 lg:col-span-4">
+        <button type="submit" class="rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">Lưu</button>
+        <button type="button" id="btnCancelEdit" class="rounded-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50">Hủy</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Thêm mới -->
+  <div class="rounded-xl border border-gray-200 bg-white p-5 shadow-sm mb-6">
+    <h2 class="text-sm font-bold text-gray-700 uppercase tracking-wide mb-3">Thêm loại mới</h2>
+    <form id="formAdd" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3 items-end">
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">Mã</label>
+        <input name="code" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm font-mono focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" placeholder="TOPPI-X1" required />
+      </div>
+      <div class="sm:col-span-2">
+        <label class="block text-xs font-medium text-gray-600 mb-1">Tên</label>
+        <input name="name" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" required />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">Thứ tự</label>
+        <input name="sortOrder" type="number" value="0" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" />
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-gray-600 mb-1">BH (tháng)</label>
+        <input name="defaultWarrantyMonths" type="number" value="12" class="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none" />
+      </div>
+      <div class="lg:col-span-5">
+        <button type="submit" class="rounded-lg bg-teal-600 px-4 py-2 text-sm font-semibold text-white hover:bg-teal-700">Thêm</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="overflow-x-auto rounded-xl border border-gray-200 bg-white shadow-sm">
+    <table class="min-w-full text-sm text-left">
+      <thead class="bg-gray-50 text-gray-700 font-semibold border-b border-gray-200">
+        <tr>
+          <th class="px-4 py-3">Mã</th>
+          <th class="px-4 py-3">Tên</th>
+          <th class="px-4 py-3 text-center">BH (tháng)</th>
+          <th class="px-4 py-3 text-center">TT</th>
+          <th class="px-4 py-3 text-right">Thao tác</th>
+        </tr>
+      </thead>
+      <tbody id="ptBody" class="divide-y divide-gray-100"></tbody>
+    </table>
+    <p id="ptEmpty" class="hidden px-4 py-8 text-center text-gray-500 text-sm">Chưa có loại nào.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  function esc(s) {
+    return String(s == null ? "" : s)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/"/g, "&quot;");
+  }
+
+  async function loadTable() {
+    const r = await fetch("/admin/warranty/product-types/list-all");
+    const j = await r.json();
+    const tb = document.getElementById("ptBody");
+    const empty = document.getElementById("ptEmpty");
+    if (!j.success) {
+      tb.innerHTML = "";
+      return;
+    }
+    tb.innerHTML = "";
+    if (!j.data.length) {
+      empty.classList.remove("hidden");
+      return;
+    }
+    empty.classList.add("hidden");
+    j.data.forEach((x) => {
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-gray-50/80";
+      tr.innerHTML = `
+        <td class="px-4 py-3 font-mono font-semibold text-teal-800">${esc(x.code)}</td>
+        <td class="px-4 py-3">${esc(x.name)}</td>
+        <td class="px-4 py-3 text-center">${x.defaultWarrantyMonths}</td>
+        <td class="px-4 py-3 text-center text-gray-600">${x.sortOrder}</td>
+        <td class="px-4 py-3 text-right space-x-2 whitespace-nowrap">
+          <button type="button" class="text-teal-700 hover:underline text-sm font-medium btn-edit" data-id="${x._id}">Sửa</button>
+          <button type="button" class="text-red-600 hover:underline text-sm btn-del" data-id="${x._id}">Xóa</button>
+        </td>`;
+      tb.appendChild(tr);
+    });
+
+    tb.querySelectorAll(".btn-edit").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-id");
+        const row = j.data.find((d) => String(d._id) === id);
+        if (!row) return;
+        document.getElementById("editId").value = row._id;
+        document.getElementById("editCode").value = row.code;
+        document.getElementById("editName").value = row.name;
+        document.getElementById("editSort").value = row.sortOrder;
+        document.getElementById("editMonths").value = row.defaultWarrantyMonths;
+        document.getElementById("editBox").classList.remove("hidden");
+        document.getElementById("editBox").scrollIntoView({ behavior: "smooth", block: "nearest" });
+      });
+    });
+    tb.querySelectorAll(".btn-del").forEach((btn) => {
+      btn.addEventListener("click", async () => {
+        if (!confirm("Xóa loại sản phẩm này?")) return;
+        const dr = await fetch("/admin/warranty/product-types/delete/" + btn.getAttribute("data-id"), { method: "DELETE" });
+        const dj = await dr.json();
+        if (dj.success) loadTable();
+        else alert(dj.mess || "Lỗi");
+      });
+    });
+  }
+
+  document.getElementById("formAdd").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const res = await fetch("/admin/warranty/product-types/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(Object.fromEntries(fd.entries())),
+    });
+    const j = await res.json();
+    if (j.success) {
+      e.target.reset();
+      loadTable();
+    } else alert(j.mess || "Lỗi");
+  });
+
+  document.getElementById("formEdit").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const fd = new FormData(e.target);
+    const id = fd.get("id");
+    const body = {
+      code: fd.get("code"),
+      name: fd.get("name"),
+      sortOrder: fd.get("sortOrder"),
+      defaultWarrantyMonths: fd.get("defaultWarrantyMonths"),
+    };
+    const res = await fetch("/admin/warranty/product-types/update/" + id, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+    });
+    const j = await res.json();
+    if (j.success) {
+      document.getElementById("editBox").classList.add("hidden");
+      loadTable();
+    } else alert(j.mess || "Lỗi");
+  });
+
+  document.getElementById("btnCancelEdit").addEventListener("click", () => {
+    document.getElementById("editBox").classList.add("hidden");
+  });
+
+  loadTable();
+})();
+</script>

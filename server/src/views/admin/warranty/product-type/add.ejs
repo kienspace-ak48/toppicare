@@ -1,0 +1,43 @@
+<div class="warranty-admin">
+  <div class="wa-shell max-w-xl">
+    <h1 class="wa-page-title">Thêm loại sản phẩm</h1>
+    <p class="wa-page-sub">Dùng cho danh mục sản phẩm bảo hành.</p>
+    <form id="f" class="wa-card space-y-4">
+      <div class="wa-form-grid">
+        <label>Mã loại (code)</label>
+        <input name="code" required class="wa-input" placeholder="VD: TOPPI-X1" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Tên hiển thị</label>
+        <input name="name" required class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Thứ tự</label>
+        <input name="sortOrder" type="number" value="0" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Bảo hành mặc định (tháng)</label>
+        <input name="defaultWarrantyMonths" type="number" value="12" class="wa-input" />
+      </div>
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button type="submit" class="wa-btn wa-btn--primary">Lưu</button>
+        <a href="/admin/warranty/product-types" class="wa-btn wa-btn--ghost">Hủy</a>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = Object.fromEntries(fd.entries());
+  const res = await fetch("/admin/warranty/product-types/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (j.success) location.href = "/admin/warranty/product-types";
+  else alert(j.mess || "Lỗi");
+});
+</script>

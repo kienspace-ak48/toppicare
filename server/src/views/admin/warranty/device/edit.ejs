@@ -1,0 +1,74 @@
+<div class="warranty-admin">
+  <div class="wa-shell max-w-2xl">
+    <h1 class="wa-page-title">Sửa thiết bị</h1>
+    <% if (!device) { %>
+    <p class="text-gray-600">Không tìm thấy.</p>
+    <% } else {
+      const sold = device.soldAt ? new Date(device.soldAt) : new Date();
+      const pad = (n) => String(n).padStart(2, "0");
+      const localVal = sold.getFullYear() + "-" + pad(sold.getMonth() + 1) + "-" + pad(sold.getDate()) + "T" + pad(sold.getHours()) + ":" + pad(sold.getMinutes());
+      const ptId = device.productType && device.productType._id ? String(device.productType._id) : String(device.productType);
+    %>
+    <form id="f" class="wa-card space-y-4">
+      <div class="wa-form-grid">
+        <label>Mã máy</label>
+        <input name="serialNumber" required value="<%= device.serialNumber %>" class="wa-input font-mono" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Loại sản phẩm</label>
+        <select name="productType" required class="wa-input">
+          <% (productTypes || []).forEach(function (pt) { %>
+          <option value="<%= pt._id %>" <%= String(pt._id) === ptId ? 'selected' : '' %>><%= pt.code %> — <%= pt.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="wa-form-grid">
+        <label>Tên khách</label>
+        <input name="customerName" required value="<%= device.customerName %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>SĐT</label>
+        <input name="phone" required value="<%= device.phone %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Email</label>
+        <input name="email" value="<%= device.email || '' %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Ngày bán</label>
+        <input name="soldAt" type="datetime-local" value="<%= localVal %>" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Ghi chú nội bộ</label>
+        <textarea name="notes" rows="2" class="wa-input"><%= device.notes || '' %></textarea>
+      </div>
+      <label class="flex items-center gap-2 text-sm text-gray-700 cursor-pointer">
+        <input type="checkbox" name="isActive" id="isActive" value="1" <%= device.isActive !== false ? 'checked' : '' %> class="rounded border-gray-300" />
+        Đang hoạt động (tắt = không cho tra cứu công khai)
+      </label>
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button type="submit" class="wa-btn wa-btn--primary">Cập nhật</button>
+        <a href="/admin/warranty/devices/detail/<%= device._id %>" class="wa-btn wa-btn--ghost">Chi tiết &amp; log</a>
+      </div>
+    </form>
+    <% } %>
+  </div>
+</div>
+<script>
+<% if (device) { %>
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = Object.fromEntries(fd.entries());
+  body.isActive = document.getElementById("isActive").checked;
+  const res = await fetch("/admin/warranty/devices/update/<%= device._id %>", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (j.success) location.href = "/admin/warranty/devices/detail/<%= device._id %>";
+  else alert(j.mess || "Lỗi");
+});
+<% } %>
+</script>

@@ -10,6 +10,7 @@ const helpCenterController = require("../controller/helpCenter.controller")();
 const contactController = require("../controller/contact.controller")();
 const ServicePackageController = require("../controller/servicePackage.controller")();
 const ServiceController = require('../controller/service.controller')();
+const warrantyController = require("../controller/warranty.controller")();
 //page config
 // -cutomize
 router.get('/page-config/customize-section', PageConfigController.CustomizeSection);
@@ -128,6 +129,33 @@ router.put('/category/update/:id', categoryController.Update);
 router.post('/category/add', categoryController.Add)
 router.get('/category/', categoryController.Index);
 // router.get('/blog/', )
+// WARRANTY — một trang chính + API
+router.get("/warranty", warrantyController.Workspace);
+router.get("/warranty/settings", warrantyController.WarrantySettingsGet);
+router.put("/warranty/settings", warrantyController.WarrantySettingsUpdate);
+router.get("/warranty/devices/json/:id", warrantyController.DeviceDetailJson);
+router.post("/warranty/devices/:id/warranty-status", warrantyController.DeviceWarrantyStatusUpdate);
+
+router.get("/warranty/product-types", warrantyController.ProductTypeIndex);
+router.get("/warranty/product-types/list-all", warrantyController.ProductTypeList);
+router.get("/warranty/product-types/add", warrantyController.ProductTypeFormAdd);
+router.post("/warranty/product-types/add", warrantyController.ProductTypeAdd);
+router.get("/warranty/product-types/edit/:id", warrantyController.ProductTypeFormEdit);
+router.post("/warranty/product-types/update/:id", warrantyController.ProductTypeUpdate);
+router.delete("/warranty/product-types/delete/:id", warrantyController.ProductTypeDelete);
+
+router.get("/warranty/devices", warrantyController.DeviceIndex);
+router.get("/warranty/devices/list-all", warrantyController.DeviceList);
+router.get("/warranty/devices/add", warrantyController.DeviceFormAdd);
+router.post("/warranty/devices/add", warrantyController.DeviceAdd);
+router.get("/warranty/devices/edit/:id", warrantyController.DeviceFormEdit);
+router.post("/warranty/devices/update/:id", warrantyController.DeviceUpdate);
+router.delete("/warranty/devices/delete/:id", warrantyController.DeviceDelete);
+router.get("/warranty/devices/detail/:id", warrantyController.DeviceDetail);
+router.post("/warranty/devices/:id/device-log", warrantyController.DeviceLogAdd);
+router.put("/warranty/devices/:deviceId/device-log/:logId", warrantyController.DeviceLogUpdate);
+router.delete("/warranty/devices/:deviceId/device-log/:logId", warrantyController.DeviceLogDelete);
+
 // dashboard
 router.get("/", homeController.Index);
 

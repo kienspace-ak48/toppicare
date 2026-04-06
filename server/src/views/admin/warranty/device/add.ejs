@@ -1,0 +1,64 @@
+<div class="warranty-admin">
+  <div class="wa-shell max-w-2xl">
+    <h1 class="wa-page-title">Đăng ký thiết bị (bán hàng)</h1>
+    <p class="wa-page-sub">Sau khi lưu, xem <strong>lịch sử &amp; log</strong> tại trang chi tiết thiết bị.</p>
+    <form id="f" class="wa-card space-y-4">
+      <div class="wa-form-grid">
+        <label>Mã máy (serial)</label>
+        <input name="serialNumber" required class="wa-input font-mono" placeholder="Nhập đúng mã in trên máy" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Loại sản phẩm</label>
+        <select name="productType" required class="wa-input">
+          <option value="">— Chọn —</option>
+          <% (productTypes || []).forEach(function (pt) { %>
+          <option value="<%= pt._id %>"><%= pt.code %> — <%= pt.name %></option>
+          <% }); %>
+        </select>
+      </div>
+      <div class="wa-form-grid">
+        <label>Tên khách hàng</label>
+        <input name="customerName" required class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Số điện thoại (khách dùng để tra cứu)</label>
+        <input name="phone" required class="wa-input" placeholder="09xx hoặc +84..." />
+      </div>
+      <div class="wa-form-grid">
+        <label>Email</label>
+        <input name="email" type="email" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Ngày bán</label>
+        <input name="soldAt" type="datetime-local" class="wa-input" />
+      </div>
+      <div class="wa-form-grid">
+        <label>Ghi chú nội bộ</label>
+        <textarea name="notes" rows="2" class="wa-input"></textarea>
+      </div>
+      <div class="wa-form-grid">
+        <label>Nội dung dòng log &quot;Đăng ký bán&quot; (hiển thị cho KH)</label>
+        <textarea name="saleLogDetail" rows="2" class="wa-input" placeholder="Để trống = tự điền theo ngày bán"></textarea>
+      </div>
+      <div class="flex flex-wrap gap-2 pt-2">
+        <button type="submit" class="wa-btn wa-btn--primary">Lưu đăng ký</button>
+        <a href="/admin/warranty/devices" class="wa-btn wa-btn--ghost">Hủy</a>
+      </div>
+    </form>
+  </div>
+</div>
+<script>
+document.getElementById("f").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const fd = new FormData(e.target);
+  const body = Object.fromEntries(fd.entries());
+  const res = await fetch("/admin/warranty/devices/add", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(body),
+  });
+  const j = await res.json();
+  if (j.success) location.href = "/admin/warranty/devices";
+  else alert(j.mess || "Lỗi");
+});
+</script>

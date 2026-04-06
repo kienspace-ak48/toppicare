@@ -1,7 +1,17 @@
 const express = require('express');
+const rateLimit = require('express-rate-limit');
 const router = express.Router();
 
 const helpCenterApi = require('../api/helpcenter.api')();
+const warrantyApi = require('../api/warranty.api')();
+
+const warrantyLookupLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { success: false, mess: 'Quá nhiều lần thử. Vui lòng thử lại sau.' },
+});
 const PageConfigApi = require('../api/pageconfig.api')();
 const NewsApi = require('../api/blog.api')();
 const ServicesApi = require('../api/services.api')();
@@ -51,5 +61,7 @@ router.get("/video", async (req, res) => {
 //==========contact
 router.post('/contact', ContactApi.UserSendEmail)
 
+// warranty (public lookup)
+router.post('/warranty/lookup', warrantyLookupLimiter, warrantyApi.Lookup)
 
 module.exports = router;
