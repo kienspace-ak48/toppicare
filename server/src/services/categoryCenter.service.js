@@ -4,7 +4,7 @@ const CNAME = "categoryCenter.service.js ";
 
 class CategoryCenterService {
   constructor() {
-    console.log("Initial ", CNAME);
+    console.log("Initial ",CNAME);
   }
   async getAll() {
     try {

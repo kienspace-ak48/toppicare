@@ -74,8 +74,8 @@ const PageConfigController = () => {
           keywords: data.keywords,
           gg_a: data.gg_a||'--no--',
           gg_wt: data.gg_wt||'--no--',
+          gtm_id: (typeof data.gtm_id === 'string' && data.gtm_id.trim()) || '',
       };
-      console.log(cDTO);
       const task1 = pageconfigService.updateCustomizeSection(cDTO);
       // const task1 = true;
       if (!task1) {

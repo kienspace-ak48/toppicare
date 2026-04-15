@@ -29,7 +29,6 @@ const contactController = () => {
       try {
         const type = "customer";
         const task1 = await contactService.getByNotType(type);
-        console.log(task1);
         res.render(VNAME + "/partner", { data: task1 });
       } catch (error) {
         console.log(CNAME, error.message);

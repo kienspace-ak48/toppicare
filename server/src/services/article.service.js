@@ -4,7 +4,7 @@ const CNAME = "article.service.js ";
 
 class ArticleService {
   constructor() {
-    console.log("Initial ", CNAME);
+    console.log("Initial ",CNAME);
   }
 
   async create(data) {

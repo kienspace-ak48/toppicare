@@ -186,6 +186,8 @@ const pageConfig = new mongoose.Schema({
     keywords: String,
     gg_a: String,
     gg_wt: String,
+    /** Google Tag Manager container ID, e.g. GTM-XXXXXXX */
+    gtm_id: String,
   }
 });
 
