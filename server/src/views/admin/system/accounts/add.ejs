@@ -1,0 +1,136 @@
+<div class="admin-page-toolbar d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+  <h1 class="mb-0 h5">Thêm tài khoản quản trị</h1>
+  <a href="/admin/system/accounts" class="btn btn-outline-secondary btn-sm">Quay lại</a>
+</div>
+
+<% if (error) { %>
+  <div class="alert alert-danger" role="alert"><%= error %></div>
+<% } %>
+
+<div class="card shadow-sm">
+  <div class="card-body">
+    <form action="/admin/system/accounts" method="post" class="row g-3" style="max-width: 40rem;">
+      <div class="col-12">
+        <label class="form-label">Ảnh đại diện (gallery)</label>
+        <div class="image_action admin-image-action-block">
+          <div class="d-flex flex-wrap gap-2 align-items-stretch">
+            <button type="button" class="btn btn-outline-success chooseImg">Chọn ảnh</button>
+            <button type="button" class="btn btn-outline-secondary btn-clear-avatar-account">Bỏ ảnh</button>
+            <input type="hidden" name="avatar" class="img_input" value="<%= form.avatar || '' %>" />
+          </div>
+          <div class="img_preview admin-img-preview mt-2">
+            <% var prevAdd = form.avatar ? '/' + String(form.avatar).replace(/^\/+/, '') : ''; %>
+            <img class="rounded border bg-body-secondary" src="<%= prevAdd || 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' %>" alt="" style="max-height: 120px; width: auto;" />
+          </div>
+          <div class="form-text">Chọn từ thư viện <a href="/admin/gallery" target="_blank" rel="noopener">Gallery</a>.</div>
+        </div>
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="acc_email">Email <span class="text-danger">*</span></label>
+        <input type="email" class="form-control" id="acc_email" name="email" required value="<%= form.email || '' %>" autocomplete="off" />
+      </div>
+      <div class="col-12">
+        <label class="form-label" for="acc_password">Mật khẩu <span class="text-danger">*</span></label>
+        <input type="password" class="form-control" id="acc_password" name="password" required autocomplete="new-password" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="acc_name">Tên hiển thị</label>
+        <input type="text" class="form-control" id="acc_name" name="name" value="<%= form.name || '' %>" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="acc_username">Username</label>
+        <input type="text" class="form-control" id="acc_username" name="username" value="<%= form.username || '' %>" />
+      </div>
+      <div class="col-md-6">
+        <label class="form-label" for="acc_role">Role</label>
+        <select class="form-select" id="acc_role" name="role">
+          <option value="admin" <%= form.role === 'admin' ? 'selected' : '' %>>Admin</option>
+          <option value="super_admin" <%= form.role === 'super_admin' ? 'selected' : '' %>>Super admin</option>
+        </select>
+      </div>
+      <div class="col-md-6 d-flex align-items-end">
+        <div class="form-check">
+          <input type="hidden" name="status" value="0" />
+          <input class="form-check-input" type="checkbox" id="acc_status" name="status" value="1" <%= form.status !== false ? 'checked' : '' %> />
+          <label class="form-check-label" for="acc_status">Kích hoạt</label>
+        </div>
+      </div>
+      <div class="col-12">
+        <button type="submit" class="btn btn-primary">Tạo tài khoản</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<%- include('../../../partials/galleryPickerModal.ejs') %>
+<script>
+  (function () {
+    var transparent =
+      "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
+    var ctaChooseImg = document.querySelectorAll(".chooseImg");
+    var chooseImgModal = document.querySelector("#gallery_modal");
+    var imgList = document.querySelector("#imgList");
+    var imgInputIsFocusing = null;
+
+    function openChooseImgModal() {
+      chooseImgModal.classList.remove("hidden");
+      chooseImgModal.classList.add("flex");
+    }
+    window.closeChooseImgModal = function () {
+      chooseImgModal.classList.remove("flex");
+      chooseImgModal.classList.add("hidden");
+    };
+
+    ctaChooseImg.forEach(function (el) {
+      el.addEventListener("click", function (ev) {
+        ev.preventDefault();
+        loadImage();
+        imgInputIsFocusing = el.closest(".image_action");
+        openChooseImgModal();
+      });
+    });
+
+    document.querySelectorAll(".btn-clear-avatar-account").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var block = btn.closest(".image_action");
+        if (!block) return;
+        block.querySelector(".img_input").value = "";
+        var im = block.querySelector(".img_preview img");
+        if (im) im.src = transparent;
+      });
+    });
+
+    window.selectImage = function (src) {
+      if (!imgInputIsFocusing) return;
+      imgInputIsFocusing.querySelector(".img_input").value = src;
+      imgInputIsFocusing.querySelector(".img_preview img").src = "/" + src;
+      window.closeChooseImgModal();
+    };
+
+    function loadImage() {
+      if (!imgList) return;
+      imgList.innerHTML = "Loading...";
+      $.ajax({
+        url: "/admin/gallery/image-getall",
+        method: "GET",
+        success: function (res) {
+          if (res.success) {
+            imgList.innerHTML = "";
+            res.data.forEach(function (item) {
+              var img = document.createElement("img");
+              img.src = "/" + item.path;
+              img.className = "admin-img-picker-item";
+              img.onclick = function () {
+                window.selectImage(item.path);
+              };
+              imgList.appendChild(img);
+            });
+          }
+        },
+        error: function (xhr) {
+          console.log(xhr.responseJSON && xhr.responseJSON.mess ? xhr.responseJSON.mess : "Server error");
+        },
+      });
+    }
+  })();
+</script>

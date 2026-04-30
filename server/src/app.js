@@ -25,7 +25,10 @@ app.use(deviceInfoMiddleware);
 app.set("view engine", "ejs");
 app.set("views", path.join(myPath.root, "src/views"));
 app.use(expressLayouts);
-app.set("layout", "layouts/adminLayout");
+app.set("layout", "layouts/adminLayoutCoreui");
+app.set("layout extractScripts", false);
+app.set("layout extractStyles", false);
+app.set("layout extractMetas", false);
 
 app.use(cookieParser());
 

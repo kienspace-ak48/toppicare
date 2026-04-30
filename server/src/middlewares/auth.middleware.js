@@ -1,8 +1,8 @@
 const jwt = require("jsonwebtoken");
-const contactService = require("../services/contact.service");
 const userModel = require("../model/user.model");
 
 const CNAME = "auth.middleware.js ";
+const ADMIN_PANEL_ROLES = ["super_admin", "admin"];
 
 async function auth(req, res, next) {
   // const count = await contactService.countNewNotPartner();
@@ -28,11 +28,26 @@ async function auth(req, res, next) {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const getInfoLogin = await userModel
       .findById(decoded.id)
-      .select("_id name username email role")
+      .select("_id name username email role status avatar")
       .lean();
+
+    if (!getInfoLogin) {
+      res.clearCookie("token");
+      return res.redirect(302, "/auth/admin/login");
+    }
+    if (!getInfoLogin.status) {
+      res.clearCookie("token");
+      return res.redirect(302, "/auth/admin/login?reason=disabled");
+    }
+    if (!ADMIN_PANEL_ROLES.includes(getInfoLogin.role)) {
+      res.clearCookie("token");
+      return res.redirect(302, "/auth/admin/login?reason=forbidden");
+    }
+
     req.user = getInfoLogin;
-    // 👇 cho EJS dùng global
     res.locals.user = getInfoLogin;
+    res.locals.isSuperAdmin = getInfoLogin.role === "super_admin";
+    res.locals.ADMIN_LOGOUT_URL = "/auth/admin/logout";
 
     next();
   } catch (error) {

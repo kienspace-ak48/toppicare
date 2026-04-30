@@ -1,129 +1,131 @@
-<div class="flex justify-between items-center my-2">
-  <h1 class="font-bold">Contact view</h1>
-  <div class="flex flex-col gap-2">
-    <!-- <a href="/admin/contact/export-csv" class="px-4 py-2 border border-gray-300 rounded-lg bg-green-500 text-white font-bold hover:scale-110">Export CSV</a> -->
-    <div class="flex items-end gap-2">
-      <div>
-        <!-- <label class="text-xs">From</label> -->
-        <input type="date" id="from-date" class="border border-gray-300 rounded px-4 py-2" />
-      </div>
-
-      <div>
-        <label class="text-xs">To</label>
-        <input type="date" id="to-date" class="border border-gray-300 rounded px-4 py-2" />
-      </div>
-
-      <button
-        id="btn-export"
-        class="px-4 py-2 bg-green-500 text-white font-bold rounded-lg hover:scale-105"
-      >
-        Export
-      </button>
-    </div>
-   
-    <!--  -->
-    <div>
-      <select id="bulk-status" class="border border-gray-300 rounded-lg p-2">
-        <option value="">-- Change status --</option>
-        <option value="read">Readed</option>
-        <option value="new">New</option>
-      </select>
-
-      <button
-        id="apply-bulk"
-        class="font-bold px-4 py-2 bg-blue-500 text-white rounded-lg"
-      >
-        Apply
-      </button>
-
-      <!--  -->
-      <button
-      id="delete-bulk"
-      class="text-white font-bold px-4 py-2 bg-red-500 rounded-lg"
-    >
-      Delete
-    </button>
-    </div>
-     <!--  -->
-    
+<div class="admin-page-toolbar">
+  <div>
+    <h1 class="mb-0">Liên hệ khách hàng</h1>
+    <p class="small text-body-secondary mb-0 mt-1">Quản lý tin nhắn / form liên hệ từ khách</p>
   </div>
 </div>
-<div class="table_wrapper overflow-x-auto">
-  <table id="mess_tbl" class="min-w-full text-sm text-center text-garay-600">
-    <thead class="text-xs bg-gray-100 font-semibold text-gray-700 uppercase">
-      <tr>
-        <th class="px-6 py-4">
-          <input type="checkbox" id="check-all" />
-        </th>
-        <th class="px-6 py-4">Date</th>
-        <th class="px-6 py-4">From</th>
-        <th class="px-6 py-4">name</th>
-        <!-- <th class="px-6 py-4">subject</th> -->
-        <th class="px-6 py-4">content</th>
-        <th class="px-6 py-4">status</th>
-        <!-- <th class="px-6 py-4">Actions</th> -->
-      </tr>
-    </thead>
-    <tbody class="divide-y divide-gray-100"></tbody>
-  </table>
+
+<div class="card shadow-sm border">
+  <div class="card-body">
+    <div class="row g-3 align-items-end mb-3">
+      <div class="col-12 col-sm-6 col-md-auto">
+        <label class="form-label small mb-1" for="from-date">Từ ngày</label>
+        <input type="date" id="from-date" class="form-control form-control-sm" />
+      </div>
+      <div class="col-12 col-sm-6 col-md-auto">
+        <label class="form-label small mb-1" for="to-date">Đến ngày</label>
+        <input type="date" id="to-date" class="form-control form-control-sm" />
+      </div>
+      <div class="col-12 col-md-auto">
+        <button type="button" id="btn-export" class="btn btn-success btn-sm">
+          <i class="fa-solid fa-file-csv me-1"></i>Xuất CSV
+        </button>
+      </div>
+      <div class="col-12 col-lg ms-lg-auto">
+        <div class="d-flex flex-wrap gap-2 align-items-end justify-content-lg-end">
+          <div class="flex-grow-1 flex-md-grow-0" style="min-width: 10rem;">
+            <label class="form-label small mb-1 d-none d-md-block" for="bulk-status">&nbsp;</label>
+            <select id="bulk-status" class="form-select form-select-sm">
+              <option value="">— Đổi trạng thái —</option>
+              <option value="read">Đã đọc</option>
+              <option value="new">Mới</option>
+            </select>
+          </div>
+          <button type="button" id="apply-bulk" class="btn btn-primary btn-sm">Áp dụng</button>
+          <button type="button" id="delete-bulk" class="btn btn-danger btn-sm">Xóa</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="table-responsive rounded border">
+      <table id="mess_tbl" class="table table-striped table-hover align-middle small mb-0 w-100">
+        <thead class="table-light">
+          <tr>
+            <th class="text-center" style="width: 2.5rem;">
+              <input type="checkbox" id="check-all" class="form-check-input" title="Chọn tất cả" />
+            </th>
+            <th style="width: 6.5rem;">Ngày</th>
+            <th>Liên hệ</th>
+            <th>Tên</th>
+            <th>Nội dung</th>
+            <th class="text-center" style="width: 4rem;">TT</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
 </div>
 
-<!-- ==========SCRIPT========= -->
 <script>
   var blogTable = null;
-  // $('#mess_tbl').DataTable().destroy();
   blogTable = new DataTable("#mess_tbl", {
     ajax: {
       url: "/admin/contact/get-all-ajax?type=customer",
       dataSrc: "data",
     },
     ordering: false,
-    info: false,
+    autoWidth: false,
+    pageLength: 10,
+    language: {
+      search: "Tìm:",
+      lengthMenu: "Hiển thị _MENU_ dòng",
+      zeroRecords: "Không có dữ liệu",
+      info: "_START_–_END_ / _TOTAL_",
+      infoEmpty: "0 mục",
+      paginate: { previous: "‹", next: "›" },
+    },
     columns: [
       {
         data: "_id",
-        render: (v, t, r) => `
-              <input type="checkbox" class="row-check" value="${r._id}"></input>
-              `,
+        className: "text-center",
+        orderable: false,
+        render: (v, t, r) =>
+          `<input type="checkbox" class="form-check-input row-check" value="${r._id}" />`,
       },
       {
         data: null,
         render: (v, t, r) =>
-          `<p>${new Date(r.createdAt).toLocaleDateString("vi-VN")}</p>`,
+          `<span class="text-nowrap">${new Date(r.createdAt).toLocaleDateString("vi-VN")}</span>`,
       },
       {
         data: "email",
-        render: (v, t, r) =>
-          `<span class="px-4 py-5"> <p>${r.email}</p><p>${r.phone}</p>  </span>`,
+        render: (v, t, r) => `
+          <div class="small">
+            <div class="text-break fw-medium">${r.email || "—"}</div>
+            <div class="text-body-secondary text-break">${r.phone || ""}</div>
+          </div>`,
       },
       {
         data: "name",
-        render: (v, t, r) => `<p class="px-4 py-5">${r.name}</p>`,
+        render: (v, t, r) =>
+          `<span class="text-break">${r.name || "—"}</span>`,
       },
       {
         data: "message",
-        render: (v, t, r) => `<p class="px-4 py-5">${r.message}</p>`,
+        render: (v, t, r) =>
+          `<span class="text-break d-inline-block" style="max-width: min(28rem, 40vw);">${r.message || "—"}</span>`,
       },
       {
         data: "status",
-        render: (v, t, r) => `
-            ${r.status == "new" ? '<i class="text-blue-500 px-4 py-5 fa-solid fa-envelope"></i>' : '<i class="px-4 py-5 fa-solid fa-envelope-open"></i>'}
-          `,
+        className: "text-center",
+        render: (v, t, r) =>
+          r.status === "new"
+            ? '<span class="text-primary" title="Mới"><i class="fa-solid fa-envelope fa-lg"></i></span>'
+            : '<span class="text-body-secondary" title="Đã xem"><i class="fa-solid fa-envelope-open fa-lg"></i></span>',
       },
     ],
   });
-  const messTbodyTable = document.querySelector("#mess_tbl tbody");
-  messTbodyTable.addEventListener("click", function (ev) {});
-  //
+
   document.querySelector("#check-all").addEventListener("change", function (e) {
     document.querySelectorAll(".row-check").forEach((cb) => {
       cb.checked = e.target.checked;
     });
   });
-  //delete
+
   document.querySelector("#delete-bulk").addEventListener("click", function () {
-    let ids = getAllRowChecked();
-    if (ids.length === 0) return alert("Chua chon dong nao");
+    const ids = getAllRowChecked();
+    if (ids.length === 0) return alert("Chưa chọn dòng nào");
     fetch(`/admin/contact/delete-many-mess`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
@@ -131,58 +133,40 @@
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log(res);
-        if (res.success) {
-          blogTable.ajax.reload();
-        }
+        if (res.success) blogTable.ajax.reload();
       })
-      .catch((err) => console.log("Co loi xay ra", err));
+      .catch((err) => console.log(err));
   });
-  //change status
-  document
-    .querySelector("#apply-bulk")
-    .addEventListener("click", async function () {
-      const status = document.querySelector("#bulk-status").value;
-      if (!status) return alert("Chon status truoc");
-      let ids = getAllRowChecked();
-      if (ids.length === 0) return alert("Chua chon dong nao");
-      console.log(JSON.stringify({ ids, status }));
-      fetch(`/admin/contact/change-status`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ids, status }),
+
+  document.querySelector("#apply-bulk").addEventListener("click", function () {
+    const status = document.querySelector("#bulk-status").value;
+    if (!status) return alert("Chọn trạng thái trước");
+    const ids = getAllRowChecked();
+    if (ids.length === 0) return alert("Chưa chọn dòng nào");
+    fetch(`/admin/contact/change-status`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ ids, status }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.success) blogTable.ajax.reload();
       })
-        .then((res) => res.json())
-        .then((res) => {
-          console.log(res);
-          if (res.success) {
-            blogTable.ajax.reload();
-          }
-        })
-        .catch((err) => console.log(err));
-    });
-  //getAllRowChecked
-  //lay danh sach id da chon
+      .catch((err) => console.log(err));
+  });
+
   function getAllRowChecked() {
-    const ids = Array.from(document.querySelectorAll(".row-check:checked")).map(
-      (cb) => cb.value,
-    );
-    return ids;
+    return Array.from(document.querySelectorAll(".row-check:checked")).map((cb) => cb.value);
   }
-  //export excel
-  document.querySelector('#btn-export').addEventListener('click', function () {
 
-  const from = document.querySelector('#from-date').value;
-  const to = document.querySelector('#to-date').value;
-  const type="customer"
-
-  let url = '/admin/contact/export-csv?';
-
-  if (type) url += `type=${type}&`;
-  if (from) url += `from=${from}&`;
-  if (to) url += `to=${to}`;
-
-  window.location.href = url;
-});
-
+  document.querySelector("#btn-export").addEventListener("click", function () {
+    const from = document.querySelector("#from-date").value;
+    const to = document.querySelector("#to-date").value;
+    const type = "customer";
+    let url = "/admin/contact/export-csv?";
+    if (type) url += `type=${type}&`;
+    if (from) url += `from=${from}&`;
+    if (to) url += `to=${to}`;
+    window.location.href = url;
+  });
 </script>

@@ -180,6 +180,8 @@ const pageConfig = new mongoose.Schema({
     youtube: String,
     worktime: String,
     img: String,
+    /** Ảnh preview bên phải trang /app (tải ứng dụng), đường dẫn gallery */
+    download_app_img: String,
 
     title: String,
     desc: String,
@@ -188,6 +190,8 @@ const pageConfig = new mongoose.Schema({
     gg_wt: String,
     /** Google Tag Manager container ID, e.g. GTM-XXXXXXX */
     gtm_id: String,
+    /** Facebook / Meta Pixel ID (chỉ số, ví dụ 1291350602880286) */
+    meta_pixel_id: String,
   }
 });
 

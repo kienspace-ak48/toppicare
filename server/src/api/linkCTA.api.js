@@ -1,7 +1,9 @@
 // const uaInfo = requrie('../middlewares/clientInfo');
+const pageconfigService = require('../services/pageconfig.service');
+
 const downloadCTAApi = () => {
   return {
-    DownloadApp: (req, res) => {
+    DownloadApp: async (req, res) => {
         const os = req.deviceInfo.os;
       if (os === "iOS") {
         return res.redirect("https://apps.apple.com/vn/app/toppicare/id6755223405?l=vi");
@@ -14,10 +16,9 @@ const downloadCTAApi = () => {
       }
 
       // Desktop hoặc khác
-      return res.render('pages/download', {layout: false});
-      res.json({
-        divice: req.deviceInfo,
-      });
+      const pc = await pageconfigService.getPageConfig();
+      const downloadAppImg = (pc?.success && pc.data?.customize?.download_app_img) ? pc.data.customize.download_app_img : '';
+      return res.render('pages/download', { layout: false, downloadAppImg });
     },
   };
 };

@@ -75,6 +75,8 @@ const PageConfigController = () => {
           gg_a: data.gg_a||'--no--',
           gg_wt: data.gg_wt||'--no--',
           gtm_id: (typeof data.gtm_id === 'string' && data.gtm_id.trim()) || '',
+          meta_pixel_id: (typeof data.meta_pixel_id === 'string' && data.meta_pixel_id.replace(/\D/g, '').slice(0, 24)) || '',
+          download_app_img: (typeof data.download_app_img === 'string' && data.download_app_img.trim()) || '',
       };
       const task1 = pageconfigService.updateCustomizeSection(cDTO);
       // const task1 = true;

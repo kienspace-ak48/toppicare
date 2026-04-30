@@ -6,6 +6,7 @@ const UserSchema =new mongoose.Schema({
     password: String,
     email: String,
     phone: String,
+    /** Đường dẫn tương đối (như gallery API), ví dụ disk/uploads/... — không gắn domain */
     avatar: String,
     status: {type: Boolean, default: true},
     role: {type: String, default: 'user'}

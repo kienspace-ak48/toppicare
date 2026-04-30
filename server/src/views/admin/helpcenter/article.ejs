@@ -1,49 +1,93 @@
 <style>
-  tbody td{
-    text-align: center;
+  .admin-table-shell {
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    overflow: hidden;
   }
-  .dt-layout-row {
+  .admin-table-shell .dt-layout-row {
     display: flex !important;
     flex-wrap: wrap !important;
     justify-content: space-between !important;
     align-items: center !important;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    background: #fafafa;
+    border-bottom: 1px solid #e5e7eb;
   }
-  .dt-search label{
-    display: none !important;
+  .admin-table-shell .dt-layout-cell:last-child .dt-layout-row {
+    border-bottom: none;
+    background: #fff;
   }
-  .dt-layout-cell{
-    width: 100% !important;
+  .admin-table-shell .dt-search label { display: none !important; }
+  .admin-table-shell .dt-search input {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    min-width: 11rem;
   }
-  .dt-search input{
-    
+  .admin-table-shell .dt-layout-cell { width: auto !important; }
+  .admin-table-shell table.dataTable { width: 100% !important; margin: 0 !important; }
+  .admin-table-shell table.dataTable thead th {
+    border-bottom: 1px solid #e5e7eb !important;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+  }
+  .admin-table-shell table.dataTable tbody td {
+    border-bottom: 1px solid #f3f4f6 !important;
+    vertical-align: middle !important;
+    padding: 0.375rem 0.5rem;
+  }
+  .admin-table-shell .dt-paging { font-size: 0.8125rem; }
+  .admin-table-shell table.dataTable tbody tr:hover { background-color: #f9fafb !important; }
+  .admin-table-shell .blog-thumb-wrap {
+    width: 72px;
+    height: 72px;
+    max-width: 100%;
+    overflow: hidden;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 0.375rem;
+    border: 1px solid #f3f4f6;
+    background: #f9fafb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .admin-table-shell .blog-thumb-wrap img {
+    width: 100%;
+    height: 100%;
+    max-width: 72px;
+    max-height: 72px;
+    object-fit: cover;
+    display: block;
   }
 </style>
-<div class="flex justify-between items-center mb-5">
-  <h3 class="text-xl font-bold">Posts/ Danh sách bài viết</h3>
-  <a href="/admin/help-center/article/form-add" class="hover:cursor-pointer">
-  <button
+<div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+  <h1 class="text-base font-semibold text-gray-800 m-0">Help center / Danh sách bài viết</h1>
+  <a
+    href="/admin/help-center/article/form-add"
     id="btn_cta_add_blog"
-    class="font-bold text-white px-4 py-3 border border-gray-300 shadow bg-blue-500 rounded-lg"
+    class="inline-flex items-center gap-1 text-sm font-medium text-white no-underline px-3 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 shadow-sm border-0"
   >
-    Add +
-  </button>
+    Thêm bài +
   </a>
 </div>
-<div class="wrapper_table overflow-x-auto">
-  <table id="blog_tbl" class="min-w-full text-sm text-center text-gray-600">
-    <thead class="bg-gray-100 font-semibold text-gray-700 uppercase text-xs">
+<div class="admin-table-shell wrapper_table">
+  <table id="blog_tbl" class="w-full text-sm text-gray-700">
+    <thead class="bg-gray-50 text-gray-600">
       <tr>
-        <th class="px-6 py-4">Name</th>
-        <th class="px-6 py-4">Slug</th>
-        <th class="px-6 py-4">Image</th>
-        <!-- <th class="px-6 py-4">Root</th> -->
-        <!-- <th class="px-6 py-4">Category</th> -->
-        <!-- <th class="px-6 py-4">Feature</th> -->
-        <th class="px-6 py-4">Show</th>
-        <th class="px-6 py-4 text-center">Action</th>
+        <th class="px-3 py-2.5 font-semibold text-left">Name</th>
+        <th class="px-3 py-2.5 font-semibold text-left">Slug</th>
+        <th class="px-3 py-2.5 font-semibold text-center">Image</th>
+        <th class="px-3 py-2.5 font-semibold text-center">Show</th>
+        <th class="px-3 py-2.5 font-semibold text-center">Action</th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-100 text-left">
+    <tbody class="bg-white">
     </tbody>
   </table>
 </div>
@@ -63,37 +107,33 @@
     layout: {
     topStart: 'pageLength',
     topEnd: 'search',
-    bottomStart: 'info',
+    bottomStart: null,
     bottomEnd: 'paging'
   },
     info: false,
     columns: [
-      { data: "title", render: (v) => `<p class="line-clamp-2 px-4 py-6 ">${v}</p>` },
-      { data: "slug", render: (v) => `<p class="line-clamp-2 px-4 py-6">${v}</p>` },
+      { data: "title", render: (v) => `<span class="line-clamp-2 block px-2 py-1 text-sm text-left text-gray-800">${v}</span>` },
+      { data: "slug", render: (v) => `<span class="line-clamp-2 block px-2 py-1 text-sm text-left text-gray-600 font-mono">${v}</span>` },
       {
         data: "image_url",
-        render: (v,t,r) => `<div class="py-1 flex justify-center">
-          <img
-            src="/${r.image_url}"
-            alt=""
-            loading="lazy"
-            style="width: 80px; height: 80px; object-fit: cover"
-          />
-        </div>`,
+        render: (v, t, r) => {
+          const path = (r?.image_url && String(r.image_url).trim()) ? String(r.image_url).replace(/^\/+/, "") : "";
+          if (!path) {
+            return `<div class="blog-thumb-wrap text-xs text-gray-400">—</div>`;
+          }
+          return `<div class="blog-thumb-wrap py-0">
+            <img src="/${path}" alt="" loading="lazy" decoding="async" />
+          </div>`;
+        },
       },
-    //   { data: "category_id", render: (v) => `<p class="text-center  px-4 py-6">${v?.category_root||'no root'}</p>` },
-    //   { data: "category_id", render: (v) => `<p class="text-center px-4 py-6">${v?.name}</p>` },
-    //   { data: "isFeatured", render: (data, type, row) => `${row.featured?`<p class="text-center px-4 py-6"><i class="fa-solid fa-fire text-orange-500"></i></p>`:``}` },
-      { data: "status", render: (v, type, row) => `${row.status?`<p class="text-center px-4 py-6"><i class="fa-regular fa-eye hover:text-blue-500"></i></p>`:`<p class="text-center px-4 py-6"><i class="fa-regular fa-eye-slash text-red-500"></i></p>`}` },
+      { data: "status", render: (v, type, row) => `${row.status?`<div class="text-center py-1"><i class="fa-regular fa-eye text-gray-700" title="Hiển thị"></i></div>`:`<div class="text-center py-1"><i class="fa-regular fa-eye-slash text-red-500" title="Ẩn"></i></div>`}` },
       {
         data: null,
         render: (data, type, row) =>
-          `<p class="text-center">
-            <a href="/admin/help-center/article/edit/${row._id}"
-            ><i class="fa-solid fa-pen-to-square hover:text-blue-600"></i></a
-          >
-          <i class="fa-solid fa-trash-can btn_delete_blog hover:text-blue-600"></i>
-            </p>`,
+          `<div class="flex items-center justify-center gap-4 text-gray-600">
+            <a href="/admin/help-center/article/edit/${row._id}" class="hover:text-blue-600" title="Sửa"><i class="fa-solid fa-pen-to-square"></i></a>
+            <i role="button" tabindex="0" class="fa-solid fa-trash-can btn_delete_blog cursor-pointer hover:text-red-600" title="Xóa"></i>
+          </div>`,
       },
     ],
   });

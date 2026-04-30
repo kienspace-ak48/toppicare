@@ -1,0 +1,136 @@
+<div class="sidebar sidebar-dark sidebar-fixed border-end" id="sidebar">
+  <div class="sidebar-header border-bottom">
+    <div class="sidebar-brand d-flex align-items-center justify-content-center justify-content-lg-start px-2">
+      <span class="sidebar-brand-full fw-semibold text-body-secondary d-flex align-items-center gap-2">
+        <!-- <i class="fa-solid fa-gears text-info"></i> -->
+        <span>Toppicare panel</span>
+      </span>
+      <span class="sidebar-brand-narrow"><i class="fa-solid fa-gears text-info"></i></span>
+    </div>
+    <button class="btn-close d-lg-none" type="button" data-coreui-theme="dark" aria-label="Close" onclick="coreui.Sidebar.getInstance(document.querySelector('#sidebar')).toggle()"></button>
+  </div>
+  <ul class="sidebar-nav" data-coreui="navigation" data-simplebar>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-speedometer"></use>
+        </svg>
+        Dashboard
+      </a>
+    </li>
+
+    <li class="nav-title admin-nav-section-heading">Quản trị nội dung</li>
+
+    <li class="nav-group">
+      <a class="nav-link nav-group-toggle" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-puzzle"></use>
+        </svg>
+        Page config
+      </a>
+      <ul class="nav-group-items compact">
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/customize-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Customize</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Homepage</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/about-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> About</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/services-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Services</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/training-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Training</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/news-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> News</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/contact-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Contact</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/page-config/teachnician-section"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Teachnician</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-group">
+      <a class="nav-link nav-group-toggle" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-heart"></use>
+        </svg>
+        Help center
+      </a>
+      <ul class="nav-group-items compact">
+        <li class="nav-item"><a class="nav-link" href="/admin/help-center/article"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Article</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/help-center/category"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Category</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-group">
+      <a class="nav-link nav-group-toggle" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-notes"></use>
+        </svg>
+        Post
+      </a>
+      <ul class="nav-group-items compact">
+        <li class="nav-item"><a class="nav-link" href="/admin/blog"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Post</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/category"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Category</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-group">
+      <a class="nav-link nav-group-toggle" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-layers"></use>
+        </svg>
+        Services
+      </a>
+      <ul class="nav-group-items compact">
+        <li class="nav-item"><a class="nav-link" href="/admin/service"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Service list</a></li>
+        <li class="nav-item"><a class="nav-link" href="/admin/service/add"><span class="nav-icon"><span class="nav-icon-bullet"></span></span> Add service</a></li>
+      </ul>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/gallery">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-image"></use>
+        </svg>
+        Gallery
+      </a>
+    </li>
+
+    <li class="nav-group" id="sidebar-nav-contact-inbox">
+      <a class="nav-link nav-group-toggle" href="#">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-envelope-open"></use>
+        </svg>
+        Khách &amp; đối tác
+      </a>
+      <ul class="nav-group-items compact">
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center justify-content-between gap-2" href="/admin/contact?type=customer">
+            <span class="d-flex align-items-center gap-2 min-w-0">
+              <span class="nav-icon"><span class="nav-icon-bullet"></span></span>
+              <span>Khách hàng</span>
+            </span>
+            <span class="badge bg-danger rounded-pill flex-shrink-0 admin-mess-count-customer" style="display: none;"></span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link d-flex align-items-center justify-content-between gap-2" href="/admin/contact/partner">
+            <span class="d-flex align-items-center gap-2 min-w-0">
+              <span class="nav-icon"><span class="nav-icon-bullet"></span></span>
+              <span>Đối tác</span>
+            </span>
+            <span class="badge bg-danger rounded-pill flex-shrink-0 admin-mess-count-partner" style="display: none;"></span>
+          </a>
+        </li>
+      </ul>
+    </li>
+
+    <% if (typeof isSuperAdmin !== "undefined" && isSuperAdmin) { %>
+    <li class="nav-divider"></li>
+    <li class="nav-title admin-nav-section-heading admin-nav-section-system">Quản trị hệ thống</li>
+    <li class="nav-item">
+      <a class="nav-link" href="/admin/system/accounts">
+        <svg class="nav-icon">
+          <use xlink:href="/coreui/vendors/@coreui/icons/svg/free.svg#cil-lock-locked"></use>
+        </svg>
+        Tài khoản admin
+      </a>
+    </li>
+    <% } %>
+  </ul>
+  <div class="sidebar-footer border-top d-none d-md-flex">
+    <button class="sidebar-toggler" type="button" data-coreui-toggle="unfoldable"></button>
+  </div>
+</div>

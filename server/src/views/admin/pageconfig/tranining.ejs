@@ -1,199 +1,146 @@
-<div class="p-4">
-  <div class="my_header flex justify-between items-center">
-    <h1 class="text-lg font-bold">Tranining section/ Trang đào tạo <i class="text-blue-500 hover:cursor-pointer fa-regular fa-circle-question hover:scale-150" onclick="goToActionBlank('/training')"></i></h1>
-    <button
-      id="btn_cta_save_config"
-      class="font-bold px-4 py-3 bg-blue-600 rounded-lg border border-gray-300 text-white"
-    >
-      Save
-    </button>
-  </div>
-  <div class="my_content">
-    <div class="mt-5">
-      <label for="" class="font-bold my-4">Banner (1920x640)</label>
-      <input
-        type="text"
-        name="tran_title"
-        value="<%=(data.training)?data.training?.banner.title:''%>"
-        class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
-        placeholder="Title..."
-      />
-      <input
-        type="text"
-        name="tran_desc"
-        value="<%=(data.training)?data.training?.banner.desc:''%>"
-        class="my-2 px-4 py-3 border border-gray-300 w-full rounded-lg"
-        placeholder="Description..."
-      />
-      <!-- <input type="text" name="news_" class="px-4 py-3 border border-gray-300 w-full rounded-lg "> -->
-      <!-- image handle action -->
-      <div class="image_action">
-        <label for="">Image banner</label>
-        <div class="flex justify-between items-center mt-3">
-          <button
-            class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
-          >
-            Chọn ảnh
-          </button>
-          <input
-            type="text"
-            name="tran_img"
-                    value="<%=(data.training)?data.training?.banner.img:''%>"
-            class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
-            placeholder="img"
-          />
-        </div>
-        <div class="img_preview border border-gray-300 w-full h-[200px]">
-          <img
-            src="/<%=(data.training)?data.training?.banner.img:''%>"
-            alt=""
-            class="w-full object-cover max-h-[200px]"
-          />
-        </div>
-      </div>
-    </div>
-  </div>
-       <hr class="my-4">
-  <section class="benefits mt-4">
-    <div class="flex justify-between items-center">
-      <h3 class="font-bold">Benefits</h3>
-      <button
-        id="btn_cat_benefit_add_card"
-        class="font-bold px-4 py-3 rounded-lg bg-green-500 text-white"
-      >
-        Add benefit component
-      </button>
-    </div>
-    <input
-      type="text"
-      name="tran_benefit_title"
-      value="<%=(data.training)?data.training?.benefit.title:''%>"
-      class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
-      placeholder="Nhập benefit title"
-    />
-    <input
-      type="text"
-      name="tran_benefit_desc"
-      value="<%=(data.training)?data.training?.benefit.desc:''%>"
-      class="px-3 py-2 border border-gray-300 w-full rounded-lg mt-4"
-      placeholder="Nhập benefit desc"
-    />
-    <div id="benefit_wrapper" class="grid md:grid-cols-3 gap-5">
-      <%if(data.training.benefit.cards && data.training.benefit.cards.length>0){%>
-        <%data.training.benefit.cards.forEach(c=>{%>
-          <div class="benefit_instance p-4 rounded shadow relative">
-            <span
-              class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
-              >X</span
-            >
-            <input type="text" value="<%=c.title%>" name="card_title" class="px-3 py-2 w-full border border-gray-300" />
-            <textarea
-              name="card_desc"
-              id=""
-              rows="2"
-              class="px-3 py-2 w-full border border-gray-300"
-            ><%=c.desc%></textarea>
-            <!-- image handle action -->
-            <div class="image_action">
-              <!-- <label for="">Image banner</label> -->
-              <div class="flex justify-between items-center mt-3">
-                <button
-                  class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
-                >
-                  Chọn ảnh
-                </button>
-                <input
-                  type="text"
-                  name="card_icon"
-                  value="<%=c.icon?c.icon:''%>"
-                  class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
-                  placeholder="img"
-                />
-              </div>
-              <div class="img_preview border border-gray-300 w-full h-[200px]">
-                <img
-                  src="/<%=c.icon?c.icon: ''%>"
-                  alt=""
-                  class="w-full object-cover max-h-[200px]"
-                />
-              </div>
-            </div>
-            <!--  -->
-          </div>
-        <%})%>
-      <%}%>
-    </div>
-  </section>
+<div class="admin-page-toolbar">
+  <h1 class="mb-0">Trang đào tạo / Training
+    <i class="fa-regular fa-circle-question icon-link-hint ms-1" onclick="goToActionBlank('/training')" role="button" tabindex="0"></i>
+  </h1>
+  <button type="button" id="btn_cta_save_config" class="btn btn-primary">Lưu</button>
 </div>
-<!-- =======TEMPLATE =========== -->
+
+<div class="admin-section-card mb-4">
+  <h2 class="h6 text-body-secondary mb-3">Banner <small class="fw-normal">(1920×640)</small></h2>
+  <label class="form-label">Tiêu đề</label>
+  <input
+    type="text"
+    name="tran_title"
+    value="<%=(data.training)?data.training?.banner.title:''%>"
+    class="form-control mb-3"
+    placeholder="Title..."
+  />
+  <label class="form-label">Mô tả</label>
+  <input
+    type="text"
+    name="tran_desc"
+    value="<%=(data.training)?data.training?.banner.desc:''%>"
+    class="form-control mb-3"
+    placeholder="Description..."
+  />
+  <label class="form-label">Ảnh banner</label>
+  <div class="image_action admin-image-action-block">
+    <div class="d-flex flex-wrap gap-2 align-items-stretch mt-1">
+      <button type="button" class="btn btn-outline-success chooseImg flex-grow-1">Chọn ảnh</button>
+      <input
+        type="text"
+        name="tran_img"
+        value="<%=(data.training)?data.training?.banner.img:''%>"
+        class="form-control img_input flex-grow-1 hidden"
+        placeholder="Đường dẫn ảnh"
+      />
+    </div>
+    <div class="img_preview admin-img-preview mt-2">
+      <img src="/<%=(data.training)?data.training?.banner.img:''%>" alt="">
+    </div>
+  </div>
+</div>
+
+<section class="admin-section-card">
+  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+    <h2 class="h6 mb-0">Lợi ích</h2>
+    <button type="button" id="btn_cat_benefit_add_card" class="btn btn-success btn-sm">Thêm thẻ</button>
+  </div>
+  <label class="form-label">Tiêu đề block</label>
+  <input
+    type="text"
+    name="tran_benefit_title"
+    value="<%=(data.training)?data.training?.benefit.title:''%>"
+    class="form-control mb-3"
+    placeholder="Benefit title"
+  />
+  <label class="form-label">Mô tả block</label>
+  <input
+    type="text"
+    name="tran_benefit_desc"
+    value="<%=(data.training)?data.training?.benefit.desc:''%>"
+    class="form-control mb-3"
+    placeholder="Benefit desc"
+  />
+  <div id="benefit_wrapper" class="row g-3">
+    <%if(data.training.benefit.cards && data.training.benefit.cards.length>0){%>
+      <%data.training.benefit.cards.forEach(c=>{%>
+        <div class="col-12 col-md-6 col-lg-4">
+        <div class="admin-repeater-card benefit_instance h-100">
+          <button type="button" class="btn btn-sm btn-outline-danger btn_cta_benefit_delete_card admin-repeater-remove" aria-label="Xóa">×</button>
+          <label class="form-label small">Tiêu đề thẻ</label>
+          <input type="text" value="<%=c.title%>" name="card_title" class="form-control mb-2" />
+          <label class="form-label small">Mô tả</label>
+          <textarea name="card_desc" rows="2" class="form-control mb-3"><%=c.desc%></textarea>
+          <div class="image_action">
+            <div class="d-flex flex-wrap gap-2 align-items-stretch">
+              <button type="button" class="btn btn-outline-success chooseImg flex-grow-1">Chọn ảnh</button>
+              <input
+                type="text"
+                name="card_icon"
+                value="<%=c.icon?c.icon:''%>"
+                class="form-control img_input flex-grow-1 hidden"
+                placeholder="img"
+              />
+            </div>
+            <div class="img_preview admin-img-preview mt-2">
+              <img src="/<%=c.icon?c.icon: ''%>" alt="">
+            </div>
+          </div>
+        </div>
+        </div>
+      <%})%>
+    <%}%>
+  </div>
+</section>
+
 <template id="benefit_template">
-  <div class="benefit_instance p-4 rounded shadow relative">
-    <span
-      class="btn_cta_benefit_delete_card text-red-500 font-bold absolute top-0 right-2 hover:bg-red-300 hover:cursor-pointer rounded-full px-2"
-      >X</span
-    >
-    <input type="text" name="card_title" class="px-3 py-2 w-full border border-gray-300" />
-    <textarea
-      name="card_desc"
-      id=""
-      rows="2"
-      class="px-3 py-2 w-full border border-gray-300"
-    ></textarea>
-    <!-- image handle action -->
+  <div class="col-12 col-md-6 col-lg-4">
+  <div class="admin-repeater-card benefit_instance h-100">
+    <button type="button" class="btn btn-sm btn-outline-danger btn_cta_benefit_delete_card admin-repeater-remove" aria-label="Xóa">×</button>
+    <label class="form-label small">Tiêu đề thẻ</label>
+    <input type="text" name="card_title" class="form-control mb-2" />
+    <label class="form-label small">Mô tả</label>
+    <textarea name="card_desc" rows="2" class="form-control mb-3"></textarea>
     <div class="image_action">
-      <!-- <label for="">Image banner</label> -->
-      <div class="flex justify-between items-center mt-3">
-        <button
-          class="flex-1 px-4 py-3 chooseImg rounded-lg border border-green-500"
-        >
-          Chọn ảnh
-        </button>
+      <div class="d-flex flex-wrap gap-2 align-items-stretch">
+        <button type="button" class="btn btn-outline-success chooseImg flex-grow-1">Chọn ảnh</button>
         <input
           type="text"
           name="card_icon"
-          value="<%#=(data.news)?data.news?.img_url:''%>"
-          class="flex-3 img_input w-full px-4 py-3 border border-gray-300 rounded-lg hidden"
+          class="form-control img_input flex-grow-1 hidden"
           placeholder="img"
         />
       </div>
-      <div class="img_preview border border-gray-300 w-full h-[200px]">
-        <img
-          src="/<%#=(data.news)?data.news?.img_url: ''%>"
-          alt=""
-          class="w-full object-cover max-h-[200px]"
-        />
+      <div class="img_preview admin-img-preview mt-2">
+        <img src="" alt="">
       </div>
     </div>
-    <!--  -->
+  </div>
   </div>
 </template>
-<!-- =================MODAL===================== -->
+
 <div
   id="gallery_modal"
-  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+  class="admin-choose-img-modal fixed inset-0 items-center justify-center hidden"
 >
-  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
-    <div class="header flex justify-between mb-4">
-      <h2>Chon anh</h2>
-      <button onclick="closeChooseImgModal()">X</button>
+  <div class="admin-choose-img-panel">
+    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+      <h5 class="mb-0">Chọn ảnh</h5>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeChooseImgModal()" aria-label="Đóng">×</button>
     </div>
-    <!--  -->
-    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+    <div id="imgList" class="admin-img-picker-grid"></div>
   </div>
 </div>
-<!-- =========================SCRIPT HERE================ -->
+
 <script>
-  //global scope
-  const btnCtaBenefitAddCard = document.querySelector(
-    "#btn_cat_benefit_add_card",
-  );
+  const btnCtaBenefitAddCard = document.querySelector("#btn_cat_benefit_add_card");
   const benefitWrapper = document.querySelector("#benefit_wrapper");
   const benefitTemplate = document.querySelector("#benefit_template");
-  //
   var ctaChooseImg = document.querySelectorAll(".chooseImg");
   const chooseImgModal = document.querySelector("#gallery_modal");
   let imgInputIsFocusing = null;
-  // combo choose image
+
   function openChooseImgModal() {
     chooseImgModal.classList.remove("hidden");
     chooseImgModal.classList.add("flex");
@@ -215,7 +162,7 @@
     imgInputIsFocusing.querySelector(".img_preview img").src = "/" + src;
     closeChooseImgModal();
   }
-  //
+
   function loadImage() {
     imgList.innerHTML = "Loading...";
     $.ajax({
@@ -227,16 +174,8 @@
           res.data.forEach((item) => {
             const img = document.createElement("img");
             img.src = "/" + item.path;
-            img.className = `
-            w-full h-32
-            object-cover
-            cursor-pointer rounded border
-            hover:ring-4 hover:ring-blue-500
-            transition
-          `;
-
+            img.className = "admin-img-picker-item";
             img.onclick = () => selectImage(item.path);
-
             imgList.appendChild(img);
           });
         }
@@ -245,66 +184,61 @@
         console.log(xhr.responseJSON?.mess || "Server error"),
     });
   }
-  //Tuy bien
+
   benefitWrapper.addEventListener("click", (ev) => {
     const btn = ev.target.closest(".chooseImg");
     if (!btn) return;
-
     loadImage();
     imgInputIsFocusing = btn.closest(".image_action");
     openChooseImgModal();
   });
-  // end combo
-  //
-  btnCtaBenefitAddCard.addEventListener("click", (ev) => {
-    const clone = benefitTemplate.content.cloneNode(true);
-    benefitWrapper.appendChild(clone);
-  });
-  benefitWrapper.addEventListener('click', (ev)=>{
-    if(ev.target.classList.contains('btn_cta_benefit_delete_card')){
-        ev.target.closest('.benefit_instance').remove();
-    }
-  })
 
-  //
-  document
-    .querySelector("#btn_cta_save_config")
-    .addEventListener("click", (ev) => {
-      //
-      let benefitArr = [];
-      benefitWrapper.querySelectorAll('.benefit_instance').forEach(b=>{
-        let benefit = {
-         icon: b.querySelector('input[name="card_icon"]').value,
-         title: b.querySelector('input[name="card_title"]').value,
-         desc: b.querySelector('textarea[name="card_desc"]').value
-        }
-        benefitArr.push(benefit);
-      })
-      const payload = {
-        banner: {
-          title: document.querySelector('input[name="tran_title"]').value,
-          desc: document.querySelector('input[name="tran_desc"]').value,
-          img: document.querySelector('input[name="tran_img"]').value,
-        },
-        benefit: {
-          title: document.querySelector('input[name="tran_benefit_title"]').value,
-          desc: document.querySelector('input[name="tran_benefit_desc"]').value,
-          cards: benefitArr
-        }
-      };
-      console.log(payload);
-      fetch("/admin/page-config/training-section", {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      })
-        .then((res) => res.json())
-        .then((data) => {
-          console.log(data);
-          myNotification("Success", "success");
-        })
-        .catch((err) => {console.log(err); alert('Processing failed')});
+  btnCtaBenefitAddCard.addEventListener("click", () => {
+    benefitWrapper.appendChild(benefitTemplate.content.cloneNode(true));
+  });
+  benefitWrapper.addEventListener("click", (ev) => {
+    const del = ev.target.closest(".btn_cta_benefit_delete_card");
+    if (del) {
+      const col = del.closest(".col-12");
+      if (col) col.remove();
+      else del.closest(".benefit_instance")?.remove();
+    }
+  });
+
+  document.querySelector("#btn_cta_save_config").addEventListener("click", () => {
+    let benefitArr = [];
+    benefitWrapper.querySelectorAll(".benefit_instance").forEach((b) => {
+      benefitArr.push({
+        icon: b.querySelector('input[name="card_icon"]').value,
+        title: b.querySelector('input[name="card_title"]').value,
+        desc: b.querySelector('textarea[name="card_desc"]').value,
+      });
     });
+    const payload = {
+      banner: {
+        title: document.querySelector('input[name="tran_title"]').value,
+        desc: document.querySelector('input[name="tran_desc"]').value,
+        img: document.querySelector('input[name="tran_img"]').value,
+      },
+      benefit: {
+        title: document.querySelector('input[name="tran_benefit_title"]').value,
+        desc: document.querySelector('input[name="tran_benefit_desc"]').value,
+        cards: benefitArr,
+      },
+    };
+    fetch("/admin/page-config/training-section", {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        myNotification("Success", "success");
+      })
+      .catch((err) => {
+        console.log(err);
+        alert("Processing failed");
+      });
+  });
 </script>

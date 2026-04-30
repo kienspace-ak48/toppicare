@@ -1,21 +1,65 @@
-<style></style>
-<div class="flex justify-between items-center mb-3">
-  <h1 class="textlg font-bold">Categories/ Danh sách đề mục</h1>
-  <button id="openModal" class="px-4 py-3 border border-gray-300 rounded-lg">
+<style>
+  .admin-table-shell {
+    border-radius: 0.5rem;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    box-shadow: 0 1px 2px rgb(0 0 0 / 0.05);
+    overflow: hidden;
+  }
+  .admin-table-shell .dt-layout-row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    font-size: 0.875rem;
+    background: #fafafa;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  .admin-table-shell .dt-layout-cell:last-child .dt-layout-row {
+    border-bottom: none;
+    background: #fff;
+  }
+  .admin-table-shell .dt-search label { display: none !important; }
+  .admin-table-shell .dt-search input {
+    font-size: 0.875rem;
+    padding: 0.375rem 0.625rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.375rem;
+    min-width: 11rem;
+  }
+  .admin-table-shell table.dataTable { width: 100% !important; margin: 0 !important; }
+  .admin-table-shell table.dataTable thead th {
+    border-bottom: 1px solid #e5e7eb !important;
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+  }
+  .admin-table-shell table.dataTable tbody td {
+    border-bottom: 1px solid #f3f4f6 !important;
+    vertical-align: middle !important;
+    padding: 0.375rem 0.5rem;
+  }
+  .admin-table-shell .dt-paging { font-size: 0.8125rem; }
+  .admin-table-shell table.dataTable tbody tr:hover { background-color: #f9fafb !important; }
+</style>
+<div class="flex flex-wrap justify-between items-center gap-3 mb-4">
+  <h1 class="text-lg font-semibold text-gray-800 m-0">Categories / Danh sách đề mục</h1>
+  <button type="button" id="openModal" class="text-sm font-medium px-3 py-2 border border-gray-300 rounded-lg bg-white hover:bg-gray-50 text-gray-800 shadow-sm">
     + Add category
   </button>
 </div>
 
-<div class="wrapper_table overflow-x-auto">
-  <table id="category_tbl" class="w-full text-sm min-w-full text-left text-gray-600">
-    <thead class="bg-gray-100 font-semibold text-gray-700 uppercase text-xs">
+<div class="admin-table-shell wrapper_table">
+  <table id="category_tbl" class="w-full text-sm text-left text-gray-700">
+    <thead class="bg-gray-50 text-gray-600">
       <tr>
-        <th class="px-6 py-4">Name</th>
-        <th class="px-6 py-4">Description</th>
-        <th class="px-6 py-4 text-center">Action</th>
+        <th class="px-3 py-2.5 font-semibold">Name</th>
+        <th class="px-3 py-2.5 font-semibold">Description</th>
+        <th class="px-3 py-2.5 font-semibold text-center">Action</th>
       </tr>
     </thead>
-    <tbody class="divide-y divide-gray-100">
+    <tbody class="bg-white">
       
     </tbody>
   </table>
@@ -160,21 +204,22 @@
     ordering: false, // ⭐ QUAN TRỌNG
     autoWidth: false,
     info: false,
+    layout: {
+      topStart: "pageLength",
+      topEnd: "search",
+      bottomStart: null,
+      bottomEnd: "paging",
+    },
     columns: [
-      { data: "name", render: (v) => `<p class="px-4 py-6 ">${v}</p>` },
-      {data: 'desc', render: (v)=>`<p class="px-4 py-6">${v}</p>`},
-      // { data: "slug", render: (v) => `<p class="px-4 py-6">${v}</p>` },
-      // { data: "category_root", render: (v)=>`<p class="text-center">${v}</p>` },
-      // { data: "quantity",render: (v)=>`<p class="text-center">${v}</p>` },
+      { data: "name", render: (v) => `<span class="block px-2 py-1 text-sm text-gray-800">${v}</span>` },
+      {data: 'desc', render: (v)=>`<span class="block px-2 py-1 text-sm text-gray-600">${v || '—'}</span>`},
       {
         data: null,
         render: (data, type, row) =>
-          `
-          <p class="text-center">
-            <i data-id="${row._id}" class="btn_edit fa-solid fa-pen-to-square hover:text-blue-600"></i>
-            <i data-id="${row._id}" class="btn_delete fa-solid fa-trash-can btn_delete_blog hover:text-blue-600"></i>
-          </p> 
-          `,
+          `<div class="flex items-center justify-center gap-4 text-gray-600">
+            <i role="button" tabindex="0" data-id="${row._id}" class="btn_edit fa-solid fa-pen-to-square cursor-pointer hover:text-blue-600" title="Sửa"></i>
+            <i role="button" tabindex="0" data-id="${row._id}" class="btn_delete fa-solid fa-trash-can btn_delete_blog cursor-pointer hover:text-red-600" title="Xóa"></i>
+          </div>`,
       },
     ],
   });

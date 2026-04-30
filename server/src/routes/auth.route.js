@@ -6,6 +6,7 @@ const rateLimit= require('express-rate-limit');
 const bcrypt = require("bcrypt");
 const isProd = process.env.NODE_ENV === "production";
 const userEntity = require("../model/user.model");
+const ADMIN_PANEL_ROLES = ["super_admin", "admin"];
 //fx
 const loginLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -27,12 +28,19 @@ async function comparePassword(password, hash) {
 }
 //form login
 router.get("/admin/login", (req, res) => {
-  res.render("pages/login", { layout: false });
+  let mess;
+  const r = req.query.reason;
+  if (r === "expired") mess = "Phiên đăng nhập hết hạn, vui lòng đăng nhập lại.";
+  if (r === "disabled") mess = "Tài khoản đã bị vô hiệu hóa.";
+  if (r === "forbidden")
+    mess = "Chỉ tài khoản quản trị (Admin / Super admin) mới đăng nhập được trang này.";
+  res.render("pages/login", { layout: false, mess });
 });
 //login
 router.post("/admin/login",loginLimiter , async (req, res) => {
   const { email, password } = req.body;
-  const account = await userEntity.findOne({ email: email });
+  const emailNorm = String(email || "").trim().toLowerCase();
+  const account = await userEntity.findOne({ email: emailNorm });
   if (!account) {
     // console.log("ko thay user");
     return res.render("pages/login", {
@@ -56,6 +64,13 @@ router.post("/admin/login",loginLimiter , async (req, res) => {
       layout: false,
       success: false,
       mess: "username or password is incorrect!!",
+    });
+  }
+  if (!ADMIN_PANEL_ROLES.includes(account.role)) {
+    return res.render("pages/login", {
+      layout: false,
+      success: false,
+      mess: "Chỉ tài khoản Admin / Super admin mới đăng nhập được.",
     });
   }
   const payload = {

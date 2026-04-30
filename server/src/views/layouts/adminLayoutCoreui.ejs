@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+* CoreUI - Free Bootstrap Admin Template
+* @version v5.3.0
+* @link https://coreui.io/product/free-bootstrap-admin-template/
+* Copyright (c) 2025 creativeLabs Łukasz Holeczek
+* Licensed under MIT (https://github.com/coreui/coreui-free-bootstrap-admin-template/blob/main/LICENSE)
+-->
+
+<html lang="vi">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="ToppiLife Admin">
+    <meta name="author" content="KienVu">
+    <meta name="keyword" content="Bootstrap,Admin,Template,ToppiLife">
+    <link rel="icon" href="/favicon.ico">
+    <title>ToppiLife - Admin</title>
+
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/coreui/assets/favicon/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+    <!-- Vendors styles-->
+    <link rel="stylesheet" href="/coreui/vendors/simplebar/css/simplebar.css">
+    <link rel="stylesheet" href="/coreui/css/vendors/simplebar.css">
+    <!-- Main styles for this application-->
+    <link href="/coreui/css/style.css" rel="stylesheet">
+    <script src="/coreui/js/config.js"></script>
+    <script src="/coreui/js/color-modes.js"></script>
+    <link href="/coreui/vendors/@coreui/chartjs/css/coreui-chartjs.css" rel="stylesheet">
+
+    <!-- Giao diện admin: CoreUI + Bootstrap (trong style.css) + /css/admin-app.css — không dùng Tailwind build -->
+    <link rel="stylesheet" href="/libs/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" href="/libs/css/sweetalert2.min.css">
+    <link rel="stylesheet" href="/libs/fontawesome/css/all.min.css">
+    <link href="/css/admin-app.css" rel="stylesheet">
+    <style id="admin-shell-fix">
+      /* CoreUI: .wrapper là flex column — con flex-grow cần min-* để không tràn ngang / chồng lên header */
+      body > .wrapper.d-flex.flex-column.min-vh-100 {
+        min-width: 0;
+        isolation: isolate;
+      }
+      body > .wrapper > .body.admin-main {
+        min-width: 0;
+        min-height: 0;
+        flex: 1 1 auto;
+      }
+      /* overflow-x:auto trên toàn vùng body làm overflow-y thành auto → 2 scrollbar dọc;
+         chỉ chặn tràn ngang; bảng rộng dùng .table-responsive trong từng view */
+      body > .wrapper > .body .admin-view-root {
+        max-width: 100%;
+        min-width: 0;
+        overflow-x: clip;
+      }
+    </style>
+
+    <!-- Phải load trước <%#- body %> vì nhiều view khởi tạo DataTable inline -->
+    <script src="/libs/js/jquery-3.7.1.js"></script>
+    <script src="/libs/js/dataTables.min.js"></script>
+    <script src="/libs/js/dataTables.bootstrap5.min.js"></script>
+    <script src="/libs/js/sweetalert2.all.min.js"></script>
+    <script>
+      function myNotification(text, icon, timer = 2500, position = "top-end") {
+        Swal.fire({
+          text: text,
+          icon: icon === "danger" ? "error" : icon,
+          timer: timer,
+          position: position,
+          showConfirmButton: false,
+        });
+      }
+      function goToActionBlank(action) {
+        window.open(window.location.origin + action, "_blank");
+      }
+      function countMess(type = "customer") {
+        if (type === "partner") {
+          fetch(`/admin/contact/count-mess?type=${type}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.success) {
+                const count = res.data?.partner;
+                updateMessCount(count, ".admin-mess-count-partner");
+              }
+            })
+            .catch((err) => console.log("err: ", err));
+        }
+        if (type === "customer") {
+          fetch(`/admin/contact/count-mess?type=${type}`, {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+          })
+            .then((res) => res.json())
+            .then((res) => {
+              if (res.success) {
+                const count = res.data?.customer;
+                updateMessCount(count, ".admin-mess-count-customer");
+              }
+            })
+            .catch((err) => console.log("err: ", err));
+        }
+      }
+      function updateMessCount(count = 0, selector = ".admin-mess-count-partner") {
+        document.querySelectorAll(selector).forEach((badge) => {
+          if (count <= 0) {
+            badge.style.display = "none";
+            badge.textContent = "";
+          } else {
+            badge.style.display = "inline-flex";
+            badge.style.alignItems = "center";
+            badge.style.justifyContent = "center";
+            badge.style.minWidth = "1.25rem";
+            badge.textContent = String(count);
+          }
+        });
+      }
+    </script>
+  </head>
+  <body>
+    <%- include('../partials/sidebar.ejs')%>
+    <div class="wrapper d-flex flex-column min-vh-100">
+      <%- include('../partials/header.ejs')%>
+      <div class="body admin-main flex-grow-1">
+        <div class="container-fluid px-0 admin-view-root">
+          <%- body %>
+        </div>
+      </div>
+    </div>
+    <!-- CoreUI and necessary plugins-->
+    <script src="/coreui/vendors/@coreui/coreui/js/coreui.bundle.min.js"></script>
+    <script src="/coreui/vendors/simplebar/js/simplebar.min.js"></script>
+    <script>
+      const header = document.querySelector('header.header');
+
+      document.addEventListener('scroll', () => {
+        if (header) {
+          header.classList.toggle('shadow-sm', document.documentElement.scrollTop > 0);
+        }
+      });
+
+    </script>
+    <!-- Plugins and scripts required by this view-->
+    <script src="/coreui/vendors/chart.js/js/chart.umd.js"></script>
+    <script src="/coreui/vendors/@coreui/chartjs/js/coreui-chartjs.js"></script>
+    <script src="/coreui/vendors/@coreui/utils/js/index.js"></script>
+    <script src="/coreui/js/main.js"></script>
+    <script>
+      document.dispatchEvent(new CustomEvent("admin:charts-ready"));
+    </script>
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        countMess("customer");
+        countMess("partner");
+        var inbox = document.getElementById("sidebar-nav-contact-inbox");
+        if (inbox && /^\/admin\/contact(\/|$)/.test(window.location.pathname || "")) {
+          inbox.classList.add("show");
+        }
+      });
+    </script>
+  </body>
+</html>

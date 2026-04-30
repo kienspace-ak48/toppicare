@@ -46,10 +46,6 @@ export function Header() {
   const closeDropdown = () => {
     setDropdownOpen(false);
   };
-  const formatPhone = (phone = "") => {
-  const cleaned = phone.replace(/\D/g, ""); // bỏ ký tự lạ
-  return cleaned.replace(/(\d{4})(\d{4})(\d{2})/, "$1.$2.$3");
-};
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-40 backdrop-blur-lg bg-white/70 border-b border-white/20 shadow-lg ">

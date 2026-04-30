@@ -1,0 +1,79 @@
+<div class="admin-page-toolbar d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+  <h1 class="mb-0 h5">Tài khoản quản trị</h1>
+  <a href="/admin/system/accounts/add" class="btn btn-primary btn-sm">
+    <i class="fa-solid fa-plus me-1"></i> Thêm tài khoản
+  </a>
+</div>
+
+<% if (queryError) { %>
+  <div class="alert alert-warning" role="alert"><%= queryError %></div>
+<% } %>
+
+<div class="card shadow-sm">
+  <div class="card-body p-0">
+    <div class="table-responsive">
+      <table class="table table-striped table-hover mb-0 align-middle">
+        <thead class="table-light">
+          <tr>
+            <th class="text-center" style="width:4rem;">Ảnh</th>
+            <th>Email</th>
+            <th>Tên</th>
+            <th>Username</th>
+            <th>Role</th>
+            <th>Trạng thái</th>
+            <th class="text-end">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% if (!accounts || accounts.length === 0) { %>
+            <tr><td colspan="7" class="text-center text-body-secondary py-4">Chưa có tài khoản nào.</td></tr>
+          <% } else { %>
+            <% accounts.forEach(function (a) { %>
+              <tr>
+                <td class="text-center">
+                  <% if (a.avatar) { %>
+                    <img src="/<%= String(a.avatar).replace(/^\/+/, '') %>" alt="" class="rounded-circle border" width="36" height="36" style="object-fit:cover;" />
+                  <% } else { %>
+                    <span class="text-body-secondary small">—</span>
+                  <% } %>
+                </td>
+                <td><%= a.email %></td>
+                <td><%= a.name || "—" %></td>
+                <td><%= a.username || "—" %></td>
+                <td>
+                  <% if (a.role === "super_admin") { %>
+                    <span class="badge text-bg-danger">Super admin</span>
+                  <% } else { %>
+                    <span class="badge text-bg-secondary">Admin</span>
+                  <% } %>
+                </td>
+                <td>
+                  <% if (a.status) { %>
+                    <span class="badge text-bg-success">Hoạt động</span>
+                  <% } else { %>
+                    <span class="badge text-bg-warning text-dark">Tắt</span>
+                  <% } %>
+                </td>
+                <td class="text-end text-nowrap">
+                  <a href="/admin/system/accounts/<%= a._id %>/edit" class="btn btn-sm btn-outline-primary">Sửa</a>
+                  <% if (String(a._id) !== String(user._id)) { %>
+                  <form
+                    action="/admin/system/accounts/<%= a._id %>/delete"
+                    method="post"
+                    class="d-inline"
+                    onsubmit="return confirm('Xóa tài khoản này?');"
+                  >
+                    <button type="submit" class="btn btn-sm btn-outline-danger">Xóa</button>
+                  </form>
+                  <% } else { %>
+                  <span class="text-body-secondary small ms-1">(bạn)</span>
+                  <% } %>
+                </td>
+              </tr>
+            <% }); %>
+          <% } %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

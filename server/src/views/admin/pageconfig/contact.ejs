@@ -122,15 +122,14 @@
 <!-- =================MODAL===================== -->
 <div
   id="gallery_modal"
-  class="fixed inset-0 bg-black/50 items-center hidden justify-center"
+  class="admin-choose-img-modal fixed inset-0 items-center justify-center hidden"
 >
-  <div class="bg-white min-w-75 max-h-[80vh] rounded p-4 overflow-y-auto">
-    <div class="header flex justify-between mb-4">
-      <h2>Chon anh</h2>
-      <button onclick="closeChooseImgModal()">X</button>
+  <div class="admin-choose-img-panel">
+    <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
+      <h5 class="mb-0">Chọn ảnh</h5>
+      <button type="button" class="btn btn-sm btn-outline-secondary" onclick="closeChooseImgModal()" aria-label="Đóng">×</button>
     </div>
-    <!--  -->
-    <div id="imgList" class="grid grid-cols-4 gap-4"></div>
+    <div id="imgList" class="admin-img-picker-grid"></div>
   </div>
 </div>
 <!-- =========================SCRIPT HERE================ -->
@@ -179,13 +178,7 @@
           res.data.forEach((item) => {
             const img = document.createElement("img");
             img.src = "/" + item.path;
-            img.className = `
-            w-full h-32
-            object-cover
-            cursor-pointer rounded border
-            hover:ring-4 hover:ring-blue-500
-            transition
-          `;
+            img.className = "admin-img-picker-item";
 
             img.onclick = () => selectImage(item.path);
 

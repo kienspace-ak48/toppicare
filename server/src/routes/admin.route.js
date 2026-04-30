@@ -1,5 +1,7 @@
 const express = require("express");
 const router = express.Router();
+const systemAccountController = require("../controller/systemAccount.controller");
+const requireSuperAdmin = require("../middlewares/requireSuperAdmin.middleware");
 const homeController = require("../controller/home.controller")();
 const galleryController = require("../controller/gallery.controller")();
 const blogController = require('../controller/blog.controller')();
@@ -11,6 +13,13 @@ const contactController = require("../controller/contact.controller")();
 const ServicePackageController = require("../controller/servicePackage.controller")();
 const ServiceController = require('../controller/service.controller')();
 const warrantyController = require("../controller/warranty.controller")();
+// System accounts (chỉ super_admin)
+router.get("/system/accounts", requireSuperAdmin, systemAccountController.index);
+router.get("/system/accounts/add", requireSuperAdmin, systemAccountController.addForm);
+router.post("/system/accounts", requireSuperAdmin, systemAccountController.create);
+router.get("/system/accounts/:id/edit", requireSuperAdmin, systemAccountController.editForm);
+router.post("/system/accounts/:id/update", requireSuperAdmin, systemAccountController.update);
+router.post("/system/accounts/:id/delete", requireSuperAdmin, systemAccountController.destroy);
 //page config
 // -cutomize
 router.get('/page-config/customize-section', PageConfigController.CustomizeSection);
